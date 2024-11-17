@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Neighbor.Application\Neighbor.Application.csproj" />
+		<ProjectReference Include="..\Neighbor.Contract\Neighbor.Contract.csproj" />
+		<ProjectReference Include="..\Neighbor.Infrastructure.Dapper\Neighbor.Infrastructure.Dapper.csproj" />
+		<ProjectReference Include="..\Neighbor.Infrastructure\Neighbor.Infrastructure.csproj" />
+		<ProjectReference Include="..\Neighbor.Persistence\Neighbor.Persistence.csproj" />
+		<ProjectReference Include="..\Neighbor.Presentation\Neighbor.Presentation.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
+		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.7.3" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,32 @@
+{
+  "ConnectionStrings": {
+    "ConnectionStrings": ""
+  },
+  "RedisConfiguration": {
+    "Enabled": true,
+    "ConnectionString": ""
+  },
+  "ClientConfiguration": {
+    "Url": "",
+    "VerifyEmail": "",
+    "VerifyChangeEmail": "",
+    "VerifyChangePassword": ""
+  },
+  "EmailConfiguration": {
+    "EmailHost": "",
+    "EmailUsername": "",
+    "EmailPassword": ""
+  },
+  "UserConfiguration": {
+    "DefaultMaleAvatar": "",
+    "DefaultFemaleAvatar": ""
+  },
+  "AuthenticationConfiguration": {
+    "Issuer": "",
+    "Audience": "",
+    "AccessSecretToken": "",
+    "RefreshSecretToken": "",
+    "AccessTokenExpMinute": "",
+    "RefreshTokenExpMinute": ""
+  }
+}

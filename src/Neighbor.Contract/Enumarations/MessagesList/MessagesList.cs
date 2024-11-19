@@ -31,4 +31,16 @@ public enum MessagesList
 
     [Message("Session has expired, please log in again", "auth_login_expired")]
     AuthRefreshTokenNull,
+
+    [Message("All Categories: ", "category_noti_success_01")]
+    CategoryGetAllCategoriesSuccess,
+
+    [Message("Can not find any categories!", "category_noti_exception_01")]
+    CategoryNotFoundAnyException,
+
+    [Message("All Surcharges: ", "surcharge_noti_success_01")]
+    SurchargeGetAllSurchargesSuccess,
+
+    [Message("Can not find any surcharges!", "surcharge_noti_exception_01")]
+    SurchargeNotFoundAnyException,
 }

@@ -51,6 +51,8 @@ builder.Services.AddConfigurationService();
 
 builder.Services.AddConfigurationAppSetting(builder.Configuration);
 
+builder.Services.AddConfigurationAutoMapper();
+
 builder.Services
         .AddSwaggerGenNewtonsoftSupport()
         .AddFluentValidationRulesToSwagger()

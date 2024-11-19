@@ -4,7 +4,7 @@ using Neighbor.Domain.Entities;
 
 namespace Neighbor.Persistence.Configurations;
 
-internal class AccountConfiguration : IEntityTypeConfiguration<Account>
+public class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> builder)
     {

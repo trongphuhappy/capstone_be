@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Neighbor.Contract.Abstractions.Message;
 
-namespace Neighbor.Contract.Services.Authentications
+namespace Neighbor.Contract.Services.Authentications;
+
+public static class Query
 {
-    internal class Query
-    {
-    }
+    public record LoginQuery(string Email, string Password) : IQuery<Response.LoginResponse>;
 }

@@ -35,4 +35,16 @@ public class AuthenticationController : ApiController
 
         return Ok(result);
     }
+
+    [HttpPost("login", Name = "Login")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> Login([FromBody] Query.LoginQuery queries)
+    {
+        var result = await Sender.Send(queries);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+        
+        return Ok(result);
+    }
 }

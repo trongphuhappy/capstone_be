@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neighbor.Contract.Abstractions.Shared;
@@ -8,6 +9,7 @@ using static Neighbor.Contract.Services.Surcharges.Filter;
 
 namespace Neighbor.Presentation.Controller.V2;
 
+[ApiVersion(2)]
 public class SurchargeController : ApiController
 {
     public SurchargeController(ISender sender) : base(sender)

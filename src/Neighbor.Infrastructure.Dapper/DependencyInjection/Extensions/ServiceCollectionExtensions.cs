@@ -11,5 +11,6 @@ public static class ServiceCollectionExtensions
         => services.AddTransient<IDPUnitOfWork, DPUnitOfWork>()
                    .AddTransient<IAccountRepository, AccountRepository>()
                    .AddTransient<ICategoryRepository, CategoryRepository>()
-                   .AddTransient<ISurchargeRepository, SurchargeRepository>();
+                   .AddTransient<ISurchargeRepository, SurchargeRepository>()
+                   .AddTransient<IProductRepository, ProductRepository>();
 }

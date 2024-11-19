@@ -24,6 +24,28 @@ public static class SeedData
                 }
             );
         }
+        if (!context.Categories.Any())
+        {
+            context.Categories.AddRange(
+                Category.CreateCategory("Couch", false),
+                Category.CreateCategory("Table", false),
+                Category.CreateCategory("Electronic", false),
+                Category.CreateCategory("Decorations", false),
+                Category.CreateCategory("Bed", false),
+                Category.CreateCategory("Cabinet", false),
+                Category.CreateCategory("Car", true),
+                Category.CreateCategory("Motorbike", true),
+                Category.CreateCategory("Bike", true)
+            );
+        }
+        if (!context.Surcharges.Any())
+        {
+            context.Surcharges.AddRange(
+                Surcharge.CreateSurcharge(Guid.NewGuid(), "Late Fees", "Additional charges for delayed payments", false),
+                Surcharge.CreateSurcharge(Guid.NewGuid(), "Sanity Fees", "Charges for ensuring compliance with policies or processes", false),
+                Surcharge.CreateSurcharge(Guid.NewGuid(), "Damage Fees", "Charges for repair or replacement due to damages caused", false)
+            );
+        }
         context.SaveChanges();
     }
 }

@@ -2,5 +2,5 @@
 
 public static class Response
 {
-    public record SurchargeResponse(int Id, string Name, bool IsVehicle);
+    public record SurchargeResponse(Guid Id, string Name, string Description);
 }

@@ -7,4 +7,5 @@ public interface IDPUnitOfWork
     IAccountRepository AccountRepositories { get; }
     ICategoryRepository CategoryRepositories { get; }
     ISurchargeRepository SurchargeRepositories { get; }
+    IProductRepository ProductRepositories { get; }
 }

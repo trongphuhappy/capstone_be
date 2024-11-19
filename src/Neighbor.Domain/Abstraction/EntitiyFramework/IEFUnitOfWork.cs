@@ -6,4 +6,6 @@ public interface IEFUnitOfWork : IAsyncDisposable
 {
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     IAccountRepository AccountRepository { get; }
+    ISurchargeRepository SurchargeRepository { get; }
+    IProductRepository ProductRepository { get; }
 }

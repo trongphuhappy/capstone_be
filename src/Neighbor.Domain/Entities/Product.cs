@@ -12,6 +12,7 @@ public class Product : DomainEntity<Guid>
     public string? RejectReason { get; private set; }
     public double Rating { get; private set; }
     public double Price { get; private set; }
+    public double Value { get; private set; }
     public int CategoryId { get; private set; }
     public bool IsConfirm { get; private set; }
     public Guid LessorId { get; private set; }

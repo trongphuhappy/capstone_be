@@ -6,10 +6,12 @@ public class EFUnitOfWork : IEFUnitOfWork
 {
     private readonly ApplicationDbContext _context;
 
-    public EFUnitOfWork(ApplicationDbContext context, IAccountRepository accountRepository)
+    public EFUnitOfWork(ApplicationDbContext context, IAccountRepository accountRepository, ISurchargeRepository surchargeRepository, IProductRepository productRepository)
     {
         _context = context;
         AccountRepository = accountRepository;
+        SurchargeRepository = surchargeRepository;
+        ProductRepository = productRepository;
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -19,4 +21,8 @@ public class EFUnitOfWork : IEFUnitOfWork
     => await _context.SaveChangesAsync();
 
     public IAccountRepository AccountRepository { get; }
+
+    public ISurchargeRepository SurchargeRepository { get; }
+
+    public IProductRepository ProductRepository {  get; }
 }

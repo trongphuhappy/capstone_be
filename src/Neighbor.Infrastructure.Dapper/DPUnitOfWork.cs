@@ -15,4 +15,5 @@ public class DPUnitOfWork : IDPUnitOfWork
     public ICategoryRepository CategoryRepositories { get; }
 
     public ISurchargeRepository SurchargeRepositories { get; }
+    public IProductRepository ProductRepositories { get; }
 }

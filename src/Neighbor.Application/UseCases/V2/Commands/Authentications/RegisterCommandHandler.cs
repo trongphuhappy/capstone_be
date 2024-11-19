@@ -44,7 +44,7 @@ public sealed class RegisterCommandHandler : ICommandHandler<Command.RegisterCom
         await Task.WhenAll(
             _publisher.Publish(new DomainEvent.UserRegistedWithLocal(Guid.NewGuid(), request.Email), cancellationToken)
         );
-
+        
         return Result.Success(new Success(MessagesList.AuthRegisterSuccess.GetMessage().Code, MessagesList.AuthRegisterSuccess.GetMessage().Message));
     }
 }

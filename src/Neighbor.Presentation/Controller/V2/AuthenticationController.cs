@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using static Neighbor.Domain.Exceptions.AuthenticationException;
 
 namespace Neighbor.Presentation.Controller.V2;
 
+[ApiVersion(2)]
 public class AuthenticationController : ApiController
 {
     public AuthenticationController(ISender sender) : base(sender)

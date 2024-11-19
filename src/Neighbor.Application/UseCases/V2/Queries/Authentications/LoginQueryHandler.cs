@@ -1,5 +1,4 @@
-﻿using Mapster;
-using Neighbor.Contract.Abstractions.Message;
+﻿using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.DTOs.AuthenticationDTOs;

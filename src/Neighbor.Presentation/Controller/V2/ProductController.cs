@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neighbor.Contract.Abstractions.Shared;
@@ -7,6 +8,7 @@ using Neighbor.Presentation.Abstractions;
 
 namespace Neighbor.Presentation.Controller.V2;
 
+[ApiVersion(2)]
 public class ProductController : ApiController
 {
     public ProductController(ISender sender) : base(sender)

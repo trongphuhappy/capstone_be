@@ -2,9 +2,13 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Neighbor.API.DepedencyInjection.Extensions;
 using Neighbor.API.Middleware;
 using Neighbor.Application.DependencyInjection.Extensions;
+using Neighbor.Infrastructure.Dapper.DependencyInjection.Extensions;
 using Neighbor.Infrastructure.DependencyInjection.Extensions;
+using Neighbor.Infrastructure.Services;
+using Neighbor.Persistence;
 using Neighbor.Persistence.DependencyInjection.Extensions;
 using Neighbor.Persistence.DependencyInjection.Options;
+using Neighbor.Persistence.SeedData;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,7 +42,7 @@ builder.Services.AddSqlConfiguration();
 builder.Services.AddRepositoryBaseConfiguration();
 
 // Configure Dapper
-//builder.Services.AddInfrastructureDapper();
+builder.Services.AddInfrastructureDapper();
 
 // Configure Options and Redis
 builder.Services.AddConfigurationRedis(builder.Configuration);
@@ -75,17 +79,22 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 var app = builder.Build();
 
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
 
+    SeedData.Seed(context, builder.Configuration, new PasswordHashService());
+}
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
 app.UseCors("AllowSpecificOrigin");
-
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -8,7 +8,7 @@ using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Exceptions;
 using System.Text.Json;
 
-namespace Neighbor.Application.UseCases.V1.Commands.Authentications;
+namespace Neighbor.Application.UseCases.V2.Commands.Authentications;
 
 public sealed class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
 {

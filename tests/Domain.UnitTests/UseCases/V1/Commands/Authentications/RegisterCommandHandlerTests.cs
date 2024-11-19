@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Moq;
-using Neighbor.Application.UseCases.V1.Commands.Authentications;
+using Neighbor.Application.UseCases.V2.Commands.Authentications;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.Enumarations.Authentication;

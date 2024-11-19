@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Neighbor.Domain.Entities;
-using Neighbor.Contract.Services.Categories;
 using Neighbor.Contract.Abstractions.Shared;
 using static Neighbor.Contract.Services.Categories.Response;
 

@@ -43,6 +43,8 @@ public static class ServiceCollectionExtensions
         services
             .AddScoped(typeof(IEFUnitOfWork), typeof(EFUnitOfWork))
             .AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>))
-            .AddTransient<IAccountRepository, AccountRepository>();
+            .AddTransient<IAccountRepository, AccountRepository>()
+            .AddTransient<ISurchargeRepository, SurchargeRepository>()
+            .AddTransient<IProductRepository, ProductRepository>();
     }
 }

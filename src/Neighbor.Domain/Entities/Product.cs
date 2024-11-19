@@ -18,5 +18,5 @@ public class Product : DomainEntity<Guid>
     public virtual Lessor Lessor { get; private set; }
     public virtual Category Category { get; private set; }
     public virtual List<Images> Images { get; private set; }
-    public virtual List<ProductSurchange> ProductSurchanges { get; private set; }
+    public virtual List<ProductSurcharge> ProductSurcharges { get; private set; }
 }

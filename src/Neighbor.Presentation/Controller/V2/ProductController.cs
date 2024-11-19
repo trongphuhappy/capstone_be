@@ -5,7 +5,7 @@ using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.Services.Authentications;
 using Neighbor.Presentation.Abstractions;
 
-namespace Neighbor.Presentation.Controller.V1;
+namespace Neighbor.Presentation.Controller.V2;
 
 public class ProductController : ApiController
 {

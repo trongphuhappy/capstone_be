@@ -2,9 +2,9 @@
 
 namespace Neighbor.Domain.Entities;
 
-public class Surchange : DomainEntity<Guid>
+public class Surcharge : DomainEntity<Guid>
 {
     public string Name { get;private set; }
     public string Description { get;private set; }
-    public virtual List<ProductSurchange> productSurchanges { get; private set; }
+    public virtual List<ProductSurcharge> productSurcharges { get; private set; }
 }

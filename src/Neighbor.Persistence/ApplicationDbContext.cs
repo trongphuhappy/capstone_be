@@ -19,6 +19,6 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Images> Images { get; set; }
     public DbSet<Lessor> Lessor { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<ProductSurchange> ProductSurchange { get; set; }
-    public DbSet<Surchange> Surchange { get; set; }
+    public DbSet<ProductSurcharge> ProductSurchange { get; set; }
+    public DbSet<Surcharge> Surchange { get; set; }
 }

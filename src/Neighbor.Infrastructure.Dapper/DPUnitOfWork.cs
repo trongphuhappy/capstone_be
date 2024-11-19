@@ -9,4 +9,8 @@ public class DPUnitOfWork : IDPUnitOfWork
         AccountRepositories = accountRepository;
     }
     public IAccountRepository AccountRepositories { get; }
+
+    public ICategoryRepository CategoryRepositories { get; }
+
+    public ISurchargeRepository SurchargeRepositories { get; }
 }

@@ -2,5 +2,5 @@
 
 public static class Response
 {
-    public record CategoriesResponse(int Id, string Name, bool IsVehicle);
+    public record CategoryResponse(int Id, string Name, bool IsVehicle);
 }

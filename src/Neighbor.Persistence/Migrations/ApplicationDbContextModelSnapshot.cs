@@ -78,9 +78,6 @@ namespace Neighbor.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<int>("RoleUserId")
                         .HasColumnType("int");
 

@@ -12,8 +12,8 @@ using Neighbor.Persistence;
 namespace Neighbor.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241119054048_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241119085701_InitalCreate")]
+    partial class InitalCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,9 +80,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
 
                     b.Property<int>("RoleUserId")
                         .HasColumnType("int");

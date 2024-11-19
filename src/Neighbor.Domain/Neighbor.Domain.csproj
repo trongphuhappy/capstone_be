@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Neighbor.Contract\Neighbor.Contract.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Abstraction\Dappers\" />
-  </ItemGroup>
-
 </Project>

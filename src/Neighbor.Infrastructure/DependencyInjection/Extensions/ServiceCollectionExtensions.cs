@@ -27,7 +27,8 @@ public static class ServiceCollectionExtensions
     public static void AddConfigurationService(this IServiceCollection services)
     {
         services.AddSingleton<IEmailService, EmailService>()
-            .AddTransient<IPasswordHashService, PasswordHashService>();
+                .AddTransient<ITokenGeneratorService, TokenGeneratorService>()
+                .AddTransient<IPasswordHashService, PasswordHashService>();
     }
 
     public static void AddConfigurationAppSetting

@@ -12,7 +12,7 @@ using Neighbor.Domain.Abstraction.EntitiyFramework.Repositories;
 using Newtonsoft.Json;
 using static Neighbor.Domain.Exceptions.AuthenticationException;
 
-namespace Neighbor.Application.UseCases.V1.Commands.Authentications;
+namespace Neighbor.Application.UseCases.V2.Commands.Authentications;
 
 public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEmailCommand>
 {
@@ -56,10 +56,10 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
         var passwordHash = _passwordHashService.HashPassword(user.Password);
 
         // Get avatar if avatar is male or female
-        var avatar = user.Gender == GenderType.Male ? _userSetting.DefaultMaleAvatar  : _userSetting.DefaultFemaleAvatar;
+        var avatar = user.Gender == GenderType.Male ? _userSetting.DefaultMaleAvatar : _userSetting.DefaultFemaleAvatar;
         // Create object account with type register local
         var accountMember = Domain.Entities.Account.CreateMemberAccountLocal
-            (user.FirstName, user.LastName, user.Email, user.PhoneNumber, user.Password, avatar, user.Gender);
+            (user.FirstName, user.LastName, user.Email, user.PhoneNumber, passwordHash, avatar, user.Gender);
 
         // Save database
         _efUnitOfWork.AccountRepository.Add(accountMember);

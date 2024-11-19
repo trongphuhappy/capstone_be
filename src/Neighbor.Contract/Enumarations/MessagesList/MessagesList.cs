@@ -13,4 +13,22 @@ public enum MessagesList
 
     [Message("Registration successful, you can now login", "auth_verify_success")]
     AuthVerifyEmailRegister,
+
+    [Message("Your email is not registered", "auth_not_regist")]
+    AuthEmailNotExsitException,
+
+    [Message("This account was registered using another method", "auth_regis_another")]
+    AuthAccountRegisteredAnotherMethod,
+
+    [Message("Passwords do not match", "auth_password_not_match")]
+    AuthPasswordNotMatchException,
+
+    [Message("Your account has been banned", "account_banned")]
+    AccountBanned,
+
+    [Message("Logout successfully", "auth_logout_success")]
+    AuthLogoutSuccess,
+
+    [Message("Session has expired, please log in again", "auth_login_expired")]
+    AuthRefreshTokenNull,
 }

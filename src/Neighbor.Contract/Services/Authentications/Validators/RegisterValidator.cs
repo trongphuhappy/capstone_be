@@ -24,6 +24,11 @@ internal class RegisterValidator : AbstractValidator<Command.RegisterCommand>
             .EmailAddress().WithMessage("Invalid email format.");
 
         RuleFor(x => x.PhoneNumber)
-            .NotEmpty().WithMessage("Phone number is required");
+            .NotEmpty().WithMessage("Phone number cannot be empty.")
+            .Must(phone =>
+                (phone.Length == 10 && phone.StartsWith("0") && phone.All(char.IsDigit)) ||
+                (phone.Length == 9 && phone.All(char.IsDigit))
+            )
+            .WithMessage("Phone number must have either 10 digits starting with 0, or exactly 9 digits.");
     }
 }

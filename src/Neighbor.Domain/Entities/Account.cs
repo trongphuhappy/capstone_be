@@ -19,7 +19,7 @@ public class Account : DomainEntity<Guid>
         string? fullAvatarId,
         LoginType loginType,
         GenderType genderType,
-        RoleType roleID,
+        RoleType roleUserId,
         bool isDeleted)
     {
         FirstName = firstName;
@@ -33,7 +33,7 @@ public class Account : DomainEntity<Guid>
         FullAvatarId = fullAvatarId;
         LoginType = loginType;
         GenderType = genderType;
-        RoleId = roleID;
+        RoleUserId = roleUserId;
         IsDeleted = isDeleted;
     }
 
@@ -48,7 +48,7 @@ public class Account : DomainEntity<Guid>
     public string? FullAvatarId { get; private set; }
     public LoginType LoginType { get; private set; }
     public GenderType GenderType { get; private set; }
-    public RoleType RoleId { get; private set; }
+    public RoleType RoleUserId { get; private set; }
     public virtual RoleUser RoleUser { get; private set; }
     public virtual List<Lessor>? Lessor { get;private set; }
 

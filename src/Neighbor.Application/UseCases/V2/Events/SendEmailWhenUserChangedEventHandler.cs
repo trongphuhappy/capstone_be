@@ -4,7 +4,7 @@ using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Services.Authentications;
 using Neighbor.Contract.Settings;
 
-namespace Neighbor.Application.UseCases.V1.Events;
+namespace Neighbor.Application.UseCases.V2.Events;
 
 public sealed class SendEmailWhenUserChangedEventHandler
     : IDomainEventHandler<DomainEvent.UserRegistedWithLocal>,
@@ -13,7 +13,7 @@ public sealed class SendEmailWhenUserChangedEventHandler
 
     private readonly IEmailService _emailService;
     private readonly ClientSetting _clientSetting;
-    
+
     public SendEmailWhenUserChangedEventHandler(IEmailService emailService,
         IOptions<ClientSetting> clientConfig)
     {

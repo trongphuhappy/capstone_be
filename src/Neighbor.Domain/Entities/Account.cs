@@ -8,7 +8,19 @@ public class Account : DomainEntity<Guid>
     {
     }
 
-    public Account(string firstName, string lastName, string email, string phoneNumber, string password, string? cropAvatarUrl, string? cropAvatarId, string? fullAvatarUrl, string? fullAvatarId, LoginType loginType, GenderType genderType, bool isLessor)
+    public Account(string firstName,
+        string lastName,
+        string email,
+        string phoneNumber,
+        string password,
+        string? cropAvatarUrl, 
+        string? cropAvatarId,
+        string? fullAvatarUrl,
+        string? fullAvatarId,
+        LoginType loginType,
+        GenderType genderType,
+        RoleType roleID,
+        bool isDeleted)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -21,7 +33,8 @@ public class Account : DomainEntity<Guid>
         FullAvatarId = fullAvatarId;
         LoginType = loginType;
         GenderType = genderType;
-        IsLessor = isLessor;
+        RoleId = roleID;
+        IsDeleted = isDeleted;
     }
 
     public string FirstName { get; private set; } = string.Empty;
@@ -35,10 +48,12 @@ public class Account : DomainEntity<Guid>
     public string? FullAvatarId { get; private set; }
     public LoginType LoginType { get; private set; }
     public GenderType GenderType { get; private set; }
-    public bool IsLessor { get; private set; }
+    public RoleType RoleId { get; private set; }
+    public virtual RoleUser RoleUser { get; private set; }
+    public virtual List<Lessor>? Lessor { get;private set; }
 
     public static Account CreateMemberAccountLocal(string firstName, string lastName, string email, string phoneNumber, string password, string avatarUrl, GenderType gender)
     {
-        return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", LoginType.Local, gender, false);
+        return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", LoginType.Local, gender, RoleType.Member, false);
     }
 }

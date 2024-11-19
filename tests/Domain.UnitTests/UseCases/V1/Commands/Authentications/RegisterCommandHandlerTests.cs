@@ -10,8 +10,6 @@ using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Entities;
 using Neighbor.Domain.Exceptions;
 using System.Linq.Expressions;
-using System.Text.Json;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 public class RegisterCommandHandlerTests
 {
@@ -39,7 +37,7 @@ public class RegisterCommandHandlerTests
             It.IsAny<Expression<Func<Account, bool>>?>(),
             It.IsAny<CancellationToken>(),
             It.IsAny<Expression<Func<Account, object>>[]>()
-        )).ReturnsAsync(true); 
+        )).ReturnsAsync(true);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<AuthenticationException.EmailExistException>(() =>
@@ -58,14 +56,14 @@ public class RegisterCommandHandlerTests
     public async Task Handle_ShouldCacheUserData_WhenEmailDoesNotExist()
     {
         // Arrange
-        var command = new Neighbor.Contract.Services.Authentications.Command.RegisterCommand("firstname", "lastname", "phus@gmail.com", "123123123", "123123123" , GenderType.Male);
+        var command = new Neighbor.Contract.Services.Authentications.Command.RegisterCommand("firstname", "lastname", "phus@gmail.com", "123123123", "123123123", GenderType.Male);
 
         // Mock user not exist
         _mockEFUnitOfWork.Setup(x => x.AccountRepository.AnyAsync(
             It.IsAny<Expression<Func<Account, bool>>?>(),
             It.IsAny<CancellationToken>(),
             It.IsAny<Expression<Func<Account, object>>[]>()
-        )).ReturnsAsync(false); 
+        )).ReturnsAsync(false);
 
         // Mock: Response Cache Service
         _mockResponseCacheService.Setup(x => x.SetCacheResponseAsync(

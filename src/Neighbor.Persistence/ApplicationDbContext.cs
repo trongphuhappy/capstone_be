@@ -13,4 +13,12 @@ public sealed class ApplicationDbContext : DbContext
         => builder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
 
     public DbSet<Account> Accounts { get; set; }
+    public DbSet<RoleUser> RoleUsers { get; set; }
+    public DbSet<Category> Category { get; set; }
+    public DbSet<Feedback> Feedbacks { get; set; }
+    public DbSet<Images> Images { get; set; }
+    public DbSet<Lessor> Lessor { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductSurchange> ProductSurchange { get; set; }
+    public DbSet<Surchange> Surchange { get; set; }
 }

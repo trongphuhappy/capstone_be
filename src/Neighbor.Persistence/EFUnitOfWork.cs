@@ -19,5 +19,4 @@ public class EFUnitOfWork : IEFUnitOfWork
     => await _context.SaveChangesAsync();
 
     public IAccountRepository AccountRepository { get; }
-
 }

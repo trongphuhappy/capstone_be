@@ -4,9 +4,11 @@ using Neighbor.Domain.Abstraction.Dappers.Repositories;
 namespace Neighbor.Infrastructure.Dapper;
 public class DPUnitOfWork : IDPUnitOfWork
 {
-    public DPUnitOfWork(IAccountRepository accountRepository)
+    public DPUnitOfWork(IAccountRepository accountRepository, ICategoryRepository categoryRepository, ISurchargeRepository surchargeRepository)
     {
         AccountRepositories = accountRepository;
+        CategoryRepositories = categoryRepository;
+        SurchargeRepositories = surchargeRepository;
     }
     public IAccountRepository AccountRepositories { get; }
 

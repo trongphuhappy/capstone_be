@@ -48,7 +48,7 @@ public class SurchargeRepository : ISurchargeRepository
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : "*";
 
             // Start building the query
-            var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Surchanges WHERE 1=1 AND IsDeleted = 0");
+            var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Surcharges WHERE 1=1 AND IsDeleted = 0");
 
             var parameters = new DynamicParameters();
 
@@ -57,7 +57,7 @@ public class SurchargeRepository : ISurchargeRepository
 
             var totalCountQuery = new StringBuilder($@"
         SELECT COUNT(1) 
-        FROM Surchanges s
+        FROM Surcharges s
         WHERE 1=1 AND IsDeleted = 0");
 
             // Filter by Id

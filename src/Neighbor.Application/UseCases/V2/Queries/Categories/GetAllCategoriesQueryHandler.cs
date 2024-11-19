@@ -1,4 +1,4 @@
-﻿using MapsterMapper;
+﻿using AutoMapper;
 using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.Enumarations.MessagesList;
@@ -19,9 +19,9 @@ public sealed class GetAllSurchargesQueryHandler : IQueryHandler<Query.GetAllCat
     }
     public async Task<Result<Success<PagedResult<Response.CategoryResponse>>>> Handle(Query.GetAllCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var listBranches = await _dpUnitOfWork.CategoryRepositories.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
-        var result = _mapper.Map<PagedResult<Response.CategoryResponse>>(listBranches);
-        if (listBranches.Items.Count == 0)
+        var listCategories = await _dpUnitOfWork.CategoryRepositories.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
+        var result = _mapper.Map<PagedResult<Response.CategoryResponse>>(listCategories);
+        if (listCategories.Items.Count == 0)
         {
             return Result.Success(new Success<PagedResult<Response.CategoryResponse>>(MessagesList.CategoryNotFoundAnyException.GetMessage().Code, MessagesList.CategoryNotFoundAnyException.GetMessage().Message, result));
 

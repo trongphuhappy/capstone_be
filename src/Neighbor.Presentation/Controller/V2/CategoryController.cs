@@ -13,7 +13,7 @@ public class CategoryController : ApiController
     public CategoryController(ISender sender) : base(sender)
     { }
 
-    [HttpPost("get_all_categories", Name = "GetAllCategories")]
+    [HttpGet("get_all_categories", Name = "GetAllCategories")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
     public async Task<IActionResult> GetAllCategories([FromQuery] CategoryFilter filterParams,

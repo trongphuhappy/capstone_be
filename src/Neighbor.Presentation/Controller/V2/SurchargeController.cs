@@ -13,7 +13,7 @@ public class SurchargeController : ApiController
     public SurchargeController(ISender sender) : base(sender)
     { }
 
-    [HttpPost("get_all_surcharges", Name = "GetAllSurcharges")]
+    [HttpGet("get_all_surcharges", Name = "GetAllSurcharges")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
     public async Task<IActionResult> GetAllSurcharges([FromQuery] SurchargeFilter filterParams,

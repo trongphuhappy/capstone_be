@@ -41,14 +41,14 @@ public class CategoryRepository : ICategoryRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             // Valid columns for selecting
-            var validColumns = new HashSet<string> { "Id", "Name", "IsVehicle", "IsDeleted" };
+            var validColumns = new HashSet<string> { "Id", "Name", "IsVehicle" };
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
 
             // If no selected columns, select all
             var selectedColumnsString = columns?.Length > 0 ? string.Join(", ", columns) : "*";
 
             // Start building the query
-            var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Categories WHERE 1=1 AND IsDeleted = 0");
+            var queryBuilder = new StringBuilder($"SELECT {selectedColumnsString} FROM Categories WHERE 1=1");
 
             var parameters = new DynamicParameters();
 
@@ -58,7 +58,7 @@ public class CategoryRepository : ICategoryRepository
             var totalCountQuery = new StringBuilder($@"
         SELECT COUNT(1) 
         FROM Categories c
-        WHERE 1=1 AND IsDeleted = 0");
+        WHERE 1=1");
 
             // Filter by Id
             if (filterParams?.Id.HasValue == true)

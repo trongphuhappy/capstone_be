@@ -1,4 +1,4 @@
-﻿using MapsterMapper;
+﻿using AutoMapper;
 using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.Enumarations.MessagesList;
@@ -19,9 +19,9 @@ public sealed class GetAllSurchargesQueryHandler : IQueryHandler<Query.GetAllSur
     }
     public async Task<Result<Success<PagedResult<Response.SurchargeResponse>>>> Handle(Query.GetAllSurchargesQuery request, CancellationToken cancellationToken)
     {
-        var listBranches = await _dpUnitOfWork.SurchargeRepositories.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
-        var result = _mapper.Map<PagedResult<Response.SurchargeResponse>>(listBranches);
-        if (listBranches.Items.Count == 0)
+        var listSurcharges = await _dpUnitOfWork.SurchargeRepositories.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
+        var result = _mapper.Map<PagedResult<Response.SurchargeResponse>>(listSurcharges);
+        if (listSurcharges.Items.Count == 0)
         {
             return Result.Success(new Success<PagedResult<Response.SurchargeResponse>>(MessagesList.SurchargeNotFoundAnyException.GetMessage().Code, MessagesList.SurchargeNotFoundAnyException.GetMessage().Message, result));
 

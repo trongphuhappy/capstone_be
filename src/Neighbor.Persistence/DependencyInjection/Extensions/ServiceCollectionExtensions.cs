@@ -45,6 +45,9 @@ public static class ServiceCollectionExtensions
             .AddTransient(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>))
             .AddTransient<IAccountRepository, AccountRepository>()
             .AddTransient<ISurchargeRepository, SurchargeRepository>()
-            .AddTransient<IProductRepository, ProductRepository>();
+            .AddTransient<IProductRepository, ProductRepository>()
+            .AddTransient<IProductSurchargeRepository, ProductSurchargeRepository>()
+            .AddTransient<IInsuranceRepository, InsuranceRepository>()
+            .AddTransient<IImagesRepository, ImagesRepository>();
     }
 }

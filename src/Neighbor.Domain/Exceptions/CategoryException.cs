@@ -11,4 +11,20 @@ public static class CategoryException
                    MessagesList.CategoryNotFoundAnyException.GetMessage().Code)
         { }
     }
+
+    public sealed class CategoryNotFoundException : NotFoundException
+    {
+        public CategoryNotFoundException()
+            : base(MessagesList.CategoryNotFoundException.GetMessage().Message,
+                   MessagesList.CategoryNotFoundException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class CategoryMissingInsuranceException : BadRequestException
+    {
+        public CategoryMissingInsuranceException()
+            : base(MessagesList.CategoryMissingInsuranceException.GetMessage().Message,
+                   MessagesList.CategoryMissingInsuranceException.GetMessage().Code)
+        { }
+    }
 }

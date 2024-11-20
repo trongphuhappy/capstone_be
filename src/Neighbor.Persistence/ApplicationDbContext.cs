@@ -21,4 +21,5 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductSurcharge> ProductSurcharges { get; set; }
     public DbSet<Surcharge> Surcharges { get; set; }
+    public DbSet<Insurance> Insurances { get; set; }
 }

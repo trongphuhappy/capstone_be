@@ -36,6 +36,35 @@ public class Account : DomainEntity<Guid>
         RoleUserId = roleUserId;
         IsDeleted = isDeleted;
     }
+    public Account(Guid id, string firstName,
+        string lastName,
+        string email,
+        string phoneNumber,
+        string password,
+        string? cropAvatarUrl, 
+        string? cropAvatarId,
+        string? fullAvatarUrl,
+        string? fullAvatarId,
+        LoginType loginType,
+        GenderType genderType,
+        RoleType roleUserId,
+        bool isDeleted)
+    {
+        Id = id;
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        Password = password;
+        CropAvatarUrl = cropAvatarUrl;
+        CropAvatarId = cropAvatarId;
+        FullAvatarUrl = fullAvatarUrl;
+        FullAvatarId = fullAvatarId;
+        LoginType = loginType;
+        GenderType = genderType;
+        RoleUserId = roleUserId;
+        IsDeleted = isDeleted;
+    }
 
     public string FirstName { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;

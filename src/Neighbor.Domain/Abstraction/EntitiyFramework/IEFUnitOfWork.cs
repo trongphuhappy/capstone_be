@@ -8,4 +8,7 @@ public interface IEFUnitOfWork : IAsyncDisposable
     IAccountRepository AccountRepository { get; }
     ISurchargeRepository SurchargeRepository { get; }
     IProductRepository ProductRepository { get; }
+    IProductSurchargeRepository ProductSurchargeRepository { get; }
+    IInsuranceRepository InsuranceRepository { get; }
+    IImagesRepository ImagesRepository { get; }
 }

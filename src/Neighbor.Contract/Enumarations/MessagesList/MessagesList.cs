@@ -37,10 +37,22 @@ public enum MessagesList
 
     [Message("Can not find any categories!", "category_noti_exception_01")]
     CategoryNotFoundAnyException,
+    [Message("Can not find this category!", "category_noti_exception_02")]
+    CategoryNotFoundException,
+    [Message("Vehicle Product must have insurance!", "category_noti_exception_03")]
+    CategoryMissingInsuranceException,
 
     [Message("All Surcharges: ", "surcharge_noti_success_01")]
     SurchargeGetAllSurchargesSuccess,
 
     [Message("Can not find any surcharges!", "surcharge_noti_exception_01")]
     SurchargeNotFoundAnyException,
+    [Message("Can not find this surcharge!", "surcharge_noti_exception_02")]
+    SurchargeNotFoundException,
+
+    [Message("This user is not a lessor!", "lessor_noti_exception_01")]
+    LessorNotFoundException,
+
+    [Message("This user is not a lessor!", "product_noti_success_01")]
+    ProductCreateSuccessfully,
 }

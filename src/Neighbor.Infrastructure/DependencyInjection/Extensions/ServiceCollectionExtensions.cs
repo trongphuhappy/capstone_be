@@ -28,7 +28,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<IEmailService, EmailService>()
                 .AddTransient<ITokenGeneratorService, TokenGeneratorService>()
-                .AddTransient<IPasswordHashService, PasswordHashService>();
+                .AddTransient<IPasswordHashService, PasswordHashService>()
+                .AddTransient<IMediaService, MediaService>();
     }
 
     public static void AddConfigurationAppSetting
@@ -38,6 +39,7 @@ public static class ServiceCollectionExtensions
             .Configure<AuthenticationSetting>(configuration.GetSection(AuthenticationSetting.SectionName))
             .Configure<EmailSetting>(configuration.GetSection(EmailSetting.SectionName))
             .Configure<ClientSetting>(configuration.GetSection(ClientSetting.SectionName))
-            .Configure<UserSetting>(configuration.GetSection(UserSetting.SectionName));
+            .Configure<UserSetting>(configuration.GetSection(UserSetting.SectionName))
+            .Configure<CloudinarySetting>(configuration.GetSection(CloudinarySetting.SectionName));
     }
 }

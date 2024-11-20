@@ -4,11 +4,19 @@ namespace Neighbor.Domain.Exceptions;
 
 public static class ProductException
 {
-    //public sealed class ProductNotFoundException : NotFoundException
-    //{
-    //    public ProductNotFoundException()
-    //        : base(MessagesList.LessorNotFoundException.GetMessage().Message,
-    //               MessagesList.LessorNotFoundException.GetMessage().Code)
-    //    { }
-    //}
+    public sealed class ProductNotFoundException : NotFoundException
+    {
+        public ProductNotFoundException()
+            : base(MessagesList.ProductNotFoundException.GetMessage().Message,
+                   MessagesList.ProductNotFoundException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class ProductRejectNoReasonException : NotFoundException
+    {
+        public ProductRejectNoReasonException()
+            : base(MessagesList.ProductRejectNoReasonException.GetMessage().Message,
+                   MessagesList.ProductRejectNoReasonException.GetMessage().Code)
+        { }
+    }
 }

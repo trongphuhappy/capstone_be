@@ -39,7 +39,7 @@ public enum MessagesList
     CategoryNotFoundAnyException,
     [Message("Can not find this category!", "category_noti_exception_02")]
     CategoryNotFoundException,
-    [Message("Vehicle Product must have insurance!", "category_noti_exception_03")]
+    [Message("Vehicle Product must have insurance and all fields of insurance must not be empty!", "category_noti_exception_03")]
     CategoryMissingInsuranceException,
 
     [Message("All Surcharges: ", "surcharge_noti_success_01")]
@@ -53,6 +53,15 @@ public enum MessagesList
     [Message("This user is not a lessor!", "lessor_noti_exception_01")]
     LessorNotFoundException,
 
-    [Message("This user is not a lessor!", "product_noti_success_01")]
+    [Message("Create Product Successfully!", "product_noti_success_01")]
     ProductCreateSuccessfully,
+
+    [Message("Confirm Product Successfully!", "product_noti_success_02")]
+    ProductConfirmSuccessfully,
+
+    [Message("Can not found this Product!", "product_noti_exception_01")]
+    ProductNotFoundException,
+
+    [Message("Reject Product must have reason!", "product_noti_exception_02")]
+    ProductRejectNoReasonException,
 }

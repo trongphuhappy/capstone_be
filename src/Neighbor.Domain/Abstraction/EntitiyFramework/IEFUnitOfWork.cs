@@ -11,4 +11,6 @@ public interface IEFUnitOfWork : IAsyncDisposable
     IProductSurchargeRepository ProductSurchargeRepository { get; }
     IInsuranceRepository InsuranceRepository { get; }
     IImagesRepository ImagesRepository { get; }
+    ICategoryRepository CategoryRepository { get; }
+    ILessorRepository LessorRepository { get; }
 }

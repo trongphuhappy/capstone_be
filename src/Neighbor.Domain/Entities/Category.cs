@@ -1,6 +1,8 @@
-﻿namespace Neighbor.Domain.Entities;
+﻿using Neighbor.Domain.Abstraction.Entities;
 
-public class Category
+namespace Neighbor.Domain.Entities;
+
+public class Category : DomainEntity<int>
 {
     public Category()
     {

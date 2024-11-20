@@ -48,6 +48,8 @@ public static class ServiceCollectionExtensions
             .AddTransient<IProductRepository, ProductRepository>()
             .AddTransient<IProductSurchargeRepository, ProductSurchargeRepository>()
             .AddTransient<IInsuranceRepository, InsuranceRepository>()
-            .AddTransient<IImagesRepository, ImagesRepository>();
+            .AddTransient<IImagesRepository, ImagesRepository>()
+            .AddTransient<ICategoryRepository, CategoryRepository>()
+            .AddTransient<ILessorRepository, LessorRepository>();
     }
 }

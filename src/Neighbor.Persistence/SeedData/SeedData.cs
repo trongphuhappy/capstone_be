@@ -28,7 +28,7 @@ public static class SeedData
         if (!context.Accounts.Any())
         {
             context.Accounts.AddRange(
-                new Account(userId, "User", "Test", "testuser@neighbor.com", "0911087822", "123456", null, null, null, null, LoginType.Local, GenderType.Male, RoleType.Member, false)
+                new Account(userId, "Hien", "Nguyen", "minhhien270103@gmail.com", "0911087822", "123456", null, null, null, null, LoginType.Local, GenderType.Male, RoleType.Member, false)
             );
         }
         if (!context.Lessor.Any())

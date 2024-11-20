@@ -17,38 +17,33 @@ namespace Neighbor.Application.UseCases.V2.Commands.Products;
 public sealed class CreateProductCommandHandler : ICommandHandler<Command.CreateProductCommand>
 {
     private readonly IEFUnitOfWork _efUnitOfWork;
-    private readonly IDPUnitOfWork _dpUnitOfWork;
-    private readonly IPublisher _publisher;
     private readonly IMediaService _mediaService;
 
     public CreateProductCommandHandler(
         IEFUnitOfWork efUnitOfWork,
-        IDPUnitOfWork dpUnitOfWork,
         IPublisher publisher, IMediaService mediaService)
     {
         _efUnitOfWork = efUnitOfWork;
-        _dpUnitOfWork = dpUnitOfWork;
-        _publisher = publisher;
         _mediaService = mediaService;
     }
 
     public async Task<Result> Handle(Command.CreateProductCommand request, CancellationToken cancellationToken)
     {
         //Check if Category is existed or not
-        var selectColumn = new[] { "Id", "Name", "IsVehicle"};
-        var categoryFound = await _dpUnitOfWork.CategoryRepositories.GetPagedAsync(1, 1, new CategoryFilter(request.CategoryId, null, null), selectColumn);
+        var selectColumn = new[] { "Id", "Name", "IsVehicle" };
+        var categoryFound = await _efUnitOfWork.CategoryRepository.FindByIdAsync(request.CategoryId);
         if (categoryFound == null)
         {
             throw new CategoryException.CategoryNotFoundException();
         }
-        //Check if category is type of vehicle then insurance must exist
-        else if(categoryFound.Items[0].IsVehicle && request.Insurance == null)
+        //Check if category is type of vehicle then insurance must exist and all fields must not be null
+        else if (categoryFound.IsVehicle && (request.Insurance.Name == null || request.Insurance.Description == null || request.Insurance.IssueDate == null || request.Insurance.ExpirationDate == null || request.Insurance.InsuranceImages == null))
         {
             throw new CategoryException.CategoryMissingInsuranceException();
         }
         //Check if user is a lessor or not
-        var lessor = await _dpUnitOfWork.LessorRepositories.GetLessorByUserId(request.UserId);
-        if(lessor == null)
+        var lessor = await _efUnitOfWork.LessorRepository.FindSingleAsync(x => x.AccountId == request.UserId);
+        if (lessor == null)
         {
             throw new LessorException.LessorNotFoundException();
         }
@@ -59,10 +54,10 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
         //Upload Product Images
         var uploadProductImages = await _mediaService.UploadImagesAsync(request.ProductImages);
         var imageProducts = uploadProductImages.Select(image => new Images(image.ImageUrl, image.PublicImageId, productCreated.Id, null, null));
-        _efUnitOfWork.ImagesRepository.AddRange((List<Images>)imageProducts);
+        _efUnitOfWork.ImagesRepository.AddRange(imageProducts.ToList());
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         //Add Insurance if category is type of vehicle
-        if (categoryFound.Items[0].IsVehicle && request.Insurance == null)
+        if (categoryFound.IsVehicle && request.Insurance != null)
         {
             var insuranceCreated = Insurance.CreateInsurance(request.Insurance.Name, request.Insurance.Description, request.Insurance.IssueDate.Value, request.Insurance.ExpirationDate.Value, productCreated.Id);
             _efUnitOfWork.InsuranceRepository.Add(insuranceCreated);
@@ -70,23 +65,20 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
             //Upload Insurance Images
             var uploadInsuranceImages = await _mediaService.UploadImagesAsync(request.Insurance.InsuranceImages);
             var imageInsurances = uploadInsuranceImages.Select(image => new Images(image.ImageUrl, image.PublicImageId, null, insuranceCreated.Id, null));
-            _efUnitOfWork.ImagesRepository.AddRange((List<Images>)imageInsurances);
+            _efUnitOfWork.ImagesRepository.AddRange(imageInsurances.ToList());
+            await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         }
-        //Check if ListSurcharges not equal null then check item in ListSurcharges exist or not
         //If Surcharge exist then Add new ProductSurcharge based on ProductId, SurchargeId and Price
-        if (request.Surcharges != null)
+        if (request.Surcharge.SurchargeId != null && request.Surcharge.Price != null)
         {
-            List<ProductSurcharge> productSurcharges = new List<ProductSurcharge>();
-            request.Surcharges.ForEach(async surcharge =>
+            var surchargeFound = await _efUnitOfWork.SurchargeRepository.FindByIdAsync(request.Surcharge.SurchargeId);
+            if (surchargeFound == null)
             {
-                var surchargeFound = await _efUnitOfWork.SurchargeRepository.FindByIdAsync(surcharge.SurchargeId);
-                if(surchargeFound == null)
-                {
-                    throw new SurchargeException.SurchargeNotFoundException();
-                }
-                productSurcharges.Add(new ProductSurcharge(surcharge.Price, productCreated.Id, surcharge.SurchargeId));
-            });
-            _efUnitOfWork.ProductSurchargeRepository.AddRange(productSurcharges);
+                throw new SurchargeException.SurchargeNotFoundException();
+            }
+            var productSurcharge = ProductSurcharge.CreateProductSurcharge(request.Surcharge.Price, productCreated.Id, surchargeFound.Id);
+
+            _efUnitOfWork.ProductSurchargeRepository.Add(productSurcharge);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         }
         return Result.Success(new Success(MessagesList.ProductCreateSuccessfully.GetMessage().Code, MessagesList.ProductCreateSuccessfully.GetMessage().Message));

@@ -85,4 +85,9 @@ public class Account : DomainEntity<Guid>
     {
         return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", LoginType.Local, gender, RoleType.Member, false);
     }
+
+    public void UpdateIsDeletedForAccount(bool isDeleted)
+    {
+        IsDeleted = isDeleted;
+    }
 }

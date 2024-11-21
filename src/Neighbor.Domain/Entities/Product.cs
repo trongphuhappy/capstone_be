@@ -10,7 +10,7 @@ public class Product : DomainEntity<Guid>
     {
 
     }
-    public Product(string name, StatusType statusType, string policies, string description, double rating, double price, double value, int categoryId, ConfirmStatus confirmStatus, Guid lessorId)
+    public Product(string name, StatusType statusType, string policies, string description, double rating, double price, double value, int maximumRentDays, int categoryId, ConfirmStatus confirmStatus, Guid lessorId)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -20,6 +20,7 @@ public class Product : DomainEntity<Guid>
         Rating = rating;
         Price = price;
         Value = value;
+        MaximumRentDays = maximumRentDays;
         CategoryId = categoryId;
         ConfirmStatus = confirmStatus;
         LessorId = lessorId;
@@ -33,6 +34,7 @@ public class Product : DomainEntity<Guid>
     public double Rating { get; private set; }
     public double Price { get; private set; }
     public double Value { get; private set; }
+    public int MaximumRentDays { get; private set; }
     public int CategoryId { get; private set; }
     public ConfirmStatus ConfirmStatus { get; private set; }
     public Guid LessorId { get; private set; }
@@ -42,18 +44,19 @@ public class Product : DomainEntity<Guid>
     public virtual List<ProductSurcharge> ProductSurcharges { get; private set; }
     public virtual List<Insurance> Insurances { get; private set; }
 
-    public static Product CreateProduct(string name, string policies, string description, double price, double value, int categoryId, Guid lessorId)
+    public static Product CreateProduct(string name, string policies, string description, double price, double value, int maximumRentDays, int categoryId, Guid lessorId)
     {
-        return new Product(name, StatusType.Available, policies, description, 0, price, value, categoryId, ConfirmStatus.Pending, lessorId);
+        return new Product(name, StatusType.Available, policies, description, 0, price, value, maximumRentDays,  categoryId, ConfirmStatus.Pending, lessorId);
     }
 
-    public void UpdateProduct(string name, string policies, string description, double price, double value, string rejectReason, StatusType statusType, ConfirmStatus confirmStatus)
+    public void UpdateProduct(string name, string policies, string description, double price, double value, int maximumRentDays, string rejectReason, StatusType statusType, ConfirmStatus confirmStatus)
     {
         Name = name;
         Policies = policies;
         Description = description;
         Price = price;
         Value = value;
+        MaximumRentDays = maximumRentDays;
         RejectReason = rejectReason;
         StatusType = statusType;
         ConfirmStatus = confirmStatus;

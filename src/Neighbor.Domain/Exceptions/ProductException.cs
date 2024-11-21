@@ -20,11 +20,27 @@ public static class ProductException
         { }
     }
 
-    public sealed class ProductRejectNoReasonException : NotFoundException
+    public sealed class ProductRejectNoReasonException : BadRequestException
     {
         public ProductRejectNoReasonException()
             : base(MessagesList.ProductRejectNoReasonException.GetMessage().Message,
                    MessagesList.ProductRejectNoReasonException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class ProductHasAlreadyRejectedException : BadRequestException
+    {
+        public ProductHasAlreadyRejectedException()
+            : base(MessagesList.ProductHasAlreadyRejectedException.GetMessage().Message,
+                   MessagesList.ProductHasAlreadyRejectedException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class ProductHasAlreadyApprovedException : BadRequestException
+    {
+        public ProductHasAlreadyApprovedException()
+            : base(MessagesList.ProductHasAlreadyApprovedException.GetMessage().Message,
+                   MessagesList.ProductHasAlreadyApprovedException.GetMessage().Code)
         { }
     }
 }

@@ -26,8 +26,8 @@ public class ProductController : ApiController
     public async Task<IActionResult> CreateProduct([FromForm] ProductDTO.ProductRequestDTO productRequestDTO)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("9A8ACF15-8476-4E5F-B5FC-9496954B2BF1");
-        var result = await Sender.Send(new Command.CreateProductCommand(productRequestDTO.Name, productRequestDTO.Description, productRequestDTO.Value, productRequestDTO.Price, productRequestDTO.Policies, productRequestDTO.CategoryId, userId, productRequestDTO.ProductImages, new InsuranceDTO.InsuranceRequestDTO()
+        var userId = Guid.Parse("58005D3A-11DA-41B2-84C3-35BFC28A6406");
+        var result = await Sender.Send(new Command.CreateProductCommand(productRequestDTO.Name, productRequestDTO.Description, productRequestDTO.Value, productRequestDTO.Price, productRequestDTO.MaximumRentDays, productRequestDTO.Policies, productRequestDTO.CategoryId, userId, productRequestDTO.ProductImages, new InsuranceDTO.InsuranceRequestDTO()
         {
             Name = productRequestDTO.InsuranceName,
             IssueDate = productRequestDTO.IssueDate,

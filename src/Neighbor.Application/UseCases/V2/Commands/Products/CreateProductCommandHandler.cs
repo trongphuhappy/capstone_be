@@ -20,8 +20,7 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
     private readonly IMediaService _mediaService;
 
     public CreateProductCommandHandler(
-        IEFUnitOfWork efUnitOfWork,
-        IPublisher publisher, IMediaService mediaService)
+        IEFUnitOfWork efUnitOfWork, IMediaService mediaService)
     {
         _efUnitOfWork = efUnitOfWork;
         _mediaService = mediaService;
@@ -48,7 +47,7 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
             throw new LessorException.LessorNotFoundException();
         }
         //Add Product to Database
-        var productCreated = Product.CreateProduct(request.Name, request.Policies, request.Description, request.Price, request.Value, request.CategoryId, lessor.Id);
+        var productCreated = Product.CreateProduct(request.Name, request.Policies, request.Description, request.Price, request.Value, request.MaximumRentDays, request.CategoryId, lessor.Id);
         _efUnitOfWork.ProductRepository.Add(productCreated);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         //Upload Product Images

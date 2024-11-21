@@ -12,6 +12,14 @@ public static class ProductException
         { }
     }
 
+    public sealed class ProductNotFoundAnyException : NotFoundException
+    {
+        public ProductNotFoundAnyException()
+            : base(MessagesList.ProductNotFoundAnyException.GetMessage().Message,
+                   MessagesList.ProductNotFoundAnyException.GetMessage().Code)
+        { }
+    }
+
     public sealed class ProductRejectNoReasonException : NotFoundException
     {
         public ProductRejectNoReasonException()

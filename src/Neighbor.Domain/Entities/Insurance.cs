@@ -31,4 +31,9 @@ public class Insurance : DomainEntity<Guid>
     {
         return new Insurance(name, description, issueDate, expirationDate, productId);
     }
+
+    public void UpdateImagesInsurance(List<Images> images)
+    {
+        Images = images;
+    }
 }

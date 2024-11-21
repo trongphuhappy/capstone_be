@@ -60,6 +60,6 @@ public sealed class ConfirmProductCommandHandler : ICommandHandler<Command.Confi
            );
         }
         //Return result
-        return Result.Success(new Success(MessagesList.ProductConfirmSuccessfully.GetMessage().Code, MessagesList.ProductConfirmSuccessfully.GetMessage().Message));
+        return Result.Success(new Success(MessagesList.ProductConfirmSuccess.GetMessage().Code, MessagesList.ProductConfirmSuccess.GetMessage().Message));
     }
 }

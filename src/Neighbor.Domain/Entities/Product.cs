@@ -57,6 +57,25 @@ public class Product : DomainEntity<Guid>
         RejectReason = rejectReason;
         StatusType = statusType;
         ConfirmStatus = confirmStatus;
-        
+    }
+
+    public void UpdateImagesProduct(List<Images> images)
+    {
+        Images = images;
+    }
+
+    public void UpdateLessorProduct(Lessor lessor)
+    {
+        Lessor = lessor;
+    }
+
+    public void UpdateProductSurcharges(List<ProductSurcharge> productSurcharges)
+    {
+        ProductSurcharges = productSurcharges;
+    }
+
+    public void UpdateInsurance(List<Insurance> insurances)
+    {
+        Insurances = insurances;
     }
 }

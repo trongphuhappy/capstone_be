@@ -81,6 +81,6 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
             _efUnitOfWork.ProductSurchargeRepository.Add(productSurcharge);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         }
-        return Result.Success(new Success(MessagesList.ProductCreateSuccessfully.GetMessage().Code, MessagesList.ProductCreateSuccessfully.GetMessage().Message));
+        return Result.Success(new Success(MessagesList.ProductCreateSuccess.GetMessage().Code, MessagesList.ProductCreateSuccess.GetMessage().Message));
     }
 }

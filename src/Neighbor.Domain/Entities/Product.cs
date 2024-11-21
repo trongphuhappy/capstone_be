@@ -1,10 +1,30 @@
 ﻿using Neighbor.Contract.Enumarations.Product;
 using Neighbor.Domain.Abstraction.Entities;
+using System.Runtime.CompilerServices;
 
 namespace Neighbor.Domain.Entities;
 
 public class Product : DomainEntity<Guid>
 {
+    public Product()
+    {
+
+    }
+    public Product(string name, StatusType statusType, string policies, string description, double rating, double price, double value, int categoryId, ConfirmStatus confirmStatus, Guid lessorId)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        StatusType = statusType;
+        Policies = policies;
+        Description = description;
+        Rating = rating;
+        Price = price;
+        Value = value;
+        CategoryId = categoryId;
+        ConfirmStatus = confirmStatus;
+        LessorId = lessorId;
+    }
+
     public string Name { get; private set; }
     public StatusType StatusType { get; private set; }
     public string Policies { get; private set; }
@@ -14,10 +34,29 @@ public class Product : DomainEntity<Guid>
     public double Price { get; private set; }
     public double Value { get; private set; }
     public int CategoryId { get; private set; }
-    public bool IsConfirm { get; private set; }
+    public ConfirmStatus ConfirmStatus { get; private set; }
     public Guid LessorId { get; private set; }
     public virtual Lessor Lessor { get; private set; }
     public virtual Category Category { get; private set; }
     public virtual List<Images> Images { get; private set; }
     public virtual List<ProductSurcharge> ProductSurcharges { get; private set; }
+    public virtual List<Insurance> Insurances { get; private set; }
+
+    public static Product CreateProduct(string name, string policies, string description, double price, double value, int categoryId, Guid lessorId)
+    {
+        return new Product(name, StatusType.Available, policies, description, 0, price, value, categoryId, ConfirmStatus.Pending, lessorId);
+    }
+
+    public void UpdateProduct(string name, string policies, string description, double price, double value, string rejectReason, StatusType statusType, ConfirmStatus confirmStatus)
+    {
+        Name = name;
+        Policies = policies;
+        Description = description;
+        Price = price;
+        Value = value;
+        RejectReason = rejectReason;
+        StatusType = statusType;
+        ConfirmStatus = confirmStatus;
+        
+    }
 }

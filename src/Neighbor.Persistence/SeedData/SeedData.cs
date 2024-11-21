@@ -9,6 +9,7 @@ public static class SeedData
 {
     public static void Seed(ApplicationDbContext context, IConfiguration configuration, IPasswordHashService passwordHashService)
     {
+        Guid userId = Guid.NewGuid();
         if (!context.RoleUsers.Any())
         {
             context.RoleUsers.AddRange(
@@ -22,6 +23,18 @@ public static class SeedData
                     Id = RoleType.Member,
                     RoleName = "Member"
                 }
+            );
+        }
+        if (!context.Accounts.Any())
+        {
+            context.Accounts.AddRange(
+                new Account(userId, "Hien", "Nguyen", "minhhien270103@gmail.com", "0911087822", "123456", null, null, null, null, LoginType.Local, GenderType.Male, RoleType.Member, false)
+            );
+        }
+        if (!context.Lessor.Any())
+        {
+            context.Lessor.AddRange(
+                new Lessor("test", null, null, null, null, null, Contract.Enumarations.Product.TimeUnitType.DAY, Contract.Enumarations.Product.LocationType.HCM, userId)
             );
         }
         if (!context.Categories.Any())

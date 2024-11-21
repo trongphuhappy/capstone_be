@@ -5,6 +5,24 @@ namespace Neighbor.Domain.Entities;
 
 public class Lessor : DomainEntity<Guid>
 {
+    public Lessor()
+    {
+
+    }
+
+    public Lessor(string wareHouseAddress, string? description, string? shopName, int? responseRate, int? responseTime, int? aggreementRate, TimeUnitType timeUnitType, LocationType locationType, Guid accountId)
+    {
+        WareHouseAddress = wareHouseAddress;
+        Description = description;
+        ShopName = shopName;
+        ResponseRate = responseRate;
+        ResponseTime = responseTime;
+        AggreementRate = aggreementRate;
+        TimeUnitType = timeUnitType;
+        LocationType = locationType;
+        AccountId = accountId;
+    }
+
     public string WareHouseAddress { get; private set; }
     public string? Description { get; private set; }
     public string? ShopName { get; private set; }

@@ -14,12 +14,11 @@ public static class ProductDTO
         public int CategoryId { get; set; }
         public List<IFormFile> ProductImages { get; set; }
         public string? InsuranceName { get; set; }
-        public string? InsuranceDescription { get; set; }
         public DateTime? IssueDate { get; set; }
         public DateTime? ExpirationDate { get; set; }
         public List<IFormFile>? InsuranceImages { get; set; }
-        public Guid SurchargeId { get; set; }
-        public double SurchargePrice { get; set; }
+        public Guid? SurchargeId { get; set; }
+        public double? SurchargePrice { get; set; }
     }
 
     public class ProductResponseDTO

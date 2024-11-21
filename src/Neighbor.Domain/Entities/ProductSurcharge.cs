@@ -26,4 +26,9 @@ public class ProductSurcharge : DomainEntity<Guid>
     {
         return new ProductSurcharge(price, productId, surcharge);
     }
+
+    public void UpdateSurcharge(Surcharge surcharge)
+    {
+        Surcharge = surcharge;
+    }
 }

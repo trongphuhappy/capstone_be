@@ -19,18 +19,17 @@ public class ProductController : ApiController
     public ProductController(ISender sender) : base(sender)
     { }
 
-    [Authorize]
+    //[Authorize]
     [HttpPost("create_product", Name = "CreateProduct")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
     public async Task<IActionResult> CreateProduct([FromForm] ProductDTO.ProductRequestDTO productRequestDTO)
     {
-        var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        //var userId = Guid.Parse("E98DC949-0080-4F95-90B7-E7608B079EAF");
+        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
+        var userId = Guid.Parse("9A8ACF15-8476-4E5F-B5FC-9496954B2BF1");
         var result = await Sender.Send(new Command.CreateProductCommand(productRequestDTO.Name, productRequestDTO.Description, productRequestDTO.Value, productRequestDTO.Price, productRequestDTO.Policies, productRequestDTO.CategoryId, userId, productRequestDTO.ProductImages, new InsuranceDTO.InsuranceRequestDTO()
         {
             Name = productRequestDTO.InsuranceName,
-            Description = productRequestDTO.InsuranceDescription,
             IssueDate = productRequestDTO.IssueDate,
             ExpirationDate = productRequestDTO.ExpirationDate,
             InsuranceImages = productRequestDTO.InsuranceImages
@@ -96,17 +95,17 @@ public class ProductController : ApiController
     //    return Ok(result);
     //}
 
-    //[HttpGet("get_product_by_id", Name = "GetProductById")]
-    //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
-    //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
-    //public async Task<IActionResult> GetProductById([FromBody] Command.RegisterCommand commands)
-    //{
-    //    var result = await Sender.Send(commands);
-    //    if (result.IsFailure)
-    //        return HandlerFailure(result);
+    [HttpGet("get_product_by_id", Name = "GetProductById")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> GetProductById([FromQuery] Guid Id)
+    {
+        var result = await Sender.Send(new Query.GetProductByIdQuery(Id));
+        if (result.IsFailure)
+            return HandlerFailure(result);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 
     [HttpPut("confirm_product", Name = "ConfirmProduct")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]

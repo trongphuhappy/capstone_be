@@ -3,8 +3,8 @@ public static class SurchargeDTO
 {
     public class SurchargeRequestDTO
     {
-        public Guid SurchargeId { get; set; }
-        public double Price { get; set; }
+        public Guid? SurchargeId { get; set; }
+        public double? Price { get; set; }
     }
 
     public class SurchargeResponseDTO

@@ -34,21 +34,21 @@ public static class SeedData
         if (!context.Lessor.Any())
         {
             context.Lessor.AddRange(
-                new Lessor("test", null, null, null, null, null, Contract.Enumarations.Product.TimeUnitType.DAY, Contract.Enumarations.Product.LocationType.HCM, userId)
+                new Lessor("Binh Thanh", null, null, null, null, null, Contract.Enumarations.Product.TimeUnitType.DAY, Contract.Enumarations.Product.LocationType.HCM, userId)
             );
         }
         if (!context.Categories.Any())
         {
             context.Categories.AddRange(
-                Category.CreateCategory("Couch", false),
-                Category.CreateCategory("Table", false),
-                Category.CreateCategory("Electronic", false),
-                Category.CreateCategory("Decorations", false),
-                Category.CreateCategory("Bed", false),
-                Category.CreateCategory("Cabinet", false),
-                Category.CreateCategory("Car", true),
-                Category.CreateCategory("Motorbike", true),
-                Category.CreateCategory("Bike", true)
+                Category.CreateCategory("Couch", false, false),
+                Category.CreateCategory("Table", false, false),
+                Category.CreateCategory("Electronic", false, false),
+                Category.CreateCategory("Decorations", false, false),
+                Category.CreateCategory("Bed", false, false),
+                Category.CreateCategory("Cabinet", false, false),
+                Category.CreateCategory("Car", true, false),
+                Category.CreateCategory("Motorbike", true, false),
+                Category.CreateCategory("Bike", true, false)
             );
         }
         if (!context.Surcharges.Any())

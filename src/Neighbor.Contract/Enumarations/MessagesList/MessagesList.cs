@@ -54,14 +54,23 @@ public enum MessagesList
     LessorNotFoundException,
 
     [Message("Create Product Successfully!", "product_noti_success_01")]
-    ProductCreateSuccessfully,
+    ProductCreateSuccess,
 
     [Message("Confirm Product Successfully!", "product_noti_success_02")]
-    ProductConfirmSuccessfully,
+    ProductConfirmSuccess,
+
+    [Message("All Products: ", "product_noti_success_03")]
+    ProductGetAllSuccess,
+
+    [Message("Product Details: ", "product_noti_success_04")]
+    ProductGetDetailsSuccess,
 
     [Message("Can not found this Product!", "product_noti_exception_01")]
     ProductNotFoundException,
 
     [Message("Reject Product must have reason!", "product_noti_exception_02")]
     ProductRejectNoReasonException,
+
+    [Message("Can not find any Products", "product_noti_exception_03")]
+    ProductNotFoundAnyException,
 }

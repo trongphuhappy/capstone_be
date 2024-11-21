@@ -60,7 +60,7 @@ public class ProductRepository : IProductRepository
         l.Id, l.WareHouseAddress, l.ShopName, l.TimeUnitType AS LessorTimeUnit,
         ps.Price, ps.ProductId, ps.SurchargeId, ps.CreatedDate AS ProductSurchargeCreatedDate,
         s.Id, s.Name, s.Description, s.IsDeleted AS SurchargeIsDeleted,
-        i.Id, i.Name, i.Description, i.IssueDate, i.ExpirationDate, i.CreatedDate AS InsuranceCreatedDate,
+        i.Id, i.Name, i.IssueDate, i.ExpirationDate, i.CreatedDate AS InsuranceCreatedDate,
         ii.ImageLink, ii.ImageId, ii.CreatedDate AS ImagesInsuranceCreatedDate
     FROM Products p
     LEFT JOIN Images ip ON p.Id = ip.ProductId

@@ -37,7 +37,7 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
             throw new CategoryException.CategoryNotFoundException();
         }
         //Check if category is type of vehicle then insurance must exist and all fields must not be null
-        else if (categoryFound.IsVehicle && (request.Insurance.Name == null || request.Insurance.Description == null || request.Insurance.IssueDate == null || request.Insurance.ExpirationDate == null || request.Insurance.InsuranceImages == null))
+        else if (categoryFound.IsVehicle && (request.Insurance.Name == null || request.Insurance.IssueDate == null || request.Insurance.ExpirationDate == null || request.Insurance.InsuranceImages == null))
         {
             throw new CategoryException.CategoryMissingInsuranceException();
         }
@@ -59,7 +59,7 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
         //Add Insurance if category is type of vehicle
         if (categoryFound.IsVehicle && request.Insurance != null)
         {
-            var insuranceCreated = Insurance.CreateInsurance(request.Insurance.Name, request.Insurance.Description, request.Insurance.IssueDate.Value, request.Insurance.ExpirationDate.Value, productCreated.Id);
+            var insuranceCreated = Insurance.CreateInsurance(request.Insurance.Name, request.Insurance.IssueDate.Value, request.Insurance.ExpirationDate.Value, productCreated.Id);
             _efUnitOfWork.InsuranceRepository.Add(insuranceCreated);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             //Upload Insurance Images
@@ -71,12 +71,12 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
         //If Surcharge exist then Add new ProductSurcharge based on ProductId, SurchargeId and Price
         if (request.Surcharge.SurchargeId != null && request.Surcharge.Price != null)
         {
-            var surchargeFound = await _efUnitOfWork.SurchargeRepository.FindByIdAsync(request.Surcharge.SurchargeId);
+            var surchargeFound = await _efUnitOfWork.SurchargeRepository.FindByIdAsync(request.Surcharge.SurchargeId.Value);
             if (surchargeFound == null)
             {
                 throw new SurchargeException.SurchargeNotFoundException();
             }
-            var productSurcharge = ProductSurcharge.CreateProductSurcharge(request.Surcharge.Price, productCreated.Id, surchargeFound.Id);
+            var productSurcharge = ProductSurcharge.CreateProductSurcharge(request.Surcharge.Price.Value, productCreated.Id, surchargeFound.Id);
 
             _efUnitOfWork.ProductSurchargeRepository.Add(productSurcharge);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);

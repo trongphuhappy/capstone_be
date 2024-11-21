@@ -35,7 +35,6 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
         var insurance = product.Insurances != null && product.Insurances[0].Name != null ? new InsuranceResponseDTO()
         {
             Name = product.Insurances[0].Name,
-            Description = product.Insurances[0].Description,
             IssueDate = product.Insurances[0].IssueDate,
             ExpirationDate = product.Insurances[0].ExpirationDate,
             InsuranceImageUrl = product.Insurances[0].Images[0].ImageLink != null ? product.Insurances[0].Images[0].ImageLink : null

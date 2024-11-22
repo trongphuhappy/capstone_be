@@ -18,8 +18,7 @@ public static class ProductDTO
         public DateTime? IssueDate { get; set; }
         public DateTime? ExpirationDate { get; set; }
         public List<IFormFile>? InsuranceImages { get; set; }
-        public Guid? SurchargeId { get; set; }
-        public double? SurchargePrice { get; set; }
+        public List<SurchargeDTO.SurchargeRequestDTO>? ListSurcharges { get; set; }
     }
 
     public class ProductResponseDTO

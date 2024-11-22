@@ -9,4 +9,5 @@ public interface IDPUnitOfWork
     ISurchargeRepository SurchargeRepositories { get; }
     IProductRepository ProductRepositories { get; }
     ILessorRepository LessorRepositories { get; }
+    IWishlistRepository WishlistRepositories { get; }
 }

@@ -34,7 +34,7 @@ public static class SeedData
         if (!context.Lessor.Any())
         {
             context.Lessor.AddRange(
-                new Lessor("Binh Thanh", null, null, null, null, null, Contract.Enumarations.Product.TimeUnitType.DAY, Contract.Enumarations.Product.LocationType.HCM, userId)
+                new Lessor("Binh Thanh", null, "Binh Thanh Furniture and Vehicle Rented", null, null, null, Contract.Enumarations.Product.TimeUnitType.DAY, Contract.Enumarations.Product.LocationType.HCM, userId)
             );
         }
         if (!context.Categories.Any())

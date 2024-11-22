@@ -55,7 +55,7 @@ public class ProductRepository : IProductRepository
     {
         var sql = @"
     SELECT
-        p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate,
+        p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate,
         ip.ImageLink, ip.ImageId, ip.CreatedDate AS ImagesProductCreatedDate,
         l.Id, l.WareHouseAddress, l.ShopName, l.TimeUnitType AS LessorTimeUnit,
         ps.Price, ps.ProductId, ps.SurchargeId, ps.CreatedDate AS ProductSurchargeCreatedDate,
@@ -145,7 +145,7 @@ public class ProductRepository : IProductRepository
             var validColumns = new HashSet<string>
         {
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
-            "p.Rating", "p.Price", "p.Value", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
+            "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
             "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName"
         };
 
@@ -233,6 +233,13 @@ public class ProductRepository : IProductRepository
                 queryBuilder.Append(" AND p.Value = @Value");
                 totalCountQuery.Append(" AND p.Value = @Value");
                 parameters.Add("Value", filterParams.Value);
+            }
+
+            if (filterParams?.MaximumRentDays.HasValue == true)
+            {
+                queryBuilder.Append(" AND p.MaximumRentDays = @MaximumRentDays");
+                totalCountQuery.Append(" AND p.MaximumRentDays = @MaximumRentDays");
+                parameters.Add("MaximumRentDays", filterParams.MaximumRentDays);
             }
 
             if (filterParams?.ConfirmStatus != null)

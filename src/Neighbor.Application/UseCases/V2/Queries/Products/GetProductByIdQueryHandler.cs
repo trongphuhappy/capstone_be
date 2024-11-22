@@ -53,7 +53,7 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
             ShopName = product.Lessor.ShopName,
             WareHouseAddress = product.Lessor.WareHouseAddress
         };
-        var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.ConfirmStatus, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharge, lessor);
+        var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharge, lessor);
         //Return result
         return Result.Success(new Success<ProductResponse>(MessagesList.ProductGetDetailsSuccess.GetMessage().Code, MessagesList.ProductGetDetailsSuccess.GetMessage().Message, result));
     }

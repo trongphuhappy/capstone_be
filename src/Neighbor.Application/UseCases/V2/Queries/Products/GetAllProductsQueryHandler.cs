@@ -36,7 +36,7 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
                 ShopName = product.Lessor.ShopName,
                 WareHouseAddress = product.Lessor.WareHouseAddress
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.ConfirmStatus, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null,lessor));
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null,lessor));
         });
         //Initial result
         var result = new PagedResult<ProductResponse>(listProductsDTO, listProducts.PageIndex, listProducts.PageSize, listProducts.TotalCount, listProducts.TotalPages);

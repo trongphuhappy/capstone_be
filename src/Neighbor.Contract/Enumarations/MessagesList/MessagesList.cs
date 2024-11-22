@@ -73,4 +73,28 @@ public enum MessagesList
 
     [Message("Can not find any Products", "product_noti_exception_03")]
     ProductNotFoundAnyException,
+
+    [Message("This Product has already rejected", "product_noti_exception_04")]
+    ProductHasAlreadyRejectedException,
+
+    [Message("This Product has already approved", "product_noti_exception_05")]
+    ProductHasAlreadyApprovedException,
+
+    [Message("Can not find this account!", "account_noti_exception_01")]
+    AccountNotFoundException,
+
+    [Message("This Account has already been banned!", "account_noti_exception_02")]
+    AccountHasAlreadyBannedException,
+
+    [Message("This Account has already been unbanned!", "account_noti_exception_03")]
+    AccountHasAlreadyUnbannedException,
+
+    [Message("Ban User Successfully!", "admin_noti_success_01")]
+    AdminBanUserSuccess,
+
+    [Message("Unban User Successfully!", "admin_noti_success_02")]
+    AdminUnbanUserSuccess,
+
+    [Message("Ban User must have a reason!", "admin_noti_exception_01")]
+    AdminBanWithNoReasonException,
 }

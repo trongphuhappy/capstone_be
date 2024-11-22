@@ -10,6 +10,7 @@ public static class ProductDTO
         public string Description { get; set; }
         public double Value { get; set; }
         public double Price { get; set; }
+        public int MaximumRentDays { get; set; }
         public string Policies { get; set; }
         public int CategoryId { get; set; }
         public List<IFormFile> ProductImages { get; set; }
@@ -27,6 +28,7 @@ public static class ProductDTO
         public string Description { get; set; }
         public double Value { get; set; }
         public double Price { get; set; }
+        public int MaximumRentDays { get; set; }
         public string Policies { get; set; }
         public int CategoryId { get; set; }
         public List<string> ProductImagesUrl { get; set; }

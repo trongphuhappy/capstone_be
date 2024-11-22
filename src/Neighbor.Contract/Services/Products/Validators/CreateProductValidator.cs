@@ -11,6 +11,7 @@ internal class CreateProductValidator : AbstractValidator<Command.CreateProductC
         RuleFor(x => x.Description).NotEmpty();
         RuleFor(x => x.Value).NotNull().NotEmpty();
         RuleFor(x => x.Price).NotNull().NotEmpty();
+        RuleFor(x => x.MaximumRentDays).NotNull().NotEmpty();
         RuleFor(x => x.Policies).NotNull().NotEmpty();
         RuleFor(x => x.CategoryId).NotNull().NotEmpty();   
         RuleFor(x => x.UserId).NotNull().NotEmpty();

@@ -43,6 +43,7 @@ public class Product : DomainEntity<Guid>
     public virtual List<Images> Images { get; private set; }
     public virtual List<ProductSurcharge> ProductSurcharges { get; private set; }
     public virtual List<Insurance> Insurances { get; private set; }
+    public virtual List<Wishlist>? Wishlists { get; private set; }
 
     public static Product CreateProduct(string name, string policies, string description, double price, double value, int maximumRentDays, int categoryId, Guid lessorId)
     {

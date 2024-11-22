@@ -118,4 +118,34 @@ public class ProductController : ApiController
 
         return Ok(result);
     }
+
+    //[Authorize]
+    [HttpPut("add_to_wishlist", Name = "AddToWishlist")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> AddToWishlist([FromBody] Command.ConfirmProductCommand commands)
+    {
+        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
+        var userId = Guid.Parse("58005D3A-11DA-41B2-84C3-35BFC28A6406");
+        var result = await Sender.Send(commands);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    //[Authorize]
+    [HttpPut("get_products_from_wishlist", Name = "GetProductsFromWishlist")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> GetProductsFromWishlist([FromBody] Command.ConfirmProductCommand commands)
+    {
+        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
+        var userId = Guid.Parse("58005D3A-11DA-41B2-84C3-35BFC28A6406");
+        var result = await Sender.Send(commands);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
 }

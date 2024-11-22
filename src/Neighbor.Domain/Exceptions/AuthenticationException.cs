@@ -50,6 +50,7 @@ public static class AuthenticationException
                   MessagesList.AccountBanned.GetMessage().Code)
         { }
     }
+
     public sealed class RefreshTokenNullException : AuthorizeException
     {
         public RefreshTokenNullException()

@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Neighbor.Application.Behaviors;
-using PawFund.Application.Mapper;
 
 namespace Neighbor.Application.DependencyInjection.Extensions;
 public static class ServiceCollectionExtensions
@@ -15,8 +14,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddConfigurationAutoMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(CategoryProfile));
-        services.AddAutoMapper(typeof(SurchargeProfile));
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         return services;
     }
 }

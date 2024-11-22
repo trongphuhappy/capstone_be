@@ -73,4 +73,7 @@ public enum MessagesList
 
     [Message("Can not find any Products", "product_noti_exception_03")]
     ProductNotFoundAnyException,
+
+    [Message("Get profile successfully", "member_get_profile_success")]
+    GetProfileSuccessfully,
 }

@@ -68,6 +68,11 @@ public class Product : DomainEntity<Guid>
         Images = images;
     }
 
+    public void UpdateWishlistsProduct(List<Wishlist> wishlists)
+    {
+        Wishlists = wishlists;
+    }
+
     public void UpdateLessorProduct(Lessor lessor)
     {
         Lessor = lessor;

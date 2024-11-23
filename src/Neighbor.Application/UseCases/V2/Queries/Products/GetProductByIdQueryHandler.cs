@@ -70,6 +70,7 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
         //Check if GetDetailsProduct By User then Check if Product has existed in Wishlist or not
         if (request.AccountId != null)
         {
+            //Check if Product has already added to Wishlist
             bool isProductExistInWishlist = await _dpUnitOfWork.WishlistRepositories.IsProductExistInWishlist(request.AccountId.Value, product.Id);
             var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isProductExistInWishlist, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
             //Return result

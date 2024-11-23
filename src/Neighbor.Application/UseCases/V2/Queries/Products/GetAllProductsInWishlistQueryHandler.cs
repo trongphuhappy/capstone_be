@@ -29,8 +29,6 @@ public sealed class GetAllProductsInWishlistQueryHandler : IQueryHandler<Query.G
         for(int i = 0; i < listProducts.Items.Count; i++)
         {
             var product = listProducts.Items[i];
-            //Check if Product has existed in Wishlist
-            bool isProductExistInWishlist = await _dpUnitOfWork.WishlistRepositories.IsProductExistInWishlist(request.AccountId, product.Id);
             //Mapping Lessor of Product
             var lessor = new LessorDTO()
             {
@@ -38,7 +36,7 @@ public sealed class GetAllProductsInWishlistQueryHandler : IQueryHandler<Query.G
                 ShopName = product.Lessor.ShopName,
                 WareHouseAddress = product.Lessor.WareHouseAddress
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isProductExistInWishlist, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, true, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
         }
         //Initial result
         var result = new PagedResult<ProductResponse>(listProductsDTO, listProducts.PageIndex, listProducts.PageSize, listProducts.TotalCount, listProducts.TotalPages);

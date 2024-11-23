@@ -13,4 +13,5 @@ public interface IEFUnitOfWork : IAsyncDisposable
     IImagesRepository ImagesRepository { get; }
     ICategoryRepository CategoryRepository { get; }
     ILessorRepository LessorRepository { get; }
+    IWishlistRepository WishlistRepository { get; }
 }

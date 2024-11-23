@@ -53,83 +53,87 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product> GetDetailsAsync(Guid productId)
     {
-        var sql = @"
-    SELECT
-        p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate,
-        ip.ImageLink, ip.ImageId, ip.CreatedDate AS ImagesProductCreatedDate,
-        l.Id, l.WareHouseAddress, l.ShopName, l.TimeUnitType AS LessorTimeUnit,
-        ps.Price, ps.ProductId, ps.SurchargeId, ps.CreatedDate AS ProductSurchargeCreatedDate,
-        s.Id, s.Name, s.Description, s.IsDeleted AS SurchargeIsDeleted,
-        i.Id, i.Name, i.IssueDate, i.ExpirationDate, i.CreatedDate AS InsuranceCreatedDate,
-        ii.ImageLink, ii.ImageId, ii.CreatedDate AS ImagesInsuranceCreatedDate
-    FROM Products p
-    LEFT JOIN Images ip ON p.Id = ip.ProductId
-    JOIN Lessor l ON l.Id = p.LessorId
-    LEFT JOIN ProductSurcharges ps ON p.Id = ps.ProductId
-    LEFT JOIN Surcharges s ON s.Id = ps.SurchargeId
-    LEFT JOIN Insurances i ON p.Id = i.ProductId
-    LEFT JOIN Images ii ON i.Id = ii.InsuranceId
-    WHERE p.Id = @Id";
-
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
 
-            var productDictionary = new Dictionary<Guid, Product>();
-
-            var result = await connection.QueryAsync<Product, Images, Lessor, ProductSurcharge, Surcharge, Insurance, Images, Product>(
-                sql,
-                (product, productImage, lessor, productSurcharge, surcharge, insurance, insuranceImage) =>
+            // Query the product
+            var products = await connection.QueryAsync<Product, Lessor, Product>(
+                @"SELECT p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.TimeUnitType AS LessorTimeUnit
+              FROM Products p
+              JOIN Lessor l ON l.Id = p.LessorId
+              WHERE p.Id = @Id",
+                (p, l) =>
                 {
-                    if (!productDictionary.TryGetValue(product.Id, out var existingProduct))
-                    {
-                        existingProduct = product;
-                        existingProduct.UpdateImagesProduct(new List<Images>());
-                        existingProduct.UpdateProductSurcharges(new List<ProductSurcharge>());
-                        existingProduct.UpdateInsurance(new List<Insurance>());
-                        productDictionary.Add(product.Id, existingProduct);
-                    }
-
-                    // Add product images without duplicates
-                    if (productImage != null && !existingProduct.Images.Any(img => img.ImageId == productImage.ImageId))
-                    {
-                        existingProduct.Images.Add(productImage);
-                    }
-
-                    // Add surcharges
-                    if (productSurcharge != null)
-                    {
-                        productSurcharge.UpdateSurcharge(surcharge); // Link surcharge details
-                        existingProduct.ProductSurcharges.Add(productSurcharge);
-                    }
-
-                    // Add insurances and their images
-                    if (insurance != null)
-                    {
-                        var listImagesInsurance = insurance.Images ?? new List<Images>();
-
-                        // Ensure we add unique images for insurance
-                        if (insuranceImage != null && !listImagesInsurance.Any(img => img.ImageId == insuranceImage.ImageId))
-                        {
-                            listImagesInsurance.Add(insuranceImage);
-                        }
-
-                        insurance.UpdateImagesInsurance(listImagesInsurance);
-                        existingProduct.Insurances.Add(insurance);
-                    }
-
-                    // Assign lessor details
-                    existingProduct.UpdateLessorProduct(lessor);
-
-                    return existingProduct;
+                    p.UpdateLessorProduct(l);
+                    return p;
                 },
                 new { Id = productId },
-                splitOn: "ProductModifiedDate,ImagesProductCreatedDate, LessorTimeUnit, ProductSurchargeCreatedDate, SurchargeIsDeleted, InsuranceCreatedDate"
-            );
+                splitOn: "Id");
 
-            return productDictionary.Values.FirstOrDefault();
+            if (products == null) return null;
+            var product = products.ToList()[0];
+            // Query related images
+            var productImages = await connection.QueryAsync<Images>(
+                @"SELECT ImageLink, ImageId, CreatedDate FROM Images WHERE ProductId = @Id", new { Id = productId });
+
+            product.UpdateImagesProduct(productImages.ToList());
+
+            // Query surcharges and related data
+            var productSurcharges = await connection.QueryAsync<ProductSurcharge, Surcharge, ProductSurcharge>(
+                @"SELECT ps.Id, ps.Price, ps.CreatedDate, ps.SurchargeId, ps.CreatedDate as ProductSurchargeCreatedDate,
+                  s.Id, s.Name, s.Description, s.IsDeleted 
+                FROM ProductSurcharges ps
+                JOIN Surcharges s ON ps.SurchargeId = s.Id
+                WHERE ps.ProductId = @Id",
+                (ps, s) =>
+                {
+                    ps.UpdateSurcharge(s);
+                    return ps;
+                },
+                new { Id = productId },
+                splitOn: "ProductSurchargeCreatedDate");
+
+            product.UpdateProductSurcharges(productSurcharges.ToList());
+
+            // Query insurances and their images
+            var insuranceData = new Dictionary<Guid, Insurance>();
+
+            await connection.QueryAsync<Insurance, Images, Insurance>(
+                @"SELECT i.Id, i.Name, i.IssueDate, i.ExpirationDate, i.CreatedDate AS InsuranceCreatedDate, 
+                ii.ImageLink, ii.ImageId, ii.CreatedDate
+                FROM Insurances i
+                LEFT JOIN Images ii ON i.Id = ii.InsuranceId
+                WHERE i.ProductId = @Id",
+                (insurance, insuranceImage) =>
+                {
+                    if (!insuranceData.TryGetValue(insurance.Id, out var existingInsurance))
+                    {
+                        // If this insurance is not yet added, create it
+                        existingInsurance = insurance;
+                        existingInsurance.UpdateImagesInsurance(new List<Images>());
+                        insuranceData.Add(existingInsurance.Id, existingInsurance);
+                    }
+
+                    // Add images to the insurance object
+                    if (insuranceImage != null && !existingInsurance.Images.Any(img => img.ImageId == insuranceImage.ImageId))
+                    {
+                        existingInsurance.Images.Add(insuranceImage);
+                    }
+
+                    return existingInsurance;
+                },
+                new { Id = productId },
+                splitOn: "InsuranceCreatedDate");
+
+            // Update the product's insurance list
+            product.UpdateInsurance(insuranceData.Values.ToList());
+
+            return product;
+
         }
     }
+
 
 
 
@@ -249,13 +253,175 @@ public class ProductRepository : IProductRepository
                 parameters.Add("ConfirmStatus", filterParams.ConfirmStatus);
             }
 
-            if (filterParams?.AccountId.HasValue == true)
+            if (filterParams?.AccountLessorId.HasValue == true)
             {
                 queryBuilder.Append(" AND l.AccountId = @AccountId");
                 totalCountQuery.Append(" AND l.AccountId = @AccountId");
-                parameters.Add("AccountId", filterParams.AccountId);
+                parameters.Add("AccountId", filterParams.AccountLessorId);
             }
 
+            if (filterParams?.CategoryId.HasValue == true)
+            {
+                queryBuilder.Append(" AND p.CategoryId = @CategoryId");
+                totalCountQuery.Append(" AND p.CategoryId = @CategoryId");
+                parameters.Add("CategoryId", filterParams.CategoryId);
+            }
+
+            // Get total count and pages
+            var totalCount = await connection.ExecuteScalarAsync<int>(totalCountQuery.ToString(), parameters);
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            // Pagination logic
+            var offset = (pageIndex - 1) * pageSize;
+            queryBuilder.Append($" ORDER BY p.Id OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+
+            // Dictionary for mapping products and their images
+            var productDictionary = new Dictionary<Guid, Product>();
+
+            // Execute the query
+            var items = await connection.QueryAsync<Product, Images, Lessor, Product>(
+                queryBuilder.ToString(),
+                (product, image, lessor) =>
+                {
+                    if (!productDictionary.TryGetValue(product.Id, out var existingProduct))
+                    {
+                        existingProduct = product;
+                        existingProduct.UpdateImagesProduct(new List<Images>());
+                        productDictionary.Add(product.Id, existingProduct);
+                    }
+
+                    if (image != null)
+                    {
+                        existingProduct.Images.Add(image);
+                    }
+                    existingProduct.UpdateLessorProduct(lessor);
+                    return existingProduct;
+                },
+                parameters,
+                splitOn: "ProductModifiedDate, ImageCreatedDate"
+            );
+
+            // Return paginated result
+            return new PagedResult<Product>(
+                productDictionary.Values.ToList(),
+                pageIndex,
+                pageSize,
+                totalCount,
+                totalPages
+            );
+        }
+    }
+
+    public async Task<PagedResult<Product>> GetProductsInWishlistAsync(Guid accountId,
+    int pageIndex,
+    int pageSize,
+    Filter.ProductWishlistFilter filterParams,
+    string[] selectedColumns)
+    {
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            // Valid columns for selecting
+            var validColumns = new HashSet<string>
+        {
+            "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
+            "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
+            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName"
+        };
+
+            var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
+
+            // If no selected columns, select all
+            var selectedColumnsString = columns?.Length > 0
+                ? string.Join(", ", columns)
+                : string.Join(", ", validColumns);
+
+            // Base query for fetching data
+            var queryBuilder = new StringBuilder($@"
+            SELECT {selectedColumnsString} 
+            FROM Products p
+            LEFT JOIN Images i ON p.Id = i.ProductId
+            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Wishlists w ON p.Id = w.ProductId
+            WHERE 1=1 AND w.AccountId = @AccountId");
+
+            // Base query for total count
+            var totalCountQuery = new StringBuilder($@"
+            SELECT COUNT(DISTINCT p.Id) 
+            FROM Products p
+            LEFT JOIN Images i ON p.Id = i.ProductId
+            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Wishlists w ON p.Id = w.ProductId
+            WHERE 1=1 AND w.AccountId = @AccountId");
+
+            var parameters = new DynamicParameters();
+
+            // Pagination and defaults
+            pageIndex = pageIndex <= 0 ? 1 : pageIndex;
+            pageSize = pageSize <= 0 ? 10 : pageSize > 100 ? 100 : pageSize;
+            parameters.Add("AccountId", accountId);
+            // Apply filters
+            if (filterParams?.Id.HasValue == true)
+            {
+                queryBuilder.Append(" AND p.Id = @Id");
+                totalCountQuery.Append(" AND p.Id = @Id");
+                parameters.Add("Id", filterParams.Id);
+            }
+
+            if (!string.IsNullOrEmpty(filterParams?.Name))
+            {
+                queryBuilder.Append(" AND p.Name LIKE @Name");
+                totalCountQuery.Append(" AND p.Name LIKE @Name");
+                parameters.Add("Name", $"%{filterParams.Name}%");
+            }
+
+            if (filterParams?.StatusType != null)
+            {
+                queryBuilder.Append(" AND p.StatusType = @StatusType");
+                totalCountQuery.Append(" AND p.StatusType = @StatusType");
+                parameters.Add("StatusType", filterParams.StatusType);
+            }
+
+            if (!string.IsNullOrEmpty(filterParams?.Policies))
+            {
+                queryBuilder.Append(" AND p.Policies LIKE @Policies");
+                totalCountQuery.Append(" AND p.Policies LIKE @Policies");
+                parameters.Add("Policies", $"%{filterParams.Policies}%");
+            }
+
+            if (!string.IsNullOrEmpty(filterParams?.Description))
+            {
+                queryBuilder.Append(" AND p.Description LIKE @Description");
+                totalCountQuery.Append(" AND p.Description LIKE @Description");
+                parameters.Add("Description", $"%{filterParams.Description}%");
+            }
+
+            if (filterParams?.Rating.HasValue == true)
+            {
+                queryBuilder.Append(" AND p.Rating = @Rating");
+                totalCountQuery.Append(" AND p.Rating = @Rating");
+                parameters.Add("Rating", filterParams.Rating);
+            }
+
+            if (filterParams?.Price.HasValue == true)
+            {
+                queryBuilder.Append(" AND p.Price = @Price");
+                totalCountQuery.Append(" AND p.Price = @Price");
+                parameters.Add("Price", filterParams.Price);
+            }
+
+            if (filterParams?.Value.HasValue == true)
+            {
+                queryBuilder.Append(" AND p.Value = @Value");
+                totalCountQuery.Append(" AND p.Value = @Value");
+                parameters.Add("Value", filterParams.Value);
+            }
+
+            if (filterParams?.MaximumRentDays.HasValue == true)
+            {
+                queryBuilder.Append(" AND p.MaximumRentDays = @MaximumRentDays");
+                totalCountQuery.Append(" AND p.MaximumRentDays = @MaximumRentDays");
+                parameters.Add("MaximumRentDays", filterParams.MaximumRentDays);
+            }
             if (filterParams?.CategoryId.HasValue == true)
             {
                 queryBuilder.Append(" AND p.CategoryId = @CategoryId");

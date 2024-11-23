@@ -6,7 +6,7 @@ public class EFUnitOfWork : IEFUnitOfWork
 {
     private readonly ApplicationDbContext _context;
 
-    public EFUnitOfWork(ApplicationDbContext context, IAccountRepository accountRepository, ISurchargeRepository surchargeRepository, IProductRepository productRepository, IProductSurchargeRepository productSurchargeRepository, IInsuranceRepository insuranceRepository, IImagesRepository imagesRepository, ICategoryRepository categoryRepository, ILessorRepository lessorRepository)
+    public EFUnitOfWork(ApplicationDbContext context, IAccountRepository accountRepository, ISurchargeRepository surchargeRepository, IProductRepository productRepository, IProductSurchargeRepository productSurchargeRepository, IInsuranceRepository insuranceRepository, IImagesRepository imagesRepository, ICategoryRepository categoryRepository, ILessorRepository lessorRepository, IWishlistRepository wishlistRepository)
     {
         _context = context;
         AccountRepository = accountRepository;
@@ -17,6 +17,7 @@ public class EFUnitOfWork : IEFUnitOfWork
         ImagesRepository = imagesRepository;
         CategoryRepository = categoryRepository;
         LessorRepository = lessorRepository;
+        WishlistRepository = wishlistRepository;
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -36,4 +37,6 @@ public class EFUnitOfWork : IEFUnitOfWork
     public IInsuranceRepository InsuranceRepository { get; }
     public ICategoryRepository CategoryRepository { get; }
     public ILessorRepository LessorRepository { get; }
+    public IWishlistRepository WishlistRepository { get; }
+
 }

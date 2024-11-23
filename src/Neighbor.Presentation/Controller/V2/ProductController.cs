@@ -26,18 +26,14 @@ public class ProductController : ApiController
     public async Task<IActionResult> CreateProduct([FromForm] ProductDTO.ProductRequestDTO productRequestDTO)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("58005D3A-11DA-41B2-84C3-35BFC28A6406");
+        var userId = Guid.Parse("D87399EF-6688-476F-85A3-D84827ACE0CF");
         var result = await Sender.Send(new Command.CreateProductCommand(productRequestDTO.Name, productRequestDTO.Description, productRequestDTO.Value, productRequestDTO.Price, productRequestDTO.MaximumRentDays, productRequestDTO.Policies, productRequestDTO.CategoryId, userId, productRequestDTO.ProductImages, new InsuranceDTO.InsuranceRequestDTO()
         {
             Name = productRequestDTO.InsuranceName,
             IssueDate = productRequestDTO.IssueDate,
             ExpirationDate = productRequestDTO.ExpirationDate,
             InsuranceImages = productRequestDTO.InsuranceImages
-        }, new SurchargeDTO.SurchargeRequestDTO()
-        {
-           SurchargeId = productRequestDTO.SurchargeId,
-           Price = productRequestDTO.SurchargePrice,
-        }));
+        }, productRequestDTO.ListSurcharges));
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -98,9 +94,9 @@ public class ProductController : ApiController
     [HttpGet("get_product_by_id", Name = "GetProductById")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
-    public async Task<IActionResult> GetProductById([FromQuery] Guid Id)
+    public async Task<IActionResult> GetProductById([FromQuery] Query.GetProductByIdQuery Queries)
     {
-        var result = await Sender.Send(new Query.GetProductByIdQuery(Id));
+        var result = await Sender.Send(Queries);
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -113,6 +109,39 @@ public class ProductController : ApiController
     public async Task<IActionResult> ConfirmProduct([FromBody] Command.ConfirmProductCommand commands)
     {
         var result = await Sender.Send(commands);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    //[Authorize]
+    [HttpPut("add_to_wishlist", Name = "AddToWishlist")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> AddToWishlist([FromQuery] Guid ProductId)
+    {
+        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
+        var userId = Guid.Parse("4FB70313-2A82-44BC-8CFA-2AB82B020446");
+        var result = await Sender.Send(new Command.AddToWishlistCommand(userId, ProductId));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    //[Authorize]
+    [HttpGet("get_all_products_from_wishlist", Name = "GetAllProductsFromWishlist")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> GetAllProductsFromWishlist([FromQuery] ProductWishlistFilter filterParams,
+    [FromQuery] int pageIndex = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string[] selectedColumns = null)
+    {
+        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
+        var userId = Guid.Parse("4FB70313-2A82-44BC-8CFA-2AB82B020446");
+        var result = await Sender.Send(new Query.GetAllProductsInWishlistQuery(userId, pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);
 

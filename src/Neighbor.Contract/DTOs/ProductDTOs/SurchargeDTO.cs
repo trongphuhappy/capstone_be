@@ -14,4 +14,10 @@ public static class SurchargeDTO
         public double Price { get; set; }
 
     }
+
+    public class Surchage
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }

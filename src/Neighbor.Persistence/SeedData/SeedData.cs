@@ -30,6 +30,9 @@ public static class SeedData
             context.Accounts.AddRange(
                 new Account(userId, "Hien", "Nguyen", "minhhien270103@gmail.com", "0911087822", "123456", null, null, null, null, LoginType.Local, GenderType.Male, RoleType.Member, false)
             );
+            context.Accounts.AddRange(
+                new Account(Guid.NewGuid(), "Hien", "Student", "hiennmse170279@fpt.edu.vn", "0911087833", "123456", null, null, null, null, LoginType.Local, GenderType.Male, RoleType.Member, false)
+            );
         }
         if (!context.Lessor.Any())
         {

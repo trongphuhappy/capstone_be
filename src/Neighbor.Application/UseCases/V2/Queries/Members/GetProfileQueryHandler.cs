@@ -5,7 +5,6 @@ using Neighbor.Contract.DTOs.MemberDTOs;
 using Neighbor.Contract.Enumarations.MessagesList;
 using Neighbor.Contract.Services.Members;
 using Neighbor.Domain.Abstraction.Dappers;
-using Neighbor.Domain.Abstraction.EntitiyFramework;
 using static Neighbor.Domain.Exceptions.AuthenticationException;
 
 namespace Neighbor.Application.UseCases.V2.Queries.Members;

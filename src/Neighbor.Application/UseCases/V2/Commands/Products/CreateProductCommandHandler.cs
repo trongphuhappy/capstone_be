@@ -9,8 +9,6 @@ using Neighbor.Domain.Abstraction.Dappers;
 using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Entities;
 using Neighbor.Domain.Exceptions;
-using System.Text.Json;
-using static Neighbor.Contract.Services.Categories.Filter;
 
 namespace Neighbor.Application.UseCases.V2.Commands.Products;
 

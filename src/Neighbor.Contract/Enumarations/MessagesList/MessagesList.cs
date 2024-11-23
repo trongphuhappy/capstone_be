@@ -71,7 +71,7 @@ public enum MessagesList
     [Message("Add Product to Wishlist Successfully.", "product_noti_success_06")]
     ProductAddToWishlistSuccess,
 
-    [Message("Remove Product From Wishlist Successfully.", "product_noti_success_06")]
+    [Message("Remove Product From Wishlist Successfully.", "product_noti_success_07")]
     ProductRemoveFromWishlistlistSuccess,
 
     [Message("Can not found this Product!", "product_noti_exception_01")]

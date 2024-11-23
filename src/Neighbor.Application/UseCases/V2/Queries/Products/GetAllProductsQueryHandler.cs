@@ -25,40 +25,21 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
         //Find all Products
         var listProducts = await _dpUnitOfWork.ProductRepositories.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
         var listProductsDTO = new List<ProductResponse>();
-        //Check if FindAllProduct By User then Check if Product has existed in Wishlist or not
-        if (request.FilterParams.AccountUserId != null)
+
+        //Mapping Product to ProductResponse
+        listProducts.Items.ForEach(product =>
         {
-            //Mapping Product to ProductResponse
-            for (int i = 0; i < listProducts.Items.Count; i++)
+            bool isAddedToWishlist = product.Wishlists.Count != 0 ? true : false;
+            //Mapping Lessor of Product
+            var lessor = new LessorDTO()
             {
-                var product = listProducts.Items[i];
-                //Check if Product has existed in Wishlist
-                bool isProductExistInWishlist = await _dpUnitOfWork.WishlistRepositories.IsProductExistInWishlist(request.FilterParams.AccountUserId.Value, product.Id);
-                //Mapping Lessor of Product
-                var lessor = new LessorDTO()
-                {
-                    LessorId = product.LessorId,
-                    ShopName = product.Lessor.ShopName,
-                    WareHouseAddress = product.Lessor.WareHouseAddress
-                };
-                listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isProductExistInWishlist, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
-            }
-        }
-        else
-        {
-            //Mapping Product to ProductResponse
-            listProducts.Items.ForEach(product =>
-            {
-                //Mapping Lessor of Product
-                var lessor = new LessorDTO()
-                {
-                    LessorId = product.LessorId,
-                    ShopName = product.Lessor.ShopName,
-                    WareHouseAddress = product.Lessor.WareHouseAddress
-                };
-                listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, false, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
-            });
-        }
+                LessorId = product.LessorId,
+                ShopName = product.Lessor.ShopName,
+                WareHouseAddress = product.Lessor.WareHouseAddress
+            };
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isAddedToWishlist, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+        });
+
         //Initial result
         var result = new PagedResult<ProductResponse>(listProductsDTO, listProducts.PageIndex, listProducts.PageSize, listProducts.TotalCount, listProducts.TotalPages);
         //Check if ListCategory is empty

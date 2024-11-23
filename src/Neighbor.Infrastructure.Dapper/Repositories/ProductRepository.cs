@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Azure.Core;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Neighbor.Contract.Abstractions.Shared;
@@ -150,7 +151,7 @@ public class ProductRepository : IProductRepository
         {
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
             "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
-            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName"
+            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.TimeUnitType AS LessorTimeUnitType", "w.Id", "w.AccountId"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -165,6 +166,7 @@ public class ProductRepository : IProductRepository
             SELECT {selectedColumnsString} 
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
+            LEFT JOIN Wishlists w on p.Id = w.ProductId
             JOIN Lessor l ON l.Id = p.LessorId
             WHERE 1=1");
 
@@ -173,6 +175,7 @@ public class ProductRepository : IProductRepository
             SELECT COUNT(DISTINCT p.Id) 
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
+            LEFT JOIN Wishlists w on p.Id = w.ProductId
             JOIN Lessor l ON l.Id = p.LessorId
             WHERE 1=1");
 
@@ -279,26 +282,41 @@ public class ProductRepository : IProductRepository
             var productDictionary = new Dictionary<Guid, Product>();
 
             // Execute the query
-            var items = await connection.QueryAsync<Product, Images, Lessor, Product>(
+            var items = await connection.QueryAsync<Product, Images, Lessor, Wishlist, Product>(
                 queryBuilder.ToString(),
-                (product, image, lessor) =>
+                (product, image, lessor, wishlist) =>
                 {
                     if (!productDictionary.TryGetValue(product.Id, out var existingProduct))
                     {
                         existingProduct = product;
                         existingProduct.UpdateImagesProduct(new List<Images>());
+                        existingProduct.UpdateWishlistsProduct(new List<Wishlist>());
                         productDictionary.Add(product.Id, existingProduct);
                     }
 
-                    if (image != null)
+                    // Add image if not already added
+                    if (image != null && !existingProduct.Images.Any(img => img.ImageId == image.ImageId))
                     {
                         existingProduct.Images.Add(image);
                     }
+
+                    // Add wishlist if not already added
+                    if (wishlist != null && !existingProduct.Wishlists.Any(w => w.Id == wishlist.Id))
+                    {
+                        if (filterParams.AccountUserId != null)
+                        {
+                            if (wishlist.AccountId == filterParams.AccountUserId)
+                            {
+                                existingProduct.Wishlists.Add(wishlist);
+                            }
+                        }
+                    }
+
                     existingProduct.UpdateLessorProduct(lessor);
                     return existingProduct;
                 },
                 parameters,
-                splitOn: "ProductModifiedDate, ImageCreatedDate"
+                splitOn: "ProductModifiedDate, ImageCreatedDate, LessorTimeUnitType"
             );
 
             // Return paginated result

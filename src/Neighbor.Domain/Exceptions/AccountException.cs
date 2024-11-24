@@ -27,4 +27,12 @@ public static class AccountException
                    MessagesList.AccountHasAlreadyUnbannedException.GetMessage().Code)
         { }
     }
+
+    public class AccountUpdateEmailExit : NotFoundException
+    {
+        public AccountUpdateEmailExit()
+        : base(MessagesList.AccountEmailUpdateExit.GetMessage().Message,
+               MessagesList.AccountEmailUpdateExit.GetMessage().Code)
+        { }
+    }
 }

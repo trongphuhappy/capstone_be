@@ -22,6 +22,9 @@ public class Account : DomainEntity<Guid>
         string? fullCoverPhotoUrl,
         string? fullCoverPhotoId,
         string? biography,
+        string? citizentId,
+        string? citizentFrontImage,
+        string? citizentBackImage,
         LoginType loginType,
         GenderType genderType,
         RoleType roleUserId,
@@ -41,6 +44,9 @@ public class Account : DomainEntity<Guid>
         FullCoverPhotoUrl = fullAvatarUrl;
         FullCoverPhotoId = fullAvatarId;
         Biography = biography;
+        CitizentId = citizentId;
+        CitizentFrontImage = citizentFrontImage;
+        CitizentBackImage = citizentBackImage;
         LoginType = loginType;
         GenderType = genderType;
         RoleUserId = roleUserId;
@@ -90,6 +96,9 @@ public class Account : DomainEntity<Guid>
     public string? FullCoverPhotoUrl { get; private set; }
     public string? FullCoverPhotoId { get; private set; }
     public string? Biography { get; private set; }
+    public string? CitizentId { get; private set; }
+    public string? CitizentFrontImage { get; private set; }
+    public string? CitizentBackImage { get; private set; }
     public LoginType LoginType { get; private set; }
     public GenderType GenderType { get; private set; }
     public RoleType RoleUserId { get; private set; }
@@ -98,7 +107,7 @@ public class Account : DomainEntity<Guid>
 
     public static Account CreateMemberAccountLocal(string firstName, string lastName, string email, string phoneNumber, string password, string avatarUrl, GenderType gender)
     {
-        return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", "", "", "", "", "", LoginType.Local, gender, RoleType.Member, false);
+        return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", "", "", "", "", "", "", "", "", LoginType.Local, gender, RoleType.Member, false);
     }
     public void UpdateIsDeletedForAccount(bool isDeleted)
     {
@@ -121,11 +130,12 @@ public class Account : DomainEntity<Guid>
         FullCoverPhotoUrl = fullCoverPhotoUrl;
     }
 
-    public void UpdateProfile(string? firstName, string? lastName, string? biography, string? phoneNumber)
+    public void UpdateProfile(string? firstName, string? lastName, string? biography, string? phoneNumber, string? email)
     {
         if (firstName != null) FirstName = firstName;
         if (lastName != null) LastName = lastName;
         if (biography != null) Biography = biography;
         if (phoneNumber != null) PhoneNumber = phoneNumber;
+        if (email != null) Email = email;
     }
 }

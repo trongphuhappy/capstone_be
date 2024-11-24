@@ -23,4 +23,9 @@ public static class RequestProfileDTO
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
     }
+
+    public class RequestUdpateEmail
+    {
+        public string Email { get; set; }
+    }
 }

@@ -12,8 +12,8 @@ using Neighbor.Persistence;
 namespace Neighbor.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241122122723_AddCoverPhoto")]
-    partial class AddCoverPhoto
+    [Migration("20241124092721_IntialCreate")]
+    partial class IntialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,15 @@ namespace Neighbor.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Biography")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizentBackImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizentFrontImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")

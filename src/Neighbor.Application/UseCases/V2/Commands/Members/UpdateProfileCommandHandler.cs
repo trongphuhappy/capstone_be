@@ -21,7 +21,7 @@ public sealed class UpdateProfileCommandHandler : ICommandHandler<Command.Update
         var user = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.UserId, cancellationToken);
         if (user.IsDeleted == true) throw new AccountBanned();
 
-        user.UpdateProfile(request.FirstName, request.LastName, request.Biography, request.PhoneNumber);
+        user.UpdateProfile(request.FirstName, request.LastName, request.Biography, request.PhoneNumber, null);
 
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         var profileDTO = new ProfileDTO

@@ -19,4 +19,5 @@ public sealed class ProfileDTO
     public LoginType? LoginType { get; set; }
     public GenderType? GenderType { get; set; }
     public RoleType? RoleUserId { get; set; }
+    public DateTime? CreatedDate { get; set; }
 }

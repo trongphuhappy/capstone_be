@@ -34,6 +34,15 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CitizentBackImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizentFrontImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizentId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 

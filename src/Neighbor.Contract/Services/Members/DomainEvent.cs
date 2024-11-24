@@ -1,5 +1,8 @@
-﻿namespace Neighbor.Contract.Services.Members;
+﻿using Neighbor.Contract.Abstractions.Message;
 
-internal class DomainEvent
+namespace Neighbor.Contract.Services.Members;
+
+public static class DomainEvent
 {
+    public record UserEmailChanged(Guid Id, Guid UserId, string Email) : IDomainEvent;
 }

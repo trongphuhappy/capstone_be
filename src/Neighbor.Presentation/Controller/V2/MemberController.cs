@@ -72,4 +72,31 @@ public class MemberController : ApiController
 
         return Ok(result);
     }
+
+
+    [Authorize]
+    [HttpPut("update_email", Name = "UpdateEmail")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> UpdateEmail([FromBody] RequestProfileDTO.RequestUdpateEmail request)
+    {
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.UpdateEmailCommand(Guid.Parse(userId), request.Email));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPut("verify-update-email", Name = "VerifyUpdateEmail")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> VerifyUpdateEmail([FromQuery] string userId)
+    {
+        var result = await Sender.Send(new Command.VerifyUpdateEmailCommand(Guid.Parse(userId)));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
 }

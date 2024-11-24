@@ -8,7 +8,8 @@ namespace Neighbor.Application.UseCases.V2.Events;
 
 public sealed class SendEmailWhenUserChangedEventHandler
     : IDomainEventHandler<DomainEvent.UserRegistedWithLocal>,
-    IDomainEventHandler<DomainEvent.UserVerifiedEmailRegist>
+    IDomainEventHandler<DomainEvent.UserVerifiedEmailRegist>,
+    IDomainEventHandler<Contract.Services.Members.DomainEvent.UserEmailChanged>
 {
 
     private readonly IEmailService _emailService;
@@ -40,6 +41,17 @@ public sealed class SendEmailWhenUserChangedEventHandler
            "EmailRegister.html", new Dictionary<string, string> {
             { "ToEmail", notification.Email},
             {"Link", $"{_clientSetting.Url}"}
+       });
+    }
+
+    public async Task Handle(Contract.Services.Members.DomainEvent.UserEmailChanged notification, CancellationToken cancellationToken)
+    {
+        await _emailService.SendMailAsync
+           (notification.Email,
+           "Change email",
+           "EmailUserChangeEmail.html", new Dictionary<string, string> {
+            {"ToEmail", notification.Email},
+               {"Link", $"{_clientSetting.Url}{_clientSetting.VerifyChangeEmail}/{notification.UserId}"}
        });
     }
 }

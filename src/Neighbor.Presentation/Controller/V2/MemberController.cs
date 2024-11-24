@@ -88,12 +88,12 @@ public class MemberController : ApiController
         return Ok(result);
     }
 
-    [HttpPut("verify-update-email", Name = "VerifyUpdateEmail")]
+    [HttpPut("verify_update_email", Name = "VerifyUpdateEmail")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> VerifyUpdateEmail([FromQuery] string userId)
+    public async Task<IActionResult> VerifyUpdateEmail([FromQuery] Guid userId)
     {
-        var result = await Sender.Send(new Command.VerifyUpdateEmailCommand(Guid.Parse(userId)));
+        var result = await Sender.Send(new Command.VerifyUpdateEmailCommand(userId));
         if (result.IsFailure)
             return HandlerFailure(result);
 

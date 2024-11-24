@@ -7,8 +7,6 @@ using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.DTOs.ProductDTOs;
 using Neighbor.Contract.Services.Products;
 using Neighbor.Presentation.Abstractions;
-using System.Collections.Generic;
-using System.Security.Claims;
 using static Neighbor.Contract.Services.Products.Filter;
 
 namespace Neighbor.Presentation.Controller.V2;
@@ -26,7 +24,7 @@ public class ProductController : ApiController
     public async Task<IActionResult> CreateProduct([FromForm] ProductDTO.ProductRequestDTO productRequestDTO)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("D87399EF-6688-476F-85A3-D84827ACE0CF");
+        var userId = Guid.Parse("56E38469-663F-48D7-8733-A04347A53ECA");
         var result = await Sender.Send(new Command.CreateProductCommand(productRequestDTO.Name, productRequestDTO.Description, productRequestDTO.Value, productRequestDTO.Price, productRequestDTO.MaximumRentDays, productRequestDTO.Policies, productRequestDTO.CategoryId, userId, productRequestDTO.ProductImages, new InsuranceDTO.InsuranceRequestDTO()
         {
             Name = productRequestDTO.InsuranceName,
@@ -122,7 +120,7 @@ public class ProductController : ApiController
     public async Task<IActionResult> AddToWishlist([FromQuery] Guid ProductId)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("4FB70313-2A82-44BC-8CFA-2AB82B020446");
+        var userId = Guid.Parse("68C5630B-3848-40EB-B92B-BFF0CFC0D385");
         var result = await Sender.Send(new Command.AddToWishlistCommand(userId, ProductId));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -140,7 +138,7 @@ public class ProductController : ApiController
     [FromQuery] string[] selectedColumns = null)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("4FB70313-2A82-44BC-8CFA-2AB82B020446");
+        var userId = Guid.Parse("68C5630B-3848-40EB-B92B-BFF0CFC0D385");
         var result = await Sender.Send(new Query.GetAllProductsInWishlistQuery(userId, pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);

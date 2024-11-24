@@ -81,6 +81,7 @@ public class Account : DomainEntity<Guid>
     public virtual RoleUser RoleUser { get; private set; }
     public virtual List<Lessor>? Lessor { get;private set; }
     public virtual List<Wishlist>? Wishlists { get; private set; }
+    public virtual List<Order>? Orders { get; private set; }
 
     public static Account CreateMemberAccountLocal(string firstName, string lastName, string email, string phoneNumber, string password, string avatarUrl, GenderType gender)
     {

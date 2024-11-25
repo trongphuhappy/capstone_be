@@ -25,7 +25,6 @@ public class ProductController : ApiController
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
         var userId = Guid.Parse("56E38469-663F-48D7-8733-A04347A53ECA");
-        var userId = Guid.Parse("8FD64A3D-C603-4663-9C37-CC3C3562D55F");
         var result = await Sender.Send(new Command.CreateProductCommand(productRequestDTO.Name, productRequestDTO.Description, productRequestDTO.Value, productRequestDTO.Price, productRequestDTO.MaximumRentDays, productRequestDTO.Policies, productRequestDTO.CategoryId, userId, productRequestDTO.ProductImages, new InsuranceDTO.InsuranceRequestDTO()
         {
             Name = productRequestDTO.InsuranceName,

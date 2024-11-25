@@ -5,7 +5,6 @@ using Neighbor.Contract.DTOs.ProductDTOs;
 using Neighbor.Contract.Enumarations.MessagesList;
 using Neighbor.Contract.Services.Products;
 using Neighbor.Domain.Abstraction.Dappers;
-using Neighbor.Domain.Entities;
 using static Neighbor.Contract.Services.Products.Response;
 
 namespace Neighbor.Application.UseCases.V1.Queries.Products;

@@ -6,23 +6,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Neighbor.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalCreate : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsVehicle = table.Column<bool>(type: "bit", nullable: false)
+                    IsVehicle = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,7 +57,7 @@ namespace Neighbor.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Surchange",
+                name: "Surcharges",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -66,7 +69,7 @@ namespace Neighbor.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Surchange", x => x.Id);
+                    table.PrimaryKey("PK_Surcharges", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,6 +86,16 @@ namespace Neighbor.Persistence.Migrations
                     CropAvatarId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FullAvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FullAvatarId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CropCoverPhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CropCoverPhotoId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullCoverPhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FullCoverPhotoId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CitizenId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CitizenFrontImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CitizenFrontImageId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CitizenBackImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CitizenBackImageId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LoginType = table.Column<int>(type: "int", nullable: false),
                     GenderType = table.Column<int>(type: "int", nullable: false),
                     RoleUserId = table.Column<int>(type: "int", nullable: false),
@@ -142,8 +155,10 @@ namespace Neighbor.Persistence.Migrations
                     RejectReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<double>(type: "float", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
+                    Value = table.Column<double>(type: "float", nullable: false),
+                    MaximumRentDays = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    IsConfirm = table.Column<bool>(type: "bit", nullable: false),
+                    ConfirmStatus = table.Column<int>(type: "int", nullable: false),
                     LessorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -153,9 +168,9 @@ namespace Neighbor.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Category_CategoryId",
+                        name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Category",
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -167,14 +182,68 @@ namespace Neighbor.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Insurances",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IssueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Insurances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Insurances_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductSurcharges",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SurchargeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSurcharges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductSurcharges_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductSurcharges_Surcharges_SurchargeId",
+                        column: x => x.SurchargeId,
+                        principalTable: "Surcharges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FeedBackId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    FeedBackId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    InsuranceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -186,43 +255,17 @@ namespace Neighbor.Persistence.Migrations
                         name: "FK_Images_Feedbacks_FeedBackId",
                         column: x => x.FeedBackId,
                         principalTable: "Feedbacks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Images_Insurances_InsuranceId",
+                        column: x => x.InsuranceId,
+                        principalTable: "Insurances",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Images_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductSurchange",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SurchangeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductSurchange", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductSurchange_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductSurchange_Surchange_SurchangeId",
-                        column: x => x.SurchangeId,
-                        principalTable: "Surchange",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -236,8 +279,18 @@ namespace Neighbor.Persistence.Migrations
                 column: "FeedBackId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Images_InsuranceId",
+                table: "Images",
+                column: "InsuranceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Images_ProductId",
                 table: "Images",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Insurances_ProductId",
+                table: "Insurances",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -256,14 +309,14 @@ namespace Neighbor.Persistence.Migrations
                 column: "LessorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSurchange_ProductId",
-                table: "ProductSurchange",
+                name: "IX_ProductSurcharges_ProductId",
+                table: "ProductSurcharges",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSurchange_SurchangeId",
-                table: "ProductSurchange",
-                column: "SurchangeId");
+                name: "IX_ProductSurcharges_SurchargeId",
+                table: "ProductSurcharges",
+                column: "SurchargeId");
         }
 
         /// <inheritdoc />
@@ -273,19 +326,22 @@ namespace Neighbor.Persistence.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "ProductSurchange");
+                name: "ProductSurcharges");
 
             migrationBuilder.DropTable(
                 name: "Feedbacks");
 
             migrationBuilder.DropTable(
+                name: "Insurances");
+
+            migrationBuilder.DropTable(
+                name: "Surcharges");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Surchange");
-
-            migrationBuilder.DropTable(
-                name: "Category");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Lessor");

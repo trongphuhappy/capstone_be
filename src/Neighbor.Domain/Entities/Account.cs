@@ -13,10 +13,18 @@ public class Account : DomainEntity<Guid>
         string email,
         string phoneNumber,
         string password,
-        string? cropAvatarUrl, 
+        string? cropAvatarUrl,
         string? cropAvatarId,
         string? fullAvatarUrl,
         string? fullAvatarId,
+        string? cropCoverPhotoUrl,
+        string? cropCoverPhotoId,
+        string? fullCoverPhotoUrl,
+        string? fullCoverPhotoId,
+        string? biography,
+        string? citizenId,
+        string? citizenFrontImage,
+        string? citizenBackImage,
         LoginType loginType,
         GenderType genderType,
         RoleType roleUserId,
@@ -31,6 +39,14 @@ public class Account : DomainEntity<Guid>
         CropAvatarId = cropAvatarId;
         FullAvatarUrl = fullAvatarUrl;
         FullAvatarId = fullAvatarId;
+        CropCoverPhotoUrl = cropAvatarUrl;
+        CropCoverPhotoId = cropAvatarId;
+        FullCoverPhotoUrl = fullAvatarUrl;
+        FullCoverPhotoId = fullAvatarId;
+        Biography = biography;
+        CitizenId = citizenId;
+        CitizenFrontImage = citizenFrontImage;
+        CitizenBackImage = citizenBackImage;
         LoginType = loginType;
         GenderType = genderType;
         RoleUserId = roleUserId;
@@ -41,7 +57,7 @@ public class Account : DomainEntity<Guid>
         string email,
         string phoneNumber,
         string password,
-        string? cropAvatarUrl, 
+        string? cropAvatarUrl,
         string? cropAvatarId,
         string? fullAvatarUrl,
         string? fullAvatarId,
@@ -75,6 +91,16 @@ public class Account : DomainEntity<Guid>
     public string? CropAvatarId { get; private set; }
     public string? FullAvatarUrl { get; private set; }
     public string? FullAvatarId { get; private set; }
+    public string? CropCoverPhotoUrl { get; private set; }
+    public string? CropCoverPhotoId { get; private set; }
+    public string? FullCoverPhotoUrl { get; private set; }
+    public string? FullCoverPhotoId { get; private set; }
+    public string? Biography { get; private set; }
+    public string? CitizenId { get; private set; }
+    public string? CitizenFrontImage { get; private set; }
+    public string? CitizenFrontImageId { get; private set; }
+    public string? CitizenBackImage { get; private set; }
+    public string? CitizenBackImageId { get;private set; }
     public LoginType LoginType { get; private set; }
     public GenderType GenderType { get; private set; }
     public RoleType RoleUserId { get; private set; }
@@ -85,11 +111,44 @@ public class Account : DomainEntity<Guid>
 
     public static Account CreateMemberAccountLocal(string firstName, string lastName, string email, string phoneNumber, string password, string avatarUrl, GenderType gender)
     {
-        return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", LoginType.Local, gender, RoleType.Member, false);
+        return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", "", "", "", "", "", "", "", "", LoginType.Local, gender, RoleType.Member, false);
     }
-
     public void UpdateIsDeletedForAccount(bool isDeleted)
     {
         IsDeleted = isDeleted;
+    }
+
+    public void UpdateAvatarUser(string cropAvatarUrl, string cropAvatarId, string fullAvatarUrl, string fullAvatarId)
+    {
+        CropAvatarId = cropAvatarId;
+        CropAvatarUrl = cropAvatarUrl;
+        FullAvatarId = fullAvatarId;
+        FullAvatarUrl = fullAvatarUrl;
+    }
+
+    public void UpdateCoverPhoto(string cropCoverPhotoUrl, string cropCoverPhotoId, string fullCoverPhotoUrl, string fullCoverPhotoId)
+    {
+        CropCoverPhotoId = cropCoverPhotoId;
+        CropCoverPhotoUrl = cropCoverPhotoUrl;
+        FullCoverPhotoId = fullCoverPhotoId;
+        FullCoverPhotoUrl = fullCoverPhotoUrl;
+    }
+
+    public void UpdateProfile(string? firstName, string? lastName, string? biography, string? phoneNumber, string? email)
+    {
+        if (firstName != null) FirstName = firstName;
+        if (lastName != null) LastName = lastName;
+        if (biography != null) Biography = biography;
+        if (phoneNumber != null) PhoneNumber = phoneNumber;
+        if (email != null) Email = email;
+    }
+
+    public void UpdateCitizen(string citizenId, string frontCitizenImage, string frontCitizenImageId, string backCitizenImage, string backCitizenImageId)
+    {
+        CitizenId = citizenId;
+        CitizenFrontImage = frontCitizenImage;
+        CitizenFrontImageId = frontCitizenImageId;
+        CitizenBackImage = backCitizenImage;
+        CitizenBackImageId = backCitizenImageId;
     }
 }

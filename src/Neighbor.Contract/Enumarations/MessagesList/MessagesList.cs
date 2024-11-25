@@ -109,4 +109,19 @@ public enum MessagesList
 
     [Message("Ban User must have a reason!", "admin_noti_exception_01")]
     AdminBanWithNoReasonException,
+
+    [Message("Get profile successfully", "member_get_profile_success")]
+    GetProfileSuccessfully,
+
+    [Message("This email exists, please wait for another email", "account_update_email_fail")]
+    AccountEmailUpdateExit,
+    
+    [Message("Please check email to change", "account_update_email_success")]
+    AccountUpdateChangeEmail,
+
+    [Message("Updated email successfully", "account_noti_update_email_success")]
+    AccountUpdateEmailSuccess,
+
+    [Message("Update citizen successfully", "update_citizen_successfully")]
+    UpdateCitizenSuccessfully,
 }

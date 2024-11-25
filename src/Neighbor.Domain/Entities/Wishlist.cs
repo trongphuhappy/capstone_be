@@ -6,7 +6,6 @@ public class Wishlist : DomainEntity<Guid>
 {
     public Wishlist()
     {
-
     }
 
     public Wishlist(Guid accountId, Guid productId)

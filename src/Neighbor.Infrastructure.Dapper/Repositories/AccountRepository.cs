@@ -65,21 +65,28 @@ public class AccountRepository : IAccountRepository
     {
         var sql = @"
         SELECT 
-            [Id],
-            [FirstName],
-            [LastName],
-            [Email],
-            [PhoneNumber],
-            [LoginType],
-            [Password],
-            [CropAvatarUrl],
-            [CropAvatarId],
-            [FullAvatarUrl],
-            [FullAvatarId],
-            [RoleUserId],
-            [CreatedDate],
-            [ModifiedDate],
-            [IsDeleted]
+        [Id]
+      ,[FirstName]
+      ,[LastName]
+      ,[Email]
+      ,[PhoneNumber]
+      ,[Password]
+      ,[Biography]
+      ,[CropAvatarUrl]
+      ,[CropAvatarId]
+      ,[FullAvatarUrl]
+      ,[FullAvatarId]
+      ,[CropCoverPhotoId]
+      ,[CropCoverPhotoUrl]
+      ,[FullCoverPhotoId]
+      ,[FullCoverPhotoUrl]
+      ,[LoginType]
+      ,[GenderType]
+      ,[RoleUserId]
+      ,[CitizenId]
+      ,[CreatedDate]
+      ,[ModifiedDate]
+      ,[IsDeleted]
         FROM [Accounts]
         WHERE [Id] = @id";
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))

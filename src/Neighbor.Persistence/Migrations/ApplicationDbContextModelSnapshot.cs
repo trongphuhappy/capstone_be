@@ -31,6 +31,24 @@ namespace Neighbor.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Biography")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizenBackImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizenBackImageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizenFrontImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizenFrontImageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizenId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -38,6 +56,12 @@ namespace Neighbor.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CropAvatarUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CropCoverPhotoId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CropCoverPhotoUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -52,6 +76,12 @@ namespace Neighbor.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullAvatarUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullCoverPhotoId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullCoverPhotoUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GenderType")
@@ -96,8 +126,17 @@ namespace Neighbor.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsVehicle")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -105,7 +144,7 @@ namespace Neighbor.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Feedback", b =>
@@ -144,7 +183,7 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("FeedBackId")
+                    b.Property<Guid?>("FeedBackId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageId")
@@ -155,22 +194,62 @@ namespace Neighbor.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("InsuranceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FeedBackId");
 
+                    b.HasIndex("InsuranceId");
+
                     b.HasIndex("ProductId");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Insurance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Insurances");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Lessor", b =>
@@ -232,6 +311,9 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ConfirmStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -239,14 +321,14 @@ namespace Neighbor.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsConfirm")
-                        .HasColumnType("bit");
-
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("LessorId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaximumRentDays")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -271,6 +353,9 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<int>("StatusType")
                         .HasColumnType("int");
 
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -280,7 +365,7 @@ namespace Neighbor.Persistence.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Neighbor.Domain.Entities.ProductSurchange", b =>
+            modelBuilder.Entity("Neighbor.Domain.Entities.ProductSurcharge", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -301,16 +386,16 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SurchangeId")
+                    b.Property<Guid>("SurchargeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("SurchangeId");
+                    b.HasIndex("SurchargeId");
 
-                    b.ToTable("ProductSurchange");
+                    b.ToTable("ProductSurcharges");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.RoleUser", b =>
@@ -327,7 +412,7 @@ namespace Neighbor.Persistence.Migrations
                     b.ToTable("RoleUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Neighbor.Domain.Entities.Surchange", b =>
+            modelBuilder.Entity("Neighbor.Domain.Entities.Surcharge", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -352,7 +437,7 @@ namespace Neighbor.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Surchange");
+                    b.ToTable("Surcharges");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Account", b =>
@@ -370,17 +455,30 @@ namespace Neighbor.Persistence.Migrations
                 {
                     b.HasOne("Neighbor.Domain.Entities.Feedback", "Feedback")
                         .WithMany("Images")
-                        .HasForeignKey("FeedBackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FeedBackId");
+
+                    b.HasOne("Neighbor.Domain.Entities.Insurance", "Insurance")
+                        .WithMany("Images")
+                        .HasForeignKey("InsuranceId");
 
                     b.HasOne("Neighbor.Domain.Entities.Product", "Product")
                         .WithMany("Images")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Feedback");
+
+                    b.Navigation("Insurance");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Insurance", b =>
+                {
+                    b.HasOne("Neighbor.Domain.Entities.Product", "Product")
+                        .WithMany("Insurances")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Feedback");
 
                     b.Navigation("Product");
                 });
@@ -415,23 +513,23 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Lessor");
                 });
 
-            modelBuilder.Entity("Neighbor.Domain.Entities.ProductSurchange", b =>
+            modelBuilder.Entity("Neighbor.Domain.Entities.ProductSurcharge", b =>
                 {
                     b.HasOne("Neighbor.Domain.Entities.Product", "Product")
-                        .WithMany("ProductSurchanges")
+                        .WithMany("ProductSurcharges")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Neighbor.Domain.Entities.Surchange", "Surchange")
-                        .WithMany("productSurchanges")
-                        .HasForeignKey("SurchangeId")
+                    b.HasOne("Neighbor.Domain.Entities.Surcharge", "Surcharge")
+                        .WithMany("productSurcharges")
+                        .HasForeignKey("SurchargeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
 
-                    b.Navigation("Surchange");
+                    b.Navigation("Surcharge");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Account", b =>
@@ -449,6 +547,11 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Images");
                 });
 
+            modelBuilder.Entity("Neighbor.Domain.Entities.Insurance", b =>
+                {
+                    b.Navigation("Images");
+                });
+
             modelBuilder.Entity("Neighbor.Domain.Entities.Lessor", b =>
                 {
                     b.Navigation("Products");
@@ -458,7 +561,9 @@ namespace Neighbor.Persistence.Migrations
                 {
                     b.Navigation("Images");
 
-                    b.Navigation("ProductSurchanges");
+                    b.Navigation("Insurances");
+
+                    b.Navigation("ProductSurcharges");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.RoleUser", b =>
@@ -466,9 +571,9 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Accounts");
                 });
 
-            modelBuilder.Entity("Neighbor.Domain.Entities.Surchange", b =>
+            modelBuilder.Entity("Neighbor.Domain.Entities.Surcharge", b =>
                 {
-                    b.Navigation("productSurchanges");
+                    b.Navigation("productSurcharges");
                 });
 #pragma warning restore 612, 618
         }

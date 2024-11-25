@@ -38,5 +38,4 @@ public class EFUnitOfWork : IEFUnitOfWork
     public ICategoryRepository CategoryRepository { get; }
     public ILessorRepository LessorRepository { get; }
     public IWishlistRepository WishlistRepository { get; }
-
 }

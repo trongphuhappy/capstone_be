@@ -128,7 +128,7 @@ public class MemberController : ApiController
         return Ok(result);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpGet("check_lessor_exist", Name = "CheckLessor")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
@@ -140,5 +140,19 @@ public class MemberController : ApiController
             return HandlerFailure(result);
 
         return Ok(result);  
+    }
+
+    [Authorize]
+    [HttpPut("update_info_lessor", Name = "UpdateInfoLessor")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> UpdateInfoLessor([FromBody] RequestProfileDTO.RequestUdpateInfoLessor request)
+    {
+        var userId = User.FindFirstValue("UserId");
+        var result = await Sender.Send(new Command.UpdateInfoLessorCommand(Guid.Parse(userId), request.WareHouseAddress, request.ShopName, request.LocationType));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+        
+        return Ok(result);
     }
 }

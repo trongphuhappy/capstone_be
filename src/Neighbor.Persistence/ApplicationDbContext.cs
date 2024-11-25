@@ -22,4 +22,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<ProductSurcharge> ProductSurcharges { get; set; }
     public DbSet<Surcharge> Surcharges { get; set; }
     public DbSet<Insurance> Insurances { get; set; }
+    public DbSet<Wishlist> Wishlists { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
 }

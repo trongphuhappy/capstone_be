@@ -65,6 +65,15 @@ public enum MessagesList
     [Message("Product Details: ", "product_noti_success_04")]
     ProductGetDetailsSuccess,
 
+    [Message("All Products in Wishlist: ", "product_noti_success_05")]
+    ProductGetAllInWishlistSuccess,
+
+    [Message("Add Product to Wishlist Successfully.", "product_noti_success_06")]
+    ProductAddToWishlistSuccess,
+
+    [Message("Remove Product From Wishlist Successfully.", "product_noti_success_07")]
+    ProductRemoveFromWishlistlistSuccess,
+
     [Message("Can not found this Product!", "product_noti_exception_01")]
     ProductNotFoundException,
 
@@ -79,6 +88,9 @@ public enum MessagesList
 
     [Message("This Product has already approved", "product_noti_exception_05")]
     ProductHasAlreadyApprovedException,
+
+    [Message("Can not add this product to wishlist because this product belongs to you", "product_noti_exception_05")]
+    ProductCanNotAddToWishlistBecauseProductBelongsToUserException,
 
     [Message("Can not find this account!", "account_noti_exception_01")]
     AccountNotFoundException,

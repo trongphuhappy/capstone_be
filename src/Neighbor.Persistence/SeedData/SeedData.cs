@@ -30,11 +30,14 @@ public static class SeedData
             context.Accounts.AddRange(
                 new Account(userId, "Hien", "Nguyen", "minhhien270103@gmail.com", "0911087822", "123456", null, null, null, null, LoginType.Local, GenderType.Male, RoleType.Member, false)
             );
+            context.Accounts.AddRange(
+                new Account(Guid.NewGuid(), "Hien", "Student", "hiennmse170279@fpt.edu.vn", "0911087833", "123456", null, null, null, null, LoginType.Local, GenderType.Male, RoleType.Member, false)
+            );
         }
         if (!context.Lessor.Any())
         {
             context.Lessor.AddRange(
-                new Lessor("Binh Thanh", null, "Binh Thanh Furniture and Vehicle Rented", null, null, null, Contract.Enumarations.Product.TimeUnitType.DAY, Contract.Enumarations.Product.LocationType.HCM, userId)
+                new Lessor("Binh Thanh", null, "Binh Thanh Furniture and Vehicle Rented", null, null, null, Contract.Enumarations.Product.LocationType.HCM, userId)
             );
         }
         if (!context.Categories.Any())

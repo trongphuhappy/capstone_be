@@ -12,4 +12,5 @@ public interface IProductRepository : IGenericRepository<Domain.Entities.Product
     Task<Account> GetByEmailAsync(string email);
     Task<PagedResult<Product>> GetPagedAsync(int pageIndex, int pageSize, ProductFilter filterParams, string[] selectedColumns);
     Task<Product> GetDetailsAsync(Guid productId);
+    Task<PagedResult<Product>> GetProductsInWishlistAsync(Guid accountId, int pageIndex, int pageSize, ProductWishlistFilter filterParams, string[] selectedColumns);
 }

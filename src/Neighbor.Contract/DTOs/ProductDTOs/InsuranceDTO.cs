@@ -16,6 +16,6 @@ public static class InsuranceDTO
         public string Name { get; set; }
         public DateTime IssueDate { get;  set; }
         public DateTime ExpirationDate { get;  set; }
-        public string InsuranceImageUrl { get;  set; }
+        public List<string> InsuranceImagesUrl { get; set; }
     }
 }

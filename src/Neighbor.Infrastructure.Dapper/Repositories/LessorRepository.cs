@@ -32,13 +32,12 @@ public class LessorRepository : ILessorRepository
         throw new NotImplementedException();
     }
 
-    public async Task<Lessor> GetLessorByUserId(Guid userId)
+    public async Task<Lessor> GetLessorByUserIdAsync(Guid userId)
     {
-
         var sql = @"
-        SELECT l.Id, l.WareHouseAddress, l.Description, l.ShopName, l.ResponseRate, l.ResponseTime, l.AggreementRate, l.TimeUnitType, l.LocationType, l.AccountId
+        SELECT l.Id, l.WareHouseAddress, l.Description, l.ShopName, l.LocationType, l.AccountId
         FROM Lessors l
-        WHERE l.UserId = @UserId";
+        WHERE l.AccountId = @UserId";
 
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
@@ -51,7 +50,17 @@ public class LessorRepository : ILessorRepository
 
             return result.FirstOrDefault();
         }
+    }
 
+    public async Task<bool>? LessorExistByAccountIdAsync(Guid userId)
+    {
+        var sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM Lessors WHERE AccountId = @UserId) THEN 1 ELSE 0 END";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<bool>(sql, new { UserId = userId });
+            return result;
+        }
     }
 
     public Task<int> UpdateAsync(Lessor entity)

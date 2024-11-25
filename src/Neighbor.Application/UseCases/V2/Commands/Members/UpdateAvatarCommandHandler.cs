@@ -41,6 +41,5 @@ public sealed class UpdateAvatarCommandHandler : ICommandHandler<Command.UpdateA
         };
         
         return Result.Success(new Success<ImageProfileDTO>("", "", imageProfileDTO));
-
     }
 }

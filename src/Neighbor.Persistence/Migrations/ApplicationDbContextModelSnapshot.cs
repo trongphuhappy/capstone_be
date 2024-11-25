@@ -34,13 +34,19 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CitizentBackImage")
+                    b.Property<string>("CitizenBackImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CitizentFrontImage")
+                    b.Property<string>("CitizenBackImageId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CitizentId")
+                    b.Property<string>("CitizenFrontImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizenFrontImageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CitizenId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")

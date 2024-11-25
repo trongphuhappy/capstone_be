@@ -22,9 +22,9 @@ public class Account : DomainEntity<Guid>
         string? fullCoverPhotoUrl,
         string? fullCoverPhotoId,
         string? biography,
-        string? citizentId,
-        string? citizentFrontImage,
-        string? citizentBackImage,
+        string? citizenId,
+        string? citizenFrontImage,
+        string? citizenBackImage,
         LoginType loginType,
         GenderType genderType,
         RoleType roleUserId,
@@ -44,9 +44,9 @@ public class Account : DomainEntity<Guid>
         FullCoverPhotoUrl = fullAvatarUrl;
         FullCoverPhotoId = fullAvatarId;
         Biography = biography;
-        CitizentId = citizentId;
-        CitizentFrontImage = citizentFrontImage;
-        CitizentBackImage = citizentBackImage;
+        CitizenId = citizenId;
+        CitizenFrontImage = citizenFrontImage;
+        CitizenBackImage = citizenBackImage;
         LoginType = loginType;
         GenderType = genderType;
         RoleUserId = roleUserId;
@@ -96,9 +96,11 @@ public class Account : DomainEntity<Guid>
     public string? FullCoverPhotoUrl { get; private set; }
     public string? FullCoverPhotoId { get; private set; }
     public string? Biography { get; private set; }
-    public string? CitizentId { get; private set; }
-    public string? CitizentFrontImage { get; private set; }
-    public string? CitizentBackImage { get; private set; }
+    public string? CitizenId { get; private set; }
+    public string? CitizenFrontImage { get; private set; }
+    public string? CitizenFrontImageId { get; private set; }
+    public string? CitizenBackImage { get; private set; }
+    public string? CitizenBackImageId { get;private set; }
     public LoginType LoginType { get; private set; }
     public GenderType GenderType { get; private set; }
     public RoleType RoleUserId { get; private set; }
@@ -137,5 +139,14 @@ public class Account : DomainEntity<Guid>
         if (biography != null) Biography = biography;
         if (phoneNumber != null) PhoneNumber = phoneNumber;
         if (email != null) Email = email;
+    }
+
+    public void UpdateCitizen(string citizenId, string frontCitizenImage, string frontCitizenImageId, string backCitizenImage, string backCitizenImageId)
+    {
+        CitizenId = citizenId;
+        CitizenFrontImage = frontCitizenImage;
+        CitizenFrontImageId = frontCitizenImageId;
+        CitizenBackImage = backCitizenImage;
+        CitizenBackImageId = backCitizenImageId;
     }
 }

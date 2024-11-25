@@ -12,4 +12,5 @@ public static class Command
     public record UpdateProfileCommand(Guid UserId, string? FirstName, string? LastName, string? Biography, string? PhoneNumber) : ICommand<Success<ProfileDTO>>;
     public record UpdateEmailCommand(Guid UserId, string Email) : ICommand;
     public record VerifyUpdateEmailCommand(Guid UserId) : ICommand;
+    public record UpdateCitizenCommand(Guid UserId, string CitizenId, IFormFile FrontCitzenImage, IFormFile BackCitizenImage) : ICommand;
 }

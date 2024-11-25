@@ -8,6 +8,7 @@ public sealed class ProfileDTO
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
     public string? Biography { get; set; }
+    public string? CitizenId { get; set; }
     public string? CropAvatarUrl { get; set; }
     public string? CropAvatarId { get; set; }
     public string? FullAvatarUrl { get; set; }

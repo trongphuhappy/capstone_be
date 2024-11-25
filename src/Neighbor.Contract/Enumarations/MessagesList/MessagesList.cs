@@ -109,4 +109,7 @@ public enum MessagesList
 
     [Message("Updated email successfully", "account_noti_update_email_success")]
     AccountUpdateEmailSuccess,
+
+    [Message("Update citizen successfully", "update_citizen_successfully")]
+    UpdateCitizenSuccessfully,
 }

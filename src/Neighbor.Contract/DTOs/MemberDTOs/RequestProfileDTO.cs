@@ -28,4 +28,12 @@ public static class RequestProfileDTO
     {
         public string Email { get; set; }
     }
+
+    public class RequestUpdateCitizen
+    {
+        public string CitizenId { get; set; }
+        public IFormFile FrontImageCitizen { get; set; }
+        public IFormFile BackImageCitizen { get; set; }
+    }
+
 }

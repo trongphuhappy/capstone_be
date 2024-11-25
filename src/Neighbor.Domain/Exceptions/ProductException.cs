@@ -43,4 +43,12 @@ public static class ProductException
                    MessagesList.ProductHasAlreadyApprovedException.GetMessage().Code)
         { }
     }
+
+    public sealed class CanNotAddToWishlistBecauseProductBelongsToUserException : BadRequestException
+    {
+        public CanNotAddToWishlistBecauseProductBelongsToUserException()
+            : base(MessagesList.ProductCanNotAddToWishlistBecauseProductBelongsToUserException.GetMessage().Message,
+                   MessagesList.ProductCanNotAddToWishlistBecauseProductBelongsToUserException.GetMessage().Code)
+        { }
+    }
 }

@@ -10,26 +10,25 @@ using static Neighbor.Contract.Services.Products.Response;
 
 namespace Neighbor.Application.UseCases.V1.Queries.Products;
 
-public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProductsQuery, Success<PagedResult<ProductResponse>>>
+public sealed class GetAllProductsInWishlistQueryHandler : IQueryHandler<Query.GetAllProductsInWishlistQuery, Success<PagedResult<ProductResponse>>>
 {
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IMapper _mapper;
 
-    public GetAllProductsQueryHandler(IDPUnitOfWork dpUnitOfWork, IMapper mapper)
+    public GetAllProductsInWishlistQueryHandler(IDPUnitOfWork dpUnitOfWork, IMapper mapper)
     {
         _dpUnitOfWork = dpUnitOfWork;
         _mapper = mapper;
     }
-    public async Task<Result<Success<PagedResult<ProductResponse>>>> Handle(Query.GetAllProductsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Success<PagedResult<ProductResponse>>>> Handle(Query.GetAllProductsInWishlistQuery request, CancellationToken cancellationToken)
     {
         //Find all Products
-        var listProducts = await _dpUnitOfWork.ProductRepositories.GetPagedAsync(request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
+        var listProducts = await _dpUnitOfWork.ProductRepositories.GetProductsInWishlistAsync(request.AccountId, request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
         var listProductsDTO = new List<ProductResponse>();
-
         //Mapping Product to ProductResponse
-        listProducts.Items.ForEach(product =>
+        for(int i = 0; i < listProducts.Items.Count; i++)
         {
-            bool isAddedToWishlist = product.Wishlists.Count != 0 ? true : false;
+            var product = listProducts.Items[i];
             //Mapping Lessor of Product
             var lessor = new LessorDTO()
             {
@@ -37,9 +36,8 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
                 ShopName = product.Lessor.ShopName,
                 WareHouseAddress = product.Lessor.WareHouseAddress
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isAddedToWishlist, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
-        });
-
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, true, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+        }
         //Initial result
         var result = new PagedResult<ProductResponse>(listProductsDTO, listProducts.PageIndex, listProducts.PageSize, listProducts.TotalCount, listProducts.TotalPages);
         //Check if ListCategory is empty
@@ -49,6 +47,6 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
 
         }
         //Return result
-        return Result.Success(new Success<PagedResult<ProductResponse>>(MessagesList.ProductGetAllSuccess.GetMessage().Code, MessagesList.ProductGetAllSuccess.GetMessage().Message, result));
+        return Result.Success(new Success<PagedResult<ProductResponse>>(MessagesList.ProductGetAllInWishlistSuccess.GetMessage().Code, MessagesList.ProductGetAllInWishlistSuccess.GetMessage().Message, result));
     }
 }

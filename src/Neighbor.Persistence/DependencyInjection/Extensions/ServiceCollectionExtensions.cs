@@ -50,6 +50,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<IInsuranceRepository, InsuranceRepository>()
             .AddTransient<IImagesRepository, ImagesRepository>()
             .AddTransient<ICategoryRepository, CategoryRepository>()
-            .AddTransient<ILessorRepository, LessorRepository>();
+            .AddTransient<ILessorRepository, LessorRepository>()
+            .AddTransient<IWishlistRepository, WishlistRepository>();
     }
 }

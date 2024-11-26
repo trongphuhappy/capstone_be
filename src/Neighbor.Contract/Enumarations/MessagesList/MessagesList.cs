@@ -89,8 +89,8 @@ public enum MessagesList
     [Message("This Product has already approved", "product_noti_exception_05")]
     ProductHasAlreadyApprovedException,
 
-    [Message("Can not add this product to wishlist because this product belongs to you", "product_noti_exception_05")]
-    ProductCanNotAddToWishlistBecauseProductBelongsToUserException,
+    [Message("You cannot add a product that belongs to you to your wishlist!", "wishlist_noti_exception_01")]
+    WishlistProductBelongsToUserException,
 
     [Message("Can not find this account!", "account_noti_exception_01")]
     AccountNotFoundException,
@@ -124,4 +124,10 @@ public enum MessagesList
 
     [Message("Update citizen successfully", "update_citizen_successfully")]
     UpdateCitizenSuccessfully,
+
+    [Message("You cannot rent a product that belongs to you!", "order_noti_exception_01")]
+    OrderProductBelongsToUserException,
+
+    [Message("You have already create an rental order for this product!", "order_noti_exception_02")]
+    OrderProductAlreadyOrderedByUserException,
 }

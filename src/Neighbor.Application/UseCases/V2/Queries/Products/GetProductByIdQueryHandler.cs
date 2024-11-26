@@ -41,7 +41,7 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
         } : null;
         //Mapping Surcharges of Product
         List<SurchargeResponseDTO> surcharges = null;
-        if(product.ProductSurcharges != null && product.ProductSurcharges[0].Surcharge.Name != null)
+        if (product.ProductSurcharges != null && product.ProductSurcharges[0].Surcharge.Name != null)
         {
             surcharges = new List<SurchargeResponseDTO>();
             product.ProductSurcharges.ForEach(productSurcharge =>
@@ -70,15 +70,19 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
         //Check if GetDetailsProduct By User then Check if Product has existed in Wishlist or not
         if (request.AccountId != null)
         {
+            //Check if Product belongs to User or not
+            bool isProductBelongsToUser = product.Lessor.AccountId == request.AccountId ? true : false;
+            surcharges = new List<SurchargeResponseDTO>();
+
             //Check if Product has already added to Wishlist
             bool isProductExistInWishlist = await _dpUnitOfWork.WishlistRepositories.IsProductExistInWishlist(request.AccountId.Value, product.Id);
-            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isProductExistInWishlist, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
+            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isProductExistInWishlist, isProductBelongsToUser,  null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
             //Return result
             return Result.Success(new Success<ProductResponse>(MessagesList.ProductGetDetailsSuccess.GetMessage().Code, MessagesList.ProductGetDetailsSuccess.GetMessage().Message, result));
         }
         else
         {
-            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, false, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
+            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, false, false, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
             //Return result
             return Result.Success(new Success<ProductResponse>(MessagesList.ProductGetDetailsSuccess.GetMessage().Code, MessagesList.ProductGetDetailsSuccess.GetMessage().Message, result));
         }

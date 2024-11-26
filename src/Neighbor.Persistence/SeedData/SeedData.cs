@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Enumarations.Authentication;
+using Neighbor.Contract.Enumarations.PaymentMethod;
 using Neighbor.Domain.Entities;
 
 namespace Neighbor.Persistence.SeedData;
@@ -38,6 +39,22 @@ public static class SeedData
         {
             context.Lessor.AddRange(
                 new Lessor("Binh Thanh", null, "Binh Thanh Furniture and Vehicle Rented", null, null, null, Contract.Enumarations.Product.LocationType.HCM, userId)
+            );
+        }
+
+        if (!context.PaymentMethods.Any())
+        {
+            context.PaymentMethods.AddRange(
+                new PaymentMethod
+                {
+                    Id = PaymentMethodType.Cash,
+                    MethodName = "Cash",
+                },
+                new PaymentMethod
+                {
+                    Id = PaymentMethodType.Banking,
+                    MethodName = "Banking"
+                }
             );
         }
         if (!context.Categories.Any())

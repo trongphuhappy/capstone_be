@@ -24,7 +24,7 @@ public class ProductController : ApiController
     public async Task<IActionResult> CreateProduct([FromForm] ProductDTO.ProductRequestDTO productRequestDTO)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("56E38469-663F-48D7-8733-A04347A53ECA");
+        var userId = Guid.Parse("F1D75DCA-1050-4F2F-8F53-90E790B5C11A");
         var result = await Sender.Send(new Command.CreateProductCommand(productRequestDTO.Name, productRequestDTO.Description, productRequestDTO.Value, productRequestDTO.Price, productRequestDTO.MaximumRentDays, productRequestDTO.Policies, productRequestDTO.CategoryId, userId, productRequestDTO.ProductImages, new InsuranceDTO.InsuranceRequestDTO()
         {
             Name = productRequestDTO.InsuranceName,
@@ -120,7 +120,7 @@ public class ProductController : ApiController
     public async Task<IActionResult> AddToWishlist([FromQuery] Guid ProductId)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("68C5630B-3848-40EB-B92B-BFF0CFC0D385");
+        var userId = Guid.Parse("5F7659FA-43C8-4A0B-B993-D00FD9D91C43");
         var result = await Sender.Send(new Command.AddToWishlistCommand(userId, ProductId));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -138,7 +138,7 @@ public class ProductController : ApiController
     [FromQuery] string[] selectedColumns = null)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("68C5630B-3848-40EB-B92B-BFF0CFC0D385");
+        var userId = Guid.Parse("5F7659FA-43C8-4A0B-B993-D00FD9D91C43");
         var result = await Sender.Send(new Query.GetAllProductsInWishlistQuery(userId, pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);

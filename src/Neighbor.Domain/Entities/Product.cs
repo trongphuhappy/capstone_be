@@ -89,4 +89,9 @@ public class Product : DomainEntity<Guid>
     {
         Insurances = insurances;
     }
+
+    public void UpdateStatusType(StatusType statusType)
+    {
+        StatusType = statusType;
+    }
 }

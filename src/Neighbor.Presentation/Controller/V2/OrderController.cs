@@ -22,7 +22,7 @@ public class OrderController : ApiController
     public async Task<IActionResult> HandleUser([FromBody] OrderDTO.OrderRequestDTO order)
     {
         //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("5F7659FA-43C8-4A0B-B993-D00FD9D91C43");
+        var userId = Guid.Parse("BF439F13-868B-4B71-B783-2DAC3DDBBC83");
         var result = await Sender.Send(new Command.CreateOrderBankingCommand(userId, order.ProductId, order.RentTime, order.ReturnTime));
         if (result.IsFailure)
             return HandlerFailure(result);

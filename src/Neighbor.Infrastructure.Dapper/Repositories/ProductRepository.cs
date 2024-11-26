@@ -62,7 +62,7 @@ public class ProductRepository : IProductRepository
             var products = await connection.QueryAsync<Product, Lessor, Product>(
                 @"SELECT p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId
               FROM Products p
-              JOIN Lessor l ON l.Id = p.LessorId
+              JOIN Lessors l ON l.Id = p.LessorId
               WHERE p.Id = @Id",
                 (p, l) =>
                 {
@@ -167,7 +167,7 @@ public class ProductRepository : IProductRepository
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
             LEFT JOIN Wishlists w on p.Id = w.ProductId
-            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Lessors l ON l.Id = p.LessorId
             WHERE 1=1");
 
             // Base query for total count
@@ -176,7 +176,7 @@ public class ProductRepository : IProductRepository
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
             LEFT JOIN Wishlists w on p.Id = w.ProductId
-            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Lessors l ON l.Id = p.LessorId
             WHERE 1=1");
 
             var parameters = new DynamicParameters();
@@ -358,7 +358,7 @@ public class ProductRepository : IProductRepository
             SELECT {selectedColumnsString} 
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
-            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Lessors l ON l.Id = p.LessorId
             JOIN Wishlists w ON p.Id = w.ProductId
             WHERE 1=1 AND w.AccountId = @AccountId");
 
@@ -367,7 +367,7 @@ public class ProductRepository : IProductRepository
             SELECT COUNT(DISTINCT p.Id) 
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
-            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Lessors l ON l.Id = p.LessorId
             JOIN Wishlists w ON p.Id = w.ProductId
             WHERE 1=1 AND w.AccountId = @AccountId");
 

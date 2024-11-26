@@ -16,7 +16,7 @@ public sealed class UpdateInfoLessorCommandHandler : ICommandHandler<Command.Upd
     {
         _efUnitOfWork = efUnitOfWork;
     }
-
+    
     public async Task<Result> Handle(Command.UpdateInfoLessorCommand request, CancellationToken cancellationToken)
     {
         var user = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.UserId);

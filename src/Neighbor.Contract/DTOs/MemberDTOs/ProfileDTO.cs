@@ -17,6 +17,7 @@ public sealed class ProfileDTO
     public string? CropCoverPhotoId { get; set; }
     public string? FullCoverPhotoUrl { get; set; }
     public string? FullCoverPhotoId { get; set; }
+    public bool? VerifyUser { get; set; }
     public LoginType? LoginType { get; set; }
     public GenderType? GenderType { get; set; }
     public RoleType? RoleUserId { get; set; }

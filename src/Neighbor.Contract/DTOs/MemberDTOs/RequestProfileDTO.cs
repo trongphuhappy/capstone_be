@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Neighbor.Contract.Enumarations.Product;
 
 namespace Neighbor.Contract.DTOs.MemberDTOs;
 
@@ -36,4 +37,10 @@ public static class RequestProfileDTO
         public IFormFile BackImageCitizen { get; set; }
     }
 
+    public class RequestUdpateInfoLessor
+    {
+        public string? WareHouseAddress { get; set; }
+        public string? ShopName { get; set; }
+        public LocationType? LocationType { get; set; }
+    }
 }

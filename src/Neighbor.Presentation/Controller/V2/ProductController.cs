@@ -7,6 +7,7 @@ using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.DTOs.ProductDTOs;
 using Neighbor.Contract.Services.Products;
 using Neighbor.Presentation.Abstractions;
+using System.Security.Claims;
 using static Neighbor.Contract.Services.Products.Filter;
 
 namespace Neighbor.Presentation.Controller.V2;
@@ -17,14 +18,13 @@ public class ProductController : ApiController
     public ProductController(ISender sender) : base(sender)
     { }
 
-    //[Authorize]
+    [Authorize]
     [HttpPost("create_product", Name = "CreateProduct")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
     public async Task<IActionResult> CreateProduct([FromForm] ProductDTO.ProductRequestDTO productRequestDTO)
     {
-        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("F1D75DCA-1050-4F2F-8F53-90E790B5C11A");
+        var userId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Command.CreateProductCommand(productRequestDTO.Name, productRequestDTO.Description, productRequestDTO.Value, productRequestDTO.Price, productRequestDTO.MaximumRentDays, productRequestDTO.Policies, productRequestDTO.CategoryId, userId, productRequestDTO.ProductImages, new InsuranceDTO.InsuranceRequestDTO()
         {
             Name = productRequestDTO.InsuranceName,

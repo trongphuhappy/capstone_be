@@ -2,6 +2,7 @@
 using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.DTOs.MemberDTOs;
+using Neighbor.Contract.Enumarations.Product;
 
 namespace Neighbor.Contract.Services.Members;
 
@@ -13,4 +14,6 @@ public static class Command
     public record UpdateEmailCommand(Guid UserId, string Email) : ICommand;
     public record VerifyUpdateEmailCommand(Guid UserId) : ICommand;
     public record UpdateCitizenCommand(Guid UserId, string CitizenId, IFormFile FrontCitzenImage, IFormFile BackCitizenImage) : ICommand;
+    public record UpdateInfoLessorCommand(Guid UserId, string? WareHouseAddress, string? ShopName, LocationType? LocationType) : ICommand;
+
 }

@@ -34,10 +34,10 @@ public static class SeedData
                 new Account(Guid.NewGuid(), "Hien", "Student", "hiennmse170279@fpt.edu.vn", "0911087833", "123456", null, null, null, null, LoginType.Local, GenderType.Male, RoleType.Member, false)
             );
         }
-        if (!context.Lessor.Any())
+        if (!context.Lessors.Any())
         {
-            context.Lessor.AddRange(
-                new Lessor("Binh Thanh", null, "Binh Thanh Furniture and Vehicle Rented", null, null, null, Contract.Enumarations.Product.LocationType.HCM, userId)
+            context.Lessors.AddRange(
+                new Lessor("Binh Thanh", null, "Binh Thanh Furniture and Vehicle Rented", Contract.Enumarations.Product.LocationType.HCM, userId)
             );
         }
         if (!context.Categories.Any())

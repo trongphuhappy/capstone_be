@@ -17,7 +17,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<Feedback> Feedbacks { get; set; }
     public DbSet<Images> Images { get; set; }
-    public DbSet<Lessor> Lessor { get; set; }
+    public DbSet<Lessor> Lessors { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductSurcharge> ProductSurcharges { get; set; }
     public DbSet<Surcharge> Surcharges { get; set; }

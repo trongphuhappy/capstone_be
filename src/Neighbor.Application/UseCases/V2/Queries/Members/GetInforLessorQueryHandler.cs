@@ -9,27 +9,32 @@ using static Neighbor.Domain.Exceptions.AuthenticationException;
 
 namespace Neighbor.Application.UseCases.V2.Queries.Members;
 
-public sealed class GetProfileQueryHandler : IQueryHandler<Query.GetProfileQuery, Success<ProfileDTO>>
+public sealed class GetInforLessorQueryHandler : IQueryHandler<Query.GetInforLessorQuery, Success<LessorDTO>>
 {
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IMapper _mapper;
 
-    public GetProfileQueryHandler
+    public GetInforLessorQueryHandler
         (IDPUnitOfWork dpUnitOfWork,
         IMapper mapper)
     {
         _dpUnitOfWork = dpUnitOfWork;
         _mapper = mapper;
     }
-
-    public async Task<Result<Success<ProfileDTO>>> Handle(Query.GetProfileQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Success<LessorDTO>>> Handle(Query.GetInforLessorQuery request, CancellationToken cancellationToken)
     {
         var user = await _dpUnitOfWork.AccountRepositories.GetByIdAsync(request.UserId);
+        // Check user have banned
         if (user.IsDeleted == true) throw new AccountBanned();
-        
-        var result = _mapper.Map<ProfileDTO>(user);
-        if (user.CitizenId != null && user.CitizenId != "") result.VerifyUser = true;
-        return Result.Success(new Success<ProfileDTO>(MessagesList.GetProfileSuccessfully.GetMessage().Code,
+        var lessor = await _dpUnitOfWork.LessorRepositories.GetLessorByUserIdAsync(request.UserId);
+        if (lessor == null)
+        {
+            return Result.Success(new Success<LessorDTO>(MessagesList.GetProfileSuccessfully.GetMessage().Code,
+                MessagesList.GetProfileSuccessfully.GetMessage().Message,
+                null));
+        }
+        var result = _mapper.Map<LessorDTO>(lessor);
+        return Result.Success(new Success<LessorDTO>(MessagesList.GetProfileSuccessfully.GetMessage().Code,
             MessagesList.GetProfileSuccessfully.GetMessage().Message,
             result));
     }

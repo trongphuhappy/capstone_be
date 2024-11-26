@@ -10,28 +10,32 @@ public class Lessor : DomainEntity<Guid>
 
     }
 
-    public Lessor(string wareHouseAddress, string? description, string? shopName, int? responseRate, int? responseTime, int? aggreementRate, LocationType locationType, Guid accountId)
+    public Lessor(string wareHouseAddress, string? description, string? shopName, LocationType locationType, Guid accountId)
     {
         WareHouseAddress = wareHouseAddress;
         Description = description;
         ShopName = shopName;
-        ResponseRate = responseRate;
-        ResponseTime = responseTime;
-        AggreementRate = aggreementRate;
         LocationType = locationType;
         AccountId = accountId;
-        CreatedDate = DateTime.UtcNow;
-        ModifiedDate = DateTime.UtcNow;
     }
-
+    
     public string WareHouseAddress { get; private set; }
     public string? Description { get; private set; }
     public string? ShopName { get; private set; }
-    public int? ResponseRate { get; private set; }
-    public int? ResponseTime { get;private set; }
-    public int? AggreementRate { get; private set; }
     public LocationType LocationType { get; private set; }
     public Guid AccountId { get; private set; }
     public virtual Account Account { get; private set; }
     public virtual List<Product> Products { get; private set; }
+
+    public static Lessor CreateLessor(string wareHouseAddress, string shopeName, LocationType locationType, Guid accountId)
+    {
+        return new Lessor(wareHouseAddress,"", shopeName, locationType, accountId);
+    }
+
+    public void UpdateLessor(string? wareHouseAddress, string? shopeName, LocationType? locationType)
+    {
+        if (wareHouseAddress != null) WareHouseAddress = wareHouseAddress;
+        if (shopeName != null) ShopName = shopeName;
+        if (locationType != null) LocationType = (LocationType)locationType;
+    }
 }

@@ -169,7 +169,15 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("OrderId1")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId1");
 
                     b.ToTable("Feedbacks");
                 });
@@ -288,9 +296,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<string>("ShopName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TimeUnitType")
-                        .HasColumnType("int");
-
                     b.Property<string>("WareHouseAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -300,6 +305,64 @@ namespace Neighbor.Persistence.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("Lessor");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>
+                {
+                    b.Property<long?>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("OrderId"));
+
+                    b.Property<Guid?>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DeliveryAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<double>("OrderValue")
+                        .HasColumnType("float");
+
+                    b.Property<int>("PaymentMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("RentTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReturnTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MethodName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentMethods");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Product", b =>
@@ -440,6 +503,36 @@ namespace Neighbor.Persistence.Migrations
                     b.ToTable("Surcharges");
                 });
 
+            modelBuilder.Entity("Neighbor.Domain.Entities.Wishlist", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Wishlists");
+                });
+
             modelBuilder.Entity("Neighbor.Domain.Entities.Account", b =>
                 {
                     b.HasOne("Neighbor.Domain.Entities.RoleUser", "RoleUser")
@@ -449,6 +542,17 @@ namespace Neighbor.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("RoleUser");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Feedback", b =>
+                {
+                    b.HasOne("Neighbor.Domain.Entities.Order", "Order")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("OrderId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Images", b =>
@@ -494,6 +598,29 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("Neighbor.Domain.Entities.Account", "Account")
+                        .WithMany("Orders")
+                        .HasForeignKey("AccountId");
+
+                    b.HasOne("Neighbor.Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany("Orders")
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Neighbor.Domain.Entities.Product", "Product")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("PaymentMethod");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Neighbor.Domain.Entities.Product", b =>
                 {
                     b.HasOne("Neighbor.Domain.Entities.Category", "Category")
@@ -532,9 +659,28 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Surcharge");
                 });
 
+            modelBuilder.Entity("Neighbor.Domain.Entities.Wishlist", b =>
+                {
+                    b.HasOne("Neighbor.Domain.Entities.Account", "Account")
+                        .WithMany("Wishlists")
+                        .HasForeignKey("AccountId");
+
+                    b.HasOne("Neighbor.Domain.Entities.Product", "Product")
+                        .WithMany("Wishlists")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Neighbor.Domain.Entities.Account", b =>
                 {
                     b.Navigation("Lessor");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Wishlists");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Category", b =>
@@ -557,13 +703,27 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("Feedbacks");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("Neighbor.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Images");
 
                     b.Navigation("Insurances");
 
+                    b.Navigation("Orders");
+
                     b.Navigation("ProductSurcharges");
+
+                    b.Navigation("Wishlists");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.RoleUser", b =>

@@ -14,11 +14,10 @@ public sealed class ConfirmProductCommandHandler : ICommandHandler<Command.Confi
 {
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IPublisher _publisher;
-    private readonly IMediaService _mediaService;
 
     public ConfirmProductCommandHandler(
         IEFUnitOfWork efUnitOfWork,
-        IPublisher publisher, IMediaService mediaService)
+        IPublisher publisher)
     {
         _efUnitOfWork = efUnitOfWork;
         _publisher = publisher;

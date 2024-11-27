@@ -65,6 +65,11 @@ public class Product : DomainEntity<Guid>
         ConfirmStatus = confirmStatus;
     }
 
+    public void UpdateCategory(Category category)
+    {
+        Category = category;
+    }
+
     public void UpdateImagesProduct(List<Images> images)
     {
         Images = images;

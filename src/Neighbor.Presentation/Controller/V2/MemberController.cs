@@ -115,20 +115,6 @@ public class MemberController : ApiController
     }
 
     [Authorize]
-    [HttpPut("update_citizen", Name = "UpdateCitizen")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
-    public async Task<IActionResult> UpdateCitizen([FromForm] RequestProfileDTO.RequestUpdateCitizen request)
-    {
-        var userId = User.FindFirstValue("UserId");
-        var result = await Sender.Send(new Command.UpdateCitizenCommand(Guid.Parse(userId), request.CitizenId, request.FrontImageCitizen, request.BackImageCitizen));
-        if (result.IsFailure)
-            return HandlerFailure(result);
-        
-        return Ok(result);
-    }
-
-    [Authorize]
     [HttpGet("check_lessor_exist", Name = "CheckLessor")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]

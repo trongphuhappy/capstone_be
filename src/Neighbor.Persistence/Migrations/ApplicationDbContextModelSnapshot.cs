@@ -34,21 +34,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CitizenBackImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CitizenBackImageId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CitizenFrontImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CitizenFrontImageId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CitizenId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -269,9 +254,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("AggreementRate")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -287,12 +269,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ResponseRate")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ResponseTime")
-                        .HasColumnType("int");
-
                     b.Property<string>("ShopName")
                         .HasColumnType("nvarchar(max)");
 
@@ -304,7 +280,7 @@ namespace Neighbor.Persistence.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Lessor");
+                    b.ToTable("Lessors");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>

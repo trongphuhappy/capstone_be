@@ -67,6 +67,13 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
             ShopName = product.Lessor.ShopName,
             WareHouseAddress = product.Lessor.WareHouseAddress
         };
+        //Mapping Category of Product
+        var category = new CategoryDTO()
+        {
+            CategoryId = product.Category.Id,
+            CategoryName = product.Category.Name,
+            IsVehicle = product.Category.IsVehicle,
+        };
         //Check if GetDetailsProduct By User then Check if Product has existed in Wishlist or not
         if (request.AccountId != null)
         {
@@ -76,13 +83,13 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
 
             //Check if Product has already added to Wishlist
             bool isProductExistInWishlist = await _dpUnitOfWork.WishlistRepositories.IsProductExistInWishlist(request.AccountId.Value, product.Id);
-            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isProductExistInWishlist, isProductBelongsToUser,  null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
+            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isProductExistInWishlist, isProductBelongsToUser, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
             //Return result
             return Result.Success(new Success<ProductResponse>(MessagesList.ProductGetDetailsSuccess.GetMessage().Code, MessagesList.ProductGetDetailsSuccess.GetMessage().Message, result));
         }
         else
         {
-            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, false, false, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
+            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, false, false, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
             //Return result
             return Result.Success(new Success<ProductResponse>(MessagesList.ProductGetDetailsSuccess.GetMessage().Code, MessagesList.ProductGetDetailsSuccess.GetMessage().Message, result));
         }

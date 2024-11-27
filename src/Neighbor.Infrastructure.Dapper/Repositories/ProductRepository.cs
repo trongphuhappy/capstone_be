@@ -59,18 +59,20 @@ public class ProductRepository : IProductRepository
             await connection.OpenAsync();
 
             // Query the product
-            var products = await connection.QueryAsync<Product, Lessor, Product>(
-                @"SELECT p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId
+            var products = await connection.QueryAsync<Product, Lessor, Category, Product>(
+                @"SELECT p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId, l.Description AS LessorDescription, c.Id, c.Name, c.IsVehicle
               FROM Products p
               JOIN Lessors l ON l.Id = p.LessorId
+              JOIN Categories c ON c.Id = p.CategoryId
               WHERE p.Id = @Id",
-                (p, l) =>
+                (p, l, c) =>
                 {
                     p.UpdateLessorProduct(l);
+                    p.UpdateCategory(c);
                     return p;
                 },
                 new { Id = productId },
-                splitOn: "Id");
+                splitOn: "ProductModifiedDate, LessorDescription");
 
             if (products == null) return null;
             var product = products.ToList()[0];
@@ -151,7 +153,7 @@ public class ProductRepository : IProductRepository
         {
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
             "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
-            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.AccountId", "l.CreatedDate AS LessorCreatedDate", "w.Id", "w.AccountId"
+            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.AccountId", "l.CreatedDate AS LessorCreatedDate", "w.Id", "w.AccountId", "w.ModifiedDate AS WishlistModifiedDate", "c.Id", "c.Name", "c.IsVehicle"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -168,6 +170,7 @@ public class ProductRepository : IProductRepository
             LEFT JOIN Images i ON p.Id = i.ProductId
             LEFT JOIN Wishlists w on p.Id = w.ProductId
             JOIN Lessors l ON l.Id = p.LessorId
+            JOIN Categories c ON c.Id = p.CategoryId
             WHERE 1=1");
 
             // Base query for total count
@@ -177,6 +180,7 @@ public class ProductRepository : IProductRepository
             LEFT JOIN Images i ON p.Id = i.ProductId
             LEFT JOIN Wishlists w on p.Id = w.ProductId
             JOIN Lessors l ON l.Id = p.LessorId
+            JOIN Categories c ON c.Id = p.CategoryId
             WHERE 1=1");
 
             var parameters = new DynamicParameters();
@@ -282,9 +286,9 @@ public class ProductRepository : IProductRepository
             var productDictionary = new Dictionary<Guid, Product>();
 
             // Execute the query
-            var items = await connection.QueryAsync<Product, Images, Lessor, Wishlist, Product>(
+            var items = await connection.QueryAsync<Product, Images, Lessor, Wishlist, Category, Product>(
                 queryBuilder.ToString(),
-                (product, image, lessor, wishlist) =>
+                (product, image, lessor, wishlist, category) =>
                 {
                     if (!productDictionary.TryGetValue(product.Id, out var existingProduct))
                     {
@@ -313,10 +317,11 @@ public class ProductRepository : IProductRepository
                     }
 
                     existingProduct.UpdateLessorProduct(lessor);
+                    existingProduct.UpdateCategory(category);
                     return existingProduct;
                 },
                 parameters,
-                splitOn: "ProductModifiedDate, ImageCreatedDate, LessorCreatedDate"
+                splitOn: "ProductModifiedDate, ImageCreatedDate, LessorCreatedDate, WishlistModifiedDate"
             );
 
             // Return paginated result
@@ -343,7 +348,7 @@ public class ProductRepository : IProductRepository
         {
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
             "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
-            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName"
+            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.Description AS LessorDescription", "c.Id", "c.Name", "c.IsVehicle"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -360,6 +365,7 @@ public class ProductRepository : IProductRepository
             LEFT JOIN Images i ON p.Id = i.ProductId
             JOIN Lessors l ON l.Id = p.LessorId
             JOIN Wishlists w ON p.Id = w.ProductId
+            JOIN Categories c ON c.Id = p.CategoryId
             WHERE 1=1 AND w.AccountId = @AccountId");
 
             // Base query for total count
@@ -369,6 +375,7 @@ public class ProductRepository : IProductRepository
             LEFT JOIN Images i ON p.Id = i.ProductId
             JOIN Lessors l ON l.Id = p.LessorId
             JOIN Wishlists w ON p.Id = w.ProductId
+            JOIN Categories c ON c.Id = p.CategoryId
             WHERE 1=1 AND w.AccountId = @AccountId");
 
             var parameters = new DynamicParameters();
@@ -459,9 +466,9 @@ public class ProductRepository : IProductRepository
             var productDictionary = new Dictionary<Guid, Product>();
 
             // Execute the query
-            var items = await connection.QueryAsync<Product, Images, Lessor, Product>(
+            var items = await connection.QueryAsync<Product, Images, Lessor, Category, Product>(
                 queryBuilder.ToString(),
-                (product, image, lessor) =>
+                (product, image, lessor, category) =>
                 {
                     if (!productDictionary.TryGetValue(product.Id, out var existingProduct))
                     {
@@ -475,10 +482,11 @@ public class ProductRepository : IProductRepository
                         existingProduct.Images.Add(image);
                     }
                     existingProduct.UpdateLessorProduct(lessor);
+                    existingProduct.UpdateCategory(category);
                     return existingProduct;
                 },
                 parameters,
-                splitOn: "ProductModifiedDate, ImageCreatedDate"
+                splitOn: "ProductModifiedDate, ImageCreatedDate, LessorDescription"
             );
 
             // Return paginated result

@@ -83,7 +83,6 @@ public class AccountRepository : IAccountRepository
       ,[LoginType]
       ,[GenderType]
       ,[RoleUserId]
-      ,[CitizenId]
       ,[CreatedDate]
       ,[ModifiedDate]
       ,[IsDeleted]

@@ -167,7 +167,7 @@ public class ProductRepository : IProductRepository
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
             LEFT JOIN Wishlists w on p.Id = w.ProductId
-            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Lessors l ON l.Id = p.LessorId
             WHERE 1=1");
 
             // Base query for total count
@@ -176,7 +176,7 @@ public class ProductRepository : IProductRepository
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
             LEFT JOIN Wishlists w on p.Id = w.ProductId
-            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Lessors l ON l.Id = p.LessorId
             WHERE 1=1");
 
             var parameters = new DynamicParameters();

@@ -28,7 +28,6 @@ public sealed class GetProfileQueryHandler : IQueryHandler<Query.GetProfileQuery
         if (user.IsDeleted == true) throw new AccountBanned();
         
         var result = _mapper.Map<ProfileDTO>(user);
-        if (user.CitizenId != null && user.CitizenId != "") result.VerifyUser = true;
         return Result.Success(new Success<ProfileDTO>(MessagesList.GetProfileSuccessfully.GetMessage().Code,
             MessagesList.GetProfileSuccessfully.GetMessage().Message,
             result));

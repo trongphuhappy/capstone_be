@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Neighbor.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -87,11 +87,6 @@ namespace Neighbor.Persistence.Migrations
                     FullCoverPhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FullCoverPhotoId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CitizenId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CitizenFrontImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CitizenFrontImageId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CitizenBackImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CitizenBackImageId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LoginType = table.Column<int>(type: "int", nullable: false),
                     GenderType = table.Column<int>(type: "int", nullable: false),
                     RoleUserId = table.Column<int>(type: "int", nullable: false),
@@ -111,16 +106,13 @@ namespace Neighbor.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lessor",
+                name: "Lessors",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WareHouseAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShopName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ResponseRate = table.Column<int>(type: "int", nullable: true),
-                    ResponseTime = table.Column<int>(type: "int", nullable: true),
-                    AggreementRate = table.Column<int>(type: "int", nullable: true),
                     LocationType = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -129,9 +121,9 @@ namespace Neighbor.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lessor", x => x.Id);
+                    table.PrimaryKey("PK_Lessors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lessor_Accounts_AccountId",
+                        name: "FK_Lessors_Accounts_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Accounts",
                         principalColumn: "Id",
@@ -169,9 +161,9 @@ namespace Neighbor.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Products_Lessor_LessorId",
+                        name: "FK_Products_Lessors_LessorId",
                         column: x => x.LessorId,
-                        principalTable: "Lessor",
+                        principalTable: "Lessors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -380,8 +372,8 @@ namespace Neighbor.Persistence.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lessor_AccountId",
-                table: "Lessor",
+                name: "IX_Lessors_AccountId",
+                table: "Lessors",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
@@ -464,7 +456,7 @@ namespace Neighbor.Persistence.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Lessor");
+                name: "Lessors");
 
             migrationBuilder.DropTable(
                 name: "Accounts");

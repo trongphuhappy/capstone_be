@@ -22,9 +22,6 @@ public class Account : DomainEntity<Guid>
         string? fullCoverPhotoUrl,
         string? fullCoverPhotoId,
         string? biography,
-        string? citizenId,
-        string? citizenFrontImage,
-        string? citizenBackImage,
         LoginType loginType,
         GenderType genderType,
         RoleType roleUserId,
@@ -44,38 +41,6 @@ public class Account : DomainEntity<Guid>
         FullCoverPhotoUrl = fullAvatarUrl;
         FullCoverPhotoId = fullAvatarId;
         Biography = biography;
-        CitizenId = citizenId;
-        CitizenFrontImage = citizenFrontImage;
-        CitizenBackImage = citizenBackImage;
-        LoginType = loginType;
-        GenderType = genderType;
-        RoleUserId = roleUserId;
-        IsDeleted = isDeleted;
-    }
-    public Account(Guid id, string firstName,
-        string lastName,
-        string email,
-        string phoneNumber,
-        string password,
-        string? cropAvatarUrl,
-        string? cropAvatarId,
-        string? fullAvatarUrl,
-        string? fullAvatarId,
-        LoginType loginType,
-        GenderType genderType,
-        RoleType roleUserId,
-        bool isDeleted)
-    {
-        Id = id;
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        PhoneNumber = phoneNumber;
-        Password = password;
-        CropAvatarUrl = cropAvatarUrl;
-        CropAvatarId = cropAvatarId;
-        FullAvatarUrl = fullAvatarUrl;
-        FullAvatarId = fullAvatarId;
         LoginType = loginType;
         GenderType = genderType;
         RoleUserId = roleUserId;
@@ -96,11 +61,6 @@ public class Account : DomainEntity<Guid>
     public string? FullCoverPhotoUrl { get; private set; }
     public string? FullCoverPhotoId { get; private set; }
     public string? Biography { get; private set; }
-    public string? CitizenId { get; private set; }
-    public string? CitizenFrontImage { get; private set; }
-    public string? CitizenFrontImageId { get; private set; }
-    public string? CitizenBackImage { get; private set; }
-    public string? CitizenBackImageId { get;private set; }
     public LoginType LoginType { get; private set; }
     public GenderType GenderType { get; private set; }
     public RoleType RoleUserId { get; private set; }
@@ -108,11 +68,16 @@ public class Account : DomainEntity<Guid>
     public virtual List<Lessor>? Lessor { get;private set; }
     public virtual List<Wishlist>? Wishlists { get; private set; }
     public virtual List<Order>? Orders { get; private set; }
-
+    
     public static Account CreateMemberAccountLocal(string firstName, string lastName, string email, string phoneNumber, string password, string avatarUrl, GenderType gender)
     {
-        return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", "", "", "", "", "", "", "", "", LoginType.Local, gender, RoleType.Member, false);
+        return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", "", "", "", "", "", LoginType.Local, gender, RoleType.Member, false);
     }
+    public static Account CreateAccountAdminLocal(string email, string password, string avatarUrl)
+    {
+        return new Account("Admin", "", email, "", password, avatarUrl, "", avatarUrl, "", "", "", "", "", "", LoginType.Local, GenderType.Male, RoleType.Admin, false);
+    }
+
     public void UpdateIsDeletedForAccount(bool isDeleted)
     {
         IsDeleted = isDeleted;
@@ -141,14 +106,5 @@ public class Account : DomainEntity<Guid>
         if (biography != null) Biography = biography;
         if (phoneNumber != null) PhoneNumber = phoneNumber;
         if (email != null) Email = email;
-    }
-
-    public void UpdateCitizen(string citizenId, string frontCitizenImage, string frontCitizenImageId, string backCitizenImage, string backCitizenImageId)
-    {
-        CitizenId = citizenId;
-        CitizenFrontImage = frontCitizenImage;
-        CitizenFrontImageId = frontCitizenImageId;
-        CitizenBackImage = backCitizenImage;
-        CitizenBackImageId = backCitizenImageId;
     }
 }

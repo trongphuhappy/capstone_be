@@ -12,44 +12,37 @@ namespace Neighbor.Application.UseCases.V2.Commands.Products;
 public sealed class AddToWishlistCommandHandler : ICommandHandler<Command.AddToWishlistCommand>
 {
     private readonly IEFUnitOfWork _efUnitOfWork;
-    private readonly IMediaService _mediaService;
 
     public AddToWishlistCommandHandler(
-        IEFUnitOfWork efUnitOfWork, IMediaService mediaService)
+        IEFUnitOfWork efUnitOfWork)
     {
         _efUnitOfWork = efUnitOfWork;
-        _mediaService = mediaService;
     }
 
     public async Task<Result> Handle(Command.AddToWishlistCommand request, CancellationToken cancellationToken)
     {
         //Check if Account exist
         var accountFound = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.AccountId);
-        if(accountFound == null)
+        if (accountFound == null)
         {
             throw new AccountException.AccountNotFoundException();
         }
         //Check if Product exist
         var productFound = await _efUnitOfWork.ProductRepository.FindByIdAsync(request.ProductId);
-        if(productFound == null)
+        if (productFound == null)
         {
             throw new ProductException.ProductNotFoundException();
         }
         //Check if User is a Lessor then Check if product belongs to User
-        var lessorFound = await _efUnitOfWork.LessorRepository.FindSingleAsync(lessor => lessor.AccountId == accountFound.Id);
-        if(lessorFound != null)
+        if (productFound.Lessor.AccountId == request.AccountId)
         {
-            var productBelongsToUser = await _efUnitOfWork.ProductRepository.FindSingleAsync(product => product.Id == request.ProductId && product.LessorId == lessorFound.Id);
-            if(productBelongsToUser != null)
-            {
-                throw new ProductException.CanNotAddToWishlistBecauseProductBelongsToUserException();
-            }
+            throw new WishlistException.ProductBelongsToUserException();
         }
         //Check if Product is on Account's Wishlist or not
         var isProductInWishlist = await _efUnitOfWork.WishlistRepository.FindSingleAsync(x => x.ProductId == request.ProductId && x.AccountId == request.AccountId);
 
         //Add to Wishlist
-        if(isProductInWishlist == null)
+        if (isProductInWishlist == null)
         {
             var wishlist = Wishlist.AddProductToWishlist(request.AccountId, request.ProductId);
             _efUnitOfWork.WishlistRepository.Add(wishlist);

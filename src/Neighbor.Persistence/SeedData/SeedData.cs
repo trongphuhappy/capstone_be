@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Enumarations.Authentication;
+using Neighbor.Contract.Enumarations.PaymentMethod;
 using Neighbor.Domain.Entities;
 
 namespace Neighbor.Persistence.SeedData;
@@ -29,6 +30,22 @@ public static class SeedData
         {
             context.Accounts.AddRange(
                 Account.CreateAccountAdminLocal(configuration["AccountAdmin:Email"], configuration["AccountAdmin:Password"], configuration["UserConfiguration:DefaultMaleAvatar"])
+            );
+        }
+
+        if (!context.PaymentMethods.Any())
+        {
+            context.PaymentMethods.AddRange(
+                new PaymentMethod
+                {
+                    Id = PaymentMethodType.Cash,
+                    MethodName = "Cash",
+                },
+                new PaymentMethod
+                {
+                    Id = PaymentMethodType.Banking,
+                    MethodName = "Banking"
+                }
             );
         }
         if (!context.Categories.Any())

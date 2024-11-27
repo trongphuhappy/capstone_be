@@ -51,6 +51,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<IImagesRepository, ImagesRepository>()
             .AddTransient<ICategoryRepository, CategoryRepository>()
             .AddTransient<ILessorRepository, LessorRepository>()
-            .AddTransient<IWishlistRepository, WishlistRepository>();
+            .AddTransient<IWishlistRepository, WishlistRepository>()
+            .AddTransient<IOrderRepository, OrderRepository>();
     }
 }

@@ -60,9 +60,9 @@ public class ProductRepository : IProductRepository
 
             // Query the product
             var products = await connection.QueryAsync<Product, Lessor, Product>(
-                @"SELECT p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName
+                @"SELECT p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId
               FROM Products p
-              JOIN Lessor l ON l.Id = p.LessorId
+              JOIN Lessors l ON l.Id = p.LessorId
               WHERE p.Id = @Id",
                 (p, l) =>
                 {
@@ -151,7 +151,7 @@ public class ProductRepository : IProductRepository
         {
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
             "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
-            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.CreatedDate AS LessorCreatedDate", "w.Id", "w.AccountId"
+            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.AccountId", "l.CreatedDate AS LessorCreatedDate", "w.Id", "w.AccountId"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -358,7 +358,7 @@ public class ProductRepository : IProductRepository
             SELECT {selectedColumnsString} 
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
-            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Lessors l ON l.Id = p.LessorId
             JOIN Wishlists w ON p.Id = w.ProductId
             WHERE 1=1 AND w.AccountId = @AccountId");
 
@@ -367,7 +367,7 @@ public class ProductRepository : IProductRepository
             SELECT COUNT(DISTINCT p.Id) 
             FROM Products p
             LEFT JOIN Images i ON p.Id = i.ProductId
-            JOIN Lessor l ON l.Id = p.LessorId
+            JOIN Lessors l ON l.Id = p.LessorId
             JOIN Wishlists w ON p.Id = w.ProductId
             WHERE 1=1 AND w.AccountId = @AccountId");
 

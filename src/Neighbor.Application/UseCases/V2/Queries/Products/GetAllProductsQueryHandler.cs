@@ -29,7 +29,12 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
         //Mapping Product to ProductResponse
         listProducts.Items.ForEach(product =>
         {
+            //Check if Product added to Wishlist or not
             bool isAddedToWishlist = product.Wishlists.Count != 0 ? true : false;
+            //Check if Product belongs to User or not
+            bool isProductBelongsToUser = request.FilterParams.AccountUserId != null
+                ? (product.Lessor.AccountId == request.FilterParams.AccountUserId
+                ? true : false) : false;
             //Mapping Lessor of Product
             var lessor = new LessorDTO()
             {
@@ -37,7 +42,7 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
                 ShopName = product.Lessor.ShopName,
                 WareHouseAddress = product.Lessor.WareHouseAddress
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isAddedToWishlist, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isAddedToWishlist, isProductBelongsToUser, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
         });
 
         //Initial result

@@ -130,4 +130,10 @@ public enum MessagesList
 
     [Message("You have already create an rental order for this product!", "order_noti_exception_02")]
     OrderProductAlreadyOrderedByUserException,
+
+    [Message("This Product is rented by another user!", "order_noti_exception_03")]
+    OrderProductOrderedByAnotherUserException,
+
+    [Message("This Product is not approved by Admin!", "order_noti_exception_04")]
+    OrderProductNotApprovedByAdminException,
 }

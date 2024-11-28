@@ -11,6 +11,7 @@ namespace Neighbor.Domain.Entities
 
         public Order(Guid accountId, Guid productId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double orderValue, OrderStatusType orderStatus, long orderId, bool IsConflict,  PaymentMethodType paymentMethodId)
         {
+            Id = Guid.NewGuid();
             AccountId = accountId;
             ProductId = productId;
             RentTime = rentTime;

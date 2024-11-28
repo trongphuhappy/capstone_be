@@ -46,6 +46,14 @@ public sealed class CreateOrderBankingCommandHandler : ICommandHandler<Command.C
         {
             throw new OrderException.ProductAlreadyOrderedByUserException();
         }
+        if(productFound.StatusType != StatusType.Available)
+        {
+            throw new OrderException.ProductOrderedByAnotherUserException();
+        }
+        if(productFound.ConfirmStatus != ConfirmStatus.Approved)
+        {
+            throw new OrderException.ProductNotApprovedByAdminException();
+        }
 
         //SuccessOrderBankingCommandHandler
         long orderId = 3;
@@ -60,6 +68,14 @@ public sealed class CreateOrderBankingCommandHandler : ICommandHandler<Command.C
         productSuccessFound.UpdateStatusType(StatusType.Not_Available);
         _efUnitOfWork.ProductRepository.Update(productSuccessFound);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
+        //Send success order email for Lessor
+        await Task.WhenAll(
+           _publisher.Publish(new DomainEvent.NotiLessorOrderSuccess(orderCreated.Id, productFound.Lessor.Account.Email, productFound.Name, productFound.Lessor.WareHouseAddress, request.RentTime, accountFound.Email), cancellationToken)
+       );
+        //Send success order email for User
+        await Task.WhenAll(
+           _publisher.Publish(new DomainEvent.NotiUserOrderSuccess(orderCreated.Id, accountFound.Email, productFound.Name, productFound.Lessor.WareHouseAddress, request.RentTime), cancellationToken)
+       );
         return Result.Success();
     }
 }

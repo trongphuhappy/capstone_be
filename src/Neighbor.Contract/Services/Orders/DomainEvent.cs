@@ -4,6 +4,7 @@ namespace Neighbor.Contract.Services.Orders;
 
 public static class DomainEvent
 {
-    public record ProductHasBeenApproved(Guid Id, string Email, string ProductName) : IDomainEvent;
-    public record ProductHasBeenRejected(Guid Id, string Email, string ProductName, string RejectReason) : IDomainEvent;
+    public record NotiLessorOrderSuccess(Guid Id, string Email, string ProductName, string DeliveryAddress, DateTime MeetingDate, string UserEmail) : IDomainEvent;
+    public record NotiUserOrderSuccess(Guid Id, string Email, string ProductName, string DeliveryAddress, DateTime MeetingDate) : IDomainEvent;
+
 }

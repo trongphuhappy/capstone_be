@@ -42,7 +42,14 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
                 ShopName = product.Lessor.ShopName,
                 WareHouseAddress = product.Lessor.WareHouseAddress
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isAddedToWishlist, isProductBelongsToUser, null, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+            //Mapping Category of Product
+            var category = new CategoryDTO()
+            {
+                CategoryId = product.Category.Id,
+                CategoryName = product.Category.Name,
+                IsVehicle = product.Category.IsVehicle,
+            };
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isAddedToWishlist, isProductBelongsToUser, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
         });
 
         //Initial result

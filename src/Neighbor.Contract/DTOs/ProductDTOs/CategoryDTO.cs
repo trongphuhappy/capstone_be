@@ -1,6 +1,7 @@
 ﻿namespace Neighbor.Contract.DTOs.ProductDTOs;
 public class CategoryDTO
 {
-    public Guid CategoryId { get; set; }
+    public int CategoryId { get; set; }
     public string CategoryName { get; set; }
+    public bool IsVehicle { get; set; }
 }

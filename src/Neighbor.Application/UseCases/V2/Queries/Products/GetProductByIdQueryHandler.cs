@@ -32,7 +32,7 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
         }
         //Mapping Product to Result
         //Mapping Insurance of Product
-        var insurance = product.Insurances != null && product.Insurances[0].Name != null ? new InsuranceResponseDTO()
+        var insurance = product.Insurances != null && product.Insurances.Count != 0 && product.Insurances[0].Name != null ? new InsuranceResponseDTO()
         {
             Name = product.Insurances[0].Name,
             IssueDate = product.Insurances[0].IssueDate,
@@ -41,7 +41,7 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
         } : null;
         //Mapping Surcharges of Product
         List<SurchargeResponseDTO> surcharges = null;
-        if (product.ProductSurcharges != null && product.ProductSurcharges[0].Surcharge.Name != null)
+        if (product.ProductSurcharges != null && product.ProductSurcharges.Count != 0 && product.ProductSurcharges[0].Surcharge.Name != null)
         {
             surcharges = new List<SurchargeResponseDTO>();
             product.ProductSurcharges.ForEach(productSurcharge =>

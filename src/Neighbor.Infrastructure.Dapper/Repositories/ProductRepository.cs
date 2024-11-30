@@ -273,6 +273,12 @@ public class ProductRepository : IProductRepository
                 totalCountQuery.Append(" AND p.CategoryId = @CategoryId");
                 parameters.Add("CategoryId", filterParams.CategoryId);
             }
+            if(filterParams?.IsVehicle.HasValue == true)
+            {
+                queryBuilder.Append(" AND c.IsVehicle = @IsVehicle");
+                totalCountQuery.Append(" AND c.IsVehicle = @IsVehicle");
+                parameters.Add("IsVehicle", filterParams.IsVehicle);
+            }
 
             // Get total count and pages
             var totalCount = await connection.ExecuteScalarAsync<int>(totalCountQuery.ToString(), parameters);

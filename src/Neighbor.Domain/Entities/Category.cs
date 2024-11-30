@@ -8,19 +8,21 @@ public class Category : DomainEntity<int>
     {
 
     }
-    public Category(string name, bool isVehicle, bool isDeleted)
+    public Category(string name, string? image, bool isVehicle, bool isDeleted)
     {
-        this.Name = name;
-        this.IsVehicle = isVehicle;
-        this.IsDeleted = isDeleted;
+        Name = name;
+        Image = image;
+        IsVehicle = isVehicle;
+        IsDeleted = isDeleted;
     }
     public int Id { get; private set; }
     public string Name { get; private set; }
+    public string? Image { get; private set; }
     public bool IsVehicle { get; private set; }
     public virtual ICollection<Product> Products { get; set; }
-
-    public static Category CreateCategory(string name, bool isVehicle, bool isDeleted)
+    
+    public static Category CreateCategory(string name, string? image, bool isVehicle, bool isDeleted)
     {
-        return new Category(name, isVehicle, isDeleted);
+        return new Category(name, image, isVehicle, isDeleted);
     }
 }

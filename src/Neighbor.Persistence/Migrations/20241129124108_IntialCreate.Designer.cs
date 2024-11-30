@@ -12,7 +12,7 @@ using Neighbor.Persistence;
 namespace Neighbor.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127084754_IntialCreate")]
+    [Migration("20241129124108_IntialCreate")]
     partial class IntialCreate
     {
         /// <inheritdoc />
@@ -117,6 +117,9 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -160,12 +163,9 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("OrderId1")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId1");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Feedbacks");
                 });
@@ -288,18 +288,34 @@ namespace Neighbor.Persistence.Migrations
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>
                 {
-                    b.Property<long?>("OrderId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("OrderId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("DeliveryAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsConflict")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LessorReaonReject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("OrderId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -319,7 +335,10 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<DateTime>("ReturnTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("OrderId");
+                    b.Property<string>("UserReasonReject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
@@ -527,7 +546,7 @@ namespace Neighbor.Persistence.Migrations
                 {
                     b.HasOne("Neighbor.Domain.Entities.Order", "Order")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("OrderId1")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

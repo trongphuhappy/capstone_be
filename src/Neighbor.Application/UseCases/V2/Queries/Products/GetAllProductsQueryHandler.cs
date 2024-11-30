@@ -5,7 +5,6 @@ using Neighbor.Contract.DTOs.ProductDTOs;
 using Neighbor.Contract.Enumarations.MessagesList;
 using Neighbor.Contract.Services.Products;
 using Neighbor.Domain.Abstraction.Dappers;
-using Neighbor.Domain.Entities;
 using static Neighbor.Contract.Services.Products.Response;
 
 namespace Neighbor.Application.UseCases.V1.Queries.Products;
@@ -29,12 +28,17 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
         //Mapping Product to ProductResponse
         listProducts.Items.ForEach(product =>
         {
+            bool isProductBelongsToUser = false;
             //Check if Product added to Wishlist or not
             bool isAddedToWishlist = product.Wishlists.Count != 0 ? true : false;
-            //Check if Product belongs to User or not
-            bool isProductBelongsToUser = request.FilterParams.AccountUserId != null
-                ? (product.Lessor.AccountId == request.FilterParams.AccountUserId
-                ? true : false) : false;
+            // Check if user find product that do not lessor
+            if (request.FilterParams.AccountUserId != null)
+            {
+                isProductBelongsToUser = product.Lessor.AccountId == request.FilterParams.AccountUserId
+                    ? true : false;
+            }
+            // Check if user is lessor find product
+            if (request.FilterParams.AccountLessorId != null) isProductBelongsToUser = true;
             //Mapping Lessor of Product
             var lessor = new LessorDTO()
             {

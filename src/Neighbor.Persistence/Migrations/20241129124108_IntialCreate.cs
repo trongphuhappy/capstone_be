@@ -18,6 +18,7 @@ namespace Neighbor.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVehicle = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -196,20 +197,26 @@ namespace Neighbor.Persistence.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    OrderId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReturnTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeliveryAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderValue = table.Column<double>(type: "float", nullable: false),
                     OrderStatus = table.Column<int>(type: "int", nullable: false),
+                    UserReasonReject = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LessorReaonReject = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderId = table.Column<long>(type: "bigint", nullable: true),
+                    IsConflict = table.Column<bool>(type: "bit", nullable: false),
                     PaymentMethodId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Orders_Accounts_AccountId",
                         column: x => x.AccountId,
@@ -291,7 +298,6 @@ namespace Neighbor.Persistence.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Like = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId1 = table.Column<long>(type: "bigint", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
@@ -300,10 +306,10 @@ namespace Neighbor.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Feedbacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Feedbacks_Orders_OrderId1",
-                        column: x => x.OrderId1,
+                        name: "FK_Feedbacks_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -347,9 +353,9 @@ namespace Neighbor.Persistence.Migrations
                 column: "RoleUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_OrderId1",
+                name: "IX_Feedbacks_OrderId",
                 table: "Feedbacks",
-                column: "OrderId1");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_FeedBackId",

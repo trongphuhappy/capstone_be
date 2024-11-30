@@ -41,7 +41,7 @@ public class CategoryRepository : ICategoryRepository
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             // Valid columns for selecting
-            var validColumns = new HashSet<string> { "Id", "Name", "IsVehicle" };
+            var validColumns = new HashSet<string> { "Id", "Name", "IsVehicle", "Image" };
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
 
             // If no selected columns, select all

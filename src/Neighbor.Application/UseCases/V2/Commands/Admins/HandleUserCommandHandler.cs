@@ -16,13 +16,14 @@ public sealed class HandleUserCommandHandler : ICommandHandler<Command.HandleUse
     private readonly IEFUnitOfWork _efUnitOfWork;
     private readonly IPublisher _publisher;
     private readonly IMediaService _mediaService;
-
+    
     public HandleUserCommandHandler(
         IEFUnitOfWork efUnitOfWork,
         IPublisher publisher, IMediaService mediaService)
     {
         _efUnitOfWork = efUnitOfWork;
         _publisher = publisher;
+        _mediaService = mediaService;
     }
 
     public async Task<Result> Handle(Command.HandleUserCommand request, CancellationToken cancellationToken)

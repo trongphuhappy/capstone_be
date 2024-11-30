@@ -137,9 +137,6 @@ public class ProductRepository : IProductRepository
         }
     }
 
-
-
-
     public async Task<PagedResult<Product>> GetPagedAsync(
     int pageIndex,
     int pageSize,

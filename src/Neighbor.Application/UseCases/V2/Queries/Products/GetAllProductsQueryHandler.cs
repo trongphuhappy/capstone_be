@@ -31,7 +31,7 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
             bool isProductBelongsToUser = false;
             //Check if Product added to Wishlist or not
             bool isAddedToWishlist = product.Wishlists.Count != 0 ? true : false;
-            // Check if user find product that do not lessor
+            // Check if Product is belongs to User or not
             if (request.FilterParams.AccountUserId != null)
             {
                 isProductBelongsToUser = product.Lessor.AccountId == request.FilterParams.AccountUserId
@@ -53,7 +53,7 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
                 CategoryName = product.Category.Name,
                 IsVehicle = product.Category.IsVehicle,
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, isAddedToWishlist, isProductBelongsToUser, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, null, isAddedToWishlist, isProductBelongsToUser, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
         });
 
         //Initial result

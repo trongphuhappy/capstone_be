@@ -270,7 +270,7 @@ public class ProductRepository : IProductRepository
                 totalCountQuery.Append(" AND p.CategoryId = @CategoryId");
                 parameters.Add("CategoryId", filterParams.CategoryId);
             }
-            if(filterParams?.IsVehicle.HasValue == true)
+            if (filterParams?.IsVehicle.HasValue == true)
             {
                 queryBuilder.Append(" AND c.IsVehicle = @IsVehicle");
                 totalCountQuery.Append(" AND c.IsVehicle = @IsVehicle");
@@ -283,7 +283,23 @@ public class ProductRepository : IProductRepository
 
             // Pagination logic
             var offset = (pageIndex - 1) * pageSize;
-            queryBuilder.Append($" ORDER BY p.Id OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+            //Check if IsSortCreatedDayASC exist then Sort by CreatedDate
+            if (filterParams?.IsSortCreatedDateASC.HasValue == true)
+            {
+                //Check if IsSortCreatedDayASC == true then Sort Created Date ASC
+                if (filterParams?.IsSortCreatedDateASC == true)
+                {
+                    queryBuilder.Append($" ORDER BY p.CreatedDate OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+                }
+                else
+                {
+                    queryBuilder.Append($" ORDER BY p.CreatedDate DESC OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+                }
+            }
+            else
+            {
+                queryBuilder.Append($" ORDER BY p.Id OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+            }
 
             // Dictionary for mapping products and their images
             var productDictionary = new Dictionary<Guid, Product>();
@@ -310,6 +326,7 @@ public class ProductRepository : IProductRepository
                     // Add wishlist if not already added
                     if (wishlist != null && !existingProduct.Wishlists.Any(w => w.Id == wishlist.Id))
                     {
+                        //Check if Account is User and Account has already added this Product to Wishlist or not
                         if (filterParams.AccountUserId != null)
                         {
                             if (wishlist.AccountId == filterParams.AccountUserId)
@@ -351,7 +368,7 @@ public class ProductRepository : IProductRepository
         {
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
             "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
-            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.Description AS LessorDescription", "c.Id", "c.Name", "c.IsVehicle"
+            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.Description AS LessorDescription", "w.Id", "w.CreatedDate", "w.ModifiedDate AS WishlistModifiedDate", "c.Id", "c.Name", "c.IsVehicle"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -463,20 +480,36 @@ public class ProductRepository : IProductRepository
 
             // Pagination logic
             var offset = (pageIndex - 1) * pageSize;
-            queryBuilder.Append($" ORDER BY p.Id OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-
+            //Check if IsSortCreatedDayASC exist then Sort by CreatedDate
+            if (filterParams?.IsSortAddToWishlistDateASC.HasValue == true)
+            {
+                //Check if IsSortCreatedDayASC == true then Sort Created Date ASC
+                if (filterParams?.IsSortAddToWishlistDateASC == true)
+                {
+                    queryBuilder.Append($" ORDER BY w.CreatedDate OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+                }
+                else
+                {
+                    queryBuilder.Append($" ORDER BY w.CreatedDate DESC OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+                }
+            }
+            else
+            {
+                queryBuilder.Append($" ORDER BY p.Id OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+            }
             // Dictionary for mapping products and their images
             var productDictionary = new Dictionary<Guid, Product>();
 
             // Execute the query
-            var items = await connection.QueryAsync<Product, Images, Lessor, Category, Product>(
+            var items = await connection.QueryAsync<Product, Images, Lessor, Wishlist, Category, Product>(
                 queryBuilder.ToString(),
-                (product, image, lessor, category) =>
+                (product, image, lessor, wishlist, category) =>
                 {
                     if (!productDictionary.TryGetValue(product.Id, out var existingProduct))
                     {
                         existingProduct = product;
                         existingProduct.UpdateImagesProduct(new List<Images>());
+                        existingProduct.UpdateWishlistsProduct(new List<Wishlist>());
                         productDictionary.Add(product.Id, existingProduct);
                     }
 
@@ -484,12 +517,17 @@ public class ProductRepository : IProductRepository
                     {
                         existingProduct.Images.Add(image);
                     }
+                    // Add wishlist if not already added
+                    if (wishlist != null && !existingProduct.Wishlists.Any(w => w.Id == wishlist.Id))
+                    {
+                        existingProduct.Wishlists.Add(wishlist);
+                    }
                     existingProduct.UpdateLessorProduct(lessor);
                     existingProduct.UpdateCategory(category);
                     return existingProduct;
                 },
                 parameters,
-                splitOn: "ProductModifiedDate, ImageCreatedDate, LessorDescription"
+                splitOn: "ProductModifiedDate, ImageCreatedDate, LessorDescription, WishlistModifiedDate"
             );
 
             // Return paginated result

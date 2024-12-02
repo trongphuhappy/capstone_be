@@ -29,7 +29,8 @@ public sealed class SendEmailWhenUserChangedEventHandler
             "Register Neighbor",
             "EmailRegister.html", new Dictionary<string, string> {
             { "ToEmail", notification.Email},
-            {"Link", $"{_clientSetting.Url}{_clientSetting.VerifyEmail}/{notification.Email}"}
+            {"LinkWeb", $"{_clientSetting.Url}"},
+            {"LinkVerifyEmail", $"{_clientSetting.Url}{_clientSetting.VerifyEmail}/{notification.Email}"}
         });
     }
 

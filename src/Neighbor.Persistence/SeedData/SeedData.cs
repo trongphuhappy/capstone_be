@@ -29,7 +29,7 @@ public static class SeedData
         if (!context.Accounts.Any())
         {
             context.Accounts.AddRange(
-                Account.CreateAccountAdminLocal(configuration["AccountAdmin:Email"], configuration["AccountAdmin:Password"], configuration["UserConfiguration:DefaultMaleAvatar"])
+                Account.CreateAccountAdminLocal(configuration["AccountAdmin:Email"], passwordHashService.HashPassword(configuration["AccountAdmin:Password"]), configuration["UserConfiguration:DefaultMaleAvatar"])
             );
         }
 

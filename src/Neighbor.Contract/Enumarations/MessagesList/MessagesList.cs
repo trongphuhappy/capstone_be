@@ -125,6 +125,12 @@ public enum MessagesList
     [Message("Update citizen successfully", "update_citizen_successfully")]
     UpdateCitizenSuccessfully,
 
+    [Message("All Orders: ", "order_noti_success_01")]
+    OrderGetAllSuccessfully,
+
+    [Message("Details Order: ", "order_noti_success_02")]
+    OrderGetDetailsSuccessfully,
+
     [Message("You cannot rent a product that belongs to you!", "order_noti_exception_01")]
     OrderProductBelongsToUserException,
 
@@ -136,4 +142,10 @@ public enum MessagesList
 
     [Message("This Product is not approved by Admin!", "order_noti_exception_04")]
     OrderProductNotApprovedByAdminException,
+
+    [Message("Can not find any Orders", "order_noti_exception_05")]
+    OrderNotFoundAnyException,
+
+    [Message("Can not find this Order", "order_noti_exception_06")]
+    OrderNotFoundException,
 }

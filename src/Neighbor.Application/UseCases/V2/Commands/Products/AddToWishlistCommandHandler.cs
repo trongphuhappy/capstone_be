@@ -40,7 +40,7 @@ public sealed class AddToWishlistCommandHandler : ICommandHandler<Command.AddToW
         }
         //Check if Product is on Account's Wishlist or not
         var isProductInWishlist = await _efUnitOfWork.WishlistRepository.FindSingleAsync(x => x.ProductId == request.ProductId && x.AccountId == request.AccountId);
-
+        
         //Add to Wishlist
         if (isProductInWishlist == null)
         {
@@ -57,7 +57,5 @@ public sealed class AddToWishlistCommandHandler : ICommandHandler<Command.AddToW
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Success(new Success(MessagesList.ProductRemoveFromWishlistlistSuccess.GetMessage().Code, MessagesList.ProductRemoveFromWishlistlistSuccess.GetMessage().Message));
         }
-
-
     }
 }

@@ -7,7 +7,7 @@ using Neighbor.Contract.Services.Products;
 using Neighbor.Domain.Abstraction.Dappers;
 using static Neighbor.Contract.Services.Products.Response;
 
-namespace Neighbor.Application.UseCases.V1.Queries.Products;
+namespace Neighbor.Application.UseCases.V2.Queries.Products;
 
 public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProductsQuery, Success<PagedResult<ProductResponse>>>
 {
@@ -53,7 +53,7 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
                 CategoryName = product.Category.Name,
                 IsVehicle = product.Category.IsVehicle,
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, null, isAddedToWishlist, isProductBelongsToUser, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, null, isAddedToWishlist, isProductBelongsToUser, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor, product.RejectReason));
         });
 
         //Initial result

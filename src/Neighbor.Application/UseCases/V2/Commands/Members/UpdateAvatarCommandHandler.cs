@@ -1,7 +1,6 @@
 ﻿using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Abstractions.Shared;
-using Neighbor.Contract.DTOs.MediaDTOs;
 using Neighbor.Contract.DTOs.MemberDTOs;
 using Neighbor.Contract.Services.Members;
 using Neighbor.Domain.Abstraction.EntitiyFramework;

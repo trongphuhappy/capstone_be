@@ -7,7 +7,7 @@ using Neighbor.Contract.Services.Products;
 using Neighbor.Domain.Abstraction.Dappers;
 using static Neighbor.Contract.Services.Products.Response;
 
-namespace Neighbor.Application.UseCases.V1.Queries.Products;
+namespace Neighbor.Application.UseCases.V2.Queries.Products;
 
 public sealed class GetAllProductsInWishlistQueryHandler : IQueryHandler<Query.GetAllProductsInWishlistQuery, Success<PagedResult<ProductResponse>>>
 {
@@ -25,7 +25,7 @@ public sealed class GetAllProductsInWishlistQueryHandler : IQueryHandler<Query.G
         var listProducts = await _dpUnitOfWork.ProductRepositories.GetProductsInWishlistAsync(request.AccountId, request.PageIndex, request.PageSize, request.FilterParams, request.SelectedColumns);
         var listProductsDTO = new List<ProductResponse>();
         //Mapping Product to ProductResponse
-        for(int i = 0; i < listProducts.Items.Count; i++)
+        for (int i = 0; i < listProducts.Items.Count; i++)
         {
             var product = listProducts.Items[i];
             //Mapping Lessor of Product
@@ -42,7 +42,7 @@ public sealed class GetAllProductsInWishlistQueryHandler : IQueryHandler<Query.G
                 CategoryName = product.Category.Name,
                 IsVehicle = product.Category.IsVehicle,
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, product.Wishlists[0].CreatedDate, true, false, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, product.Wishlists[0].CreatedDate, true, false, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor, product.RejectReason));
         }
         //Initial result
         var result = new PagedResult<ProductResponse>(listProductsDTO, listProducts.PageIndex, listProducts.PageSize, listProducts.TotalCount, listProducts.TotalPages);

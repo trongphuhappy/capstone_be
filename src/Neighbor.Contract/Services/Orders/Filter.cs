@@ -1,10 +1,11 @@
-﻿using Neighbor.Contract.Enumarations.Product;
+﻿using Neighbor.Contract.DTOs.OrderDTOs;
+using Neighbor.Contract.Enumarations.Order;
+using Neighbor.Contract.Enumarations.Product;
 
 namespace Neighbor.Contract.Services.Orders;
 
 public static class Filter
 {
-    public record ProductFilter(Guid? Id, string? Name, StatusType? StatusType, string? Policies, string? Description, double? Rating, double? Price, double? Value, int? MaximumRentDays, int? CategoryId, ConfirmStatus? ConfirmStatus, Guid? AccountUserId, Guid? AccountLessorId);
+    public record OrderFilter(SortType? SortType, bool? IsSortASC, double? MinValue, double? MaxValue, string? DeliveryAddress, OrderStatusType? OrderStatus, bool? IsConflict);
 
-    public record ProductWishlistFilter(Guid? Id, string? Name, StatusType? StatusType, string? Policies, string? Description, double? Rating, double? Price, double? Value, int? MaximumRentDays, int? CategoryId);
 }

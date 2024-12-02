@@ -28,7 +28,7 @@ namespace Neighbor.Domain.Entities
         public double OrderValue { get; private set; }
         public OrderStatusType OrderStatus { get; private set; }
         public string? UserReasonReject {  get; private set; }
-        public string? LessorReaonReject { get; private set; }
+        public string? LessorReasonReject { get; private set; }
         public long? OrderId { get; private set; }
         public bool IsConflict { get; private set; }
         public virtual List<Feedback> Feedbacks { get; private set; }
@@ -46,6 +46,16 @@ namespace Neighbor.Domain.Entities
             PaymentMethodType paymentMethod = PaymentMethodType.Banking;
             bool isConflict = false;
             return new Order(accountId, productId, rentTime, returnTime, deliveryAddress, orderValue, orderStatus, orderId, isConflict, paymentMethod);
+        }
+
+        public void UpdateProductOrder(Product product)
+        {
+            Product = product;
+        }
+
+        public void UpdateUserOrder(Account account)
+        {
+            Account = account;
         }
     }
 

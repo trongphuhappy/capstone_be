@@ -1,5 +1,4 @@
 ﻿using Neighbor.Contract.Enumarations.PaymentMethod;
-using Neighbor.Domain.Entities;
 
 namespace Neighbor.Domain.Entities
 {

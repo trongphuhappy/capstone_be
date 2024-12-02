@@ -25,4 +25,6 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Wishlist> Wishlists { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<Wallet> Wallets { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 }

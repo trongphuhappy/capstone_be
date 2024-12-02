@@ -35,7 +35,7 @@ public class LessorRepository : ILessorRepository
     public async Task<Lessor> GetLessorByUserIdAsync(Guid userId)
     {
         var sql = @"
-        SELECT l.Id, l.WareHouseAddress, l.Description, l.ShopName, l.LocationType, l.AccountId
+        SELECT l.Id, l.WareHouseAddress, l.ShopName, l.LocationType, l.AccountId
         FROM Lessors l
         WHERE l.AccountId = @UserId";
 

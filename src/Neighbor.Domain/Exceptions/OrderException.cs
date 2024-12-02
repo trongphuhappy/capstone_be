@@ -35,4 +35,20 @@ public static class OrderException
                        MessagesList.OrderProductNotApprovedByAdminException.GetMessage().Code)
         { }
     }
+
+    public sealed class OrderNotFoundAnyException : NotFoundException
+    {
+        public OrderNotFoundAnyException()
+                : base(MessagesList.OrderNotFoundAnyException.GetMessage().Message,
+                       MessagesList.OrderNotFoundAnyException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class OrderNotFoundException : NotFoundException
+    {
+        public OrderNotFoundException()
+                : base(MessagesList.OrderNotFoundException.GetMessage().Message,
+                       MessagesList.OrderNotFoundException.GetMessage().Code)
+        { }
+    }
 }

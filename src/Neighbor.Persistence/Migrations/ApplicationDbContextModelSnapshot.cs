@@ -257,9 +257,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -272,6 +269,9 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<string>("ShopName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("WareHouseAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -279,6 +279,8 @@ namespace Neighbor.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("WalletId");
 
                     b.ToTable("Lessors");
                 });
@@ -399,8 +401,8 @@ namespace Neighbor.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
@@ -411,8 +413,8 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<int>("StatusType")
                         .HasColumnType("int");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -496,6 +498,69 @@ namespace Neighbor.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Surcharges");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Wallet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Balance")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("LessorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessorId");
+
+                    b.ToTable("Wallets", (string)null);
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Wishlist", b =>
@@ -590,7 +655,15 @@ namespace Neighbor.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Neighbor.Domain.Entities.Transaction", "Wallet")
+                        .WithMany()
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Account");
+
+                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>
@@ -652,6 +725,27 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Surcharge");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Transaction", b =>
+                {
+                    b.HasOne("Neighbor.Domain.Entities.Wallet", "Wallet")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Wallet", b =>
+                {
+                    b.HasOne("Neighbor.Domain.Entities.Lessor", "Lessor")
+                        .WithMany()
+                        .HasForeignKey("LessorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Lessor");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Wishlist", b =>
@@ -729,6 +823,11 @@ namespace Neighbor.Persistence.Migrations
             modelBuilder.Entity("Neighbor.Domain.Entities.Surcharge", b =>
                 {
                     b.Navigation("productSurcharges");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Wallet", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

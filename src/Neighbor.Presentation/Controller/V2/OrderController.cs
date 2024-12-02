@@ -39,7 +39,7 @@ public class OrderController : ApiController
         var result = await Sender.Send(new Command.OrderSuccessCommand(orderId));
         if (result.IsFailure)
             return HandlerFailure(result);
-
+        
         return Redirect(result.Value.Data.Url);
     }
 

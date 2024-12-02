@@ -3,7 +3,7 @@ using Neighbor.Domain.Entities;
 using Neighbor.Contract.Abstractions.Shared;
 using static Neighbor.Contract.Services.Products.Response;
 
-namespace PawFund.Application.Mapper;
+namespace Neighbor.Application.Mapper;
 
 public class ProductProfile : Profile
 {

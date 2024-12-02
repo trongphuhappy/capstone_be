@@ -10,7 +10,7 @@ using static Neighbor.Contract.DTOs.ProductDTOs.InsuranceDTO;
 using static Neighbor.Contract.DTOs.ProductDTOs.SurchargeDTO;
 using static Neighbor.Contract.Services.Products.Response;
 
-namespace Neighbor.Application.UseCases.V1.Queries.Products;
+namespace Neighbor.Application.UseCases.V2.Queries.Products;
 
 public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductByIdQuery, Success<ProductResponse>>
 {

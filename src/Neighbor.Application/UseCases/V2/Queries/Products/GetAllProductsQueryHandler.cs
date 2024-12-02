@@ -7,7 +7,7 @@ using Neighbor.Contract.Services.Products;
 using Neighbor.Domain.Abstraction.Dappers;
 using static Neighbor.Contract.Services.Products.Response;
 
-namespace Neighbor.Application.UseCases.V1.Queries.Products;
+namespace Neighbor.Application.UseCases.V2.Queries.Products;
 
 public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProductsQuery, Success<PagedResult<ProductResponse>>>
 {

@@ -5,7 +5,7 @@ using Neighbor.Contract.Enumarations.MessagesList;
 using Neighbor.Contract.Services.Categories;
 using Neighbor.Domain.Abstraction.Dappers;
 
-namespace Neighbor.Application.UseCases.V1.Queries.Categories;
+namespace Neighbor.Application.UseCases.V2.Queries.Categories;
 
 public sealed class GetAllSurchargesQueryHandler : IQueryHandler<Query.GetAllCategoriesQuery, Success<PagedResult<Response.CategoryResponse>>>
 {

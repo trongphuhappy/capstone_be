@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Neighbor.Contract.Abstractions.Message;
-using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.Enumarations.MessagesList;
 using Neighbor.Contract.Enumarations.Product;

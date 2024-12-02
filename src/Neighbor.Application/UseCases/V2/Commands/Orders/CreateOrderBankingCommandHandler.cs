@@ -3,7 +3,6 @@ using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.DTOs.PaymentDTOs;
-using Neighbor.Contract.Enumarations.MessagesList;
 using Neighbor.Contract.Enumarations.Order;
 using Neighbor.Contract.Enumarations.Product;
 using Neighbor.Contract.Services.Orders;
@@ -33,16 +32,8 @@ public sealed class CreateOrderBankingCommandHandler : ICommandHandler<Command.C
         var product = await _efUnitOfWork.ProductRepository.FindByIdAsync(request.ProductId);
 
         //CreateOrderBankingCommandHandler
-        var accountFound = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.AccountId);
-        if (accountFound == null)
-        {
-            throw new AccountException.AccountNotFoundException();
-        }
-        var productFound = await _efUnitOfWork.ProductRepository.FindByIdAsync(request.ProductId);
-        if (productFound == null)
-        {
-            throw new ProductException.ProductNotFoundException();
-        }
+        var accountFound = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.AccountId) ?? throw new AccountException.AccountNotFoundException();
+        var productFound = await _efUnitOfWork.ProductRepository.FindByIdAsync(request.ProductId) ?? throw new ProductException.ProductNotFoundException();
         if (productFound.Lessor.AccountId == request.AccountId)
         {
             throw new OrderException.ProductBelongsToUserException();
@@ -64,7 +55,7 @@ public sealed class CreateOrderBankingCommandHandler : ICommandHandler<Command.C
         long orderId = new Random().Next(1, 100000);
 
         // Create payment dto
-        List<ItemDTO> itemDTOs = new List<ItemDTO> { new ItemDTO($"Order_{orderId}", 1, (int)product.Price) };
+        List<ItemDTO> itemDTOs = new() { new ItemDTO($"Order_{orderId}", 1, product.Price) };
         var createPaymentDto = new CreatePaymentDTO(orderId, $"Rent {product.Name}", itemDTOs, _payOSSetting.ErrorUrl, _payOSSetting.SuccessUrl + $"?orderId={orderId}");
         var result = await _paymentService.CreatePaymentLink(createPaymentDto);
         // Save memory to when success or fail will know value

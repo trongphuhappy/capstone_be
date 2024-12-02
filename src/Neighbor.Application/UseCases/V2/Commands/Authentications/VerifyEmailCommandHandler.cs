@@ -21,7 +21,7 @@ public sealed class VerifyEmailCommandHandler : ICommandHandler<Command.VerifyEm
     private readonly IPasswordHashService _passwordHashService;
     private readonly IPublisher _publisher;
     private readonly UserSetting _userSetting;
-
+    
     public VerifyEmailCommandHandler
        (IRepositoryBase<Domain.Entities.Account, Guid> accountRepository,
        IResponseCacheService responseCacheService,

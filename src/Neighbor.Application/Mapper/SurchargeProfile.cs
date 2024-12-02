@@ -3,7 +3,7 @@ using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Domain.Entities;
 using static Neighbor.Contract.Services.Surcharges.Response;
 
-namespace PawFund.Application.Mapper;
+namespace Neighbor.Application.Mapper;
 
 public class SurchargeProfile : Profile
 {

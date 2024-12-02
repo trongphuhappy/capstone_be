@@ -44,7 +44,7 @@ public class ProductRepository : IProductRepository
 
             // Query the product
             var products = await connection.QueryAsync<Product, Lessor, Category, Product>(
-                @"SELECT p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId, l.Description AS LessorDescription, c.Id, c.Name, c.IsVehicle
+                @"SELECT p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id as LessorId, l.WareHouseAddress, l.ShopName, l.AccountId, c.Id as CategoryId, c.Name, c.IsVehicle
               FROM Products p
               JOIN Lessors l ON l.Id = p.LessorId
               JOIN Categories c ON c.Id = p.CategoryId
@@ -56,7 +56,8 @@ public class ProductRepository : IProductRepository
                     return p;
                 },
                 new { Id = productId },
-                splitOn: "ProductModifiedDate, LessorDescription");
+                splitOn: "ProductModifiedDate, LessorId, CategoryId"
+            );
 
             if (products == null) return null;
             var product = products.ToList()[0];
@@ -120,9 +121,6 @@ public class ProductRepository : IProductRepository
 
         }
     }
-
-
-
 
     public async Task<PagedResult<Product>> GetPagedAsync(
     int pageIndex,

@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Neighbor.Contract.Abstractions.Message;
+﻿using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Abstractions.Shared;
 using Neighbor.Contract.Enumarations.MessagesList;
@@ -7,7 +6,6 @@ using Neighbor.Contract.Services.Products;
 using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Entities;
 using Neighbor.Domain.Exceptions;
-using static Neighbor.Contract.DTOs.ProductDTOs.SurchargeDTO;
 
 namespace Neighbor.Application.UseCases.V2.Commands.Products;
 
@@ -64,19 +62,6 @@ public sealed class CreateProductCommandHandler : ICommandHandler<Command.Create
             _efUnitOfWork.ImagesRepository.AddRange(imageInsurances.ToList());
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         }
-        ////If Surcharge exist then Add new ProductSurcharge based on ProductId, SurchargeId and Price
-        //if (request.Surcharge.SurchargeId != null && request.Surcharge.Price != null)
-        //{
-        //    var surchargeFound = await _efUnitOfWork.SurchargeRepository.FindByIdAsync(request.Surcharge.SurchargeId.Value);
-        //    if (surchargeFound == null)
-        //    {
-        //        throw new SurchargeException.SurchargeNotFoundException();
-        //    }
-        //    var productSurcharge = ProductSurcharge.CreateProductSurcharge(request.Surcharge.Price.Value, productCreated.Id, surchargeFound.Id);
-
-        //    _efUnitOfWork.ProductSurchargeRepository.Add(productSurcharge);
-        //    await _efUnitOfWork.SaveChangesAsync(cancellationToken);
-        //}
 
         //If List Surcharges exist then Check if Surcharge exist then Add new ProductSurcharge based on ProductId, SurchargeId and Price
         if (request.ListSurcharges != null)

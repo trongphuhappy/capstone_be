@@ -9,8 +9,8 @@ public static class ProductDTO
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public double Value { get; set; }
-        public double Price { get; set; }
+        public int Value { get; set; }
+        public int Price { get; set; }
         public int MaximumRentDays { get; set; }
         public string Policies { get; set; }
         public int CategoryId { get; set; }

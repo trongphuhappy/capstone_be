@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Settings;
 using Neighbor.Infrastructure.Services;
+using PawFund.Contract.Settings;
 using StackExchange.Redis;
 
 namespace Neighbor.Infrastructure.DependencyInjection.Extensions;
@@ -29,7 +30,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IEmailService, EmailService>()
                 .AddTransient<ITokenGeneratorService, TokenGeneratorService>()
                 .AddTransient<IPasswordHashService, PasswordHashService>()
-                .AddTransient<IMediaService, MediaService>();
+                .AddTransient<IMediaService, MediaService>()
+                .AddTransient<IPaymentService, PaymentService>();
     }
 
     public static void AddConfigurationAppSetting
@@ -40,6 +42,7 @@ public static class ServiceCollectionExtensions
             .Configure<EmailSetting>(configuration.GetSection(EmailSetting.SectionName))
             .Configure<ClientSetting>(configuration.GetSection(ClientSetting.SectionName))
             .Configure<UserSetting>(configuration.GetSection(UserSetting.SectionName))
-            .Configure<CloudinarySetting>(configuration.GetSection(CloudinarySetting.SectionName));
+            .Configure<CloudinarySetting>(configuration.GetSection(CloudinarySetting.SectionName))
+            .Configure<PayOSSetting>(configuration.GetSection(PayOSSetting.SectionName));
     }
 }

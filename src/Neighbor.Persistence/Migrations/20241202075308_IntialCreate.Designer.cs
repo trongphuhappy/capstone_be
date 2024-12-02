@@ -12,7 +12,7 @@ using Neighbor.Persistence;
 namespace Neighbor.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241202065039_IntialCreate")]
+    [Migration("20241202075308_IntialCreate")]
     partial class IntialCreate
     {
         /// <inheritdoc />
@@ -272,9 +272,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<string>("ShopName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("WalletId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("WareHouseAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -282,8 +279,6 @@ namespace Neighbor.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("WalletId");
 
                     b.ToTable("Lessors");
                 });
@@ -553,7 +548,7 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("LessorId")
+                    b.Property<Guid>("LessorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -561,9 +556,10 @@ namespace Neighbor.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LessorId");
+                    b.HasIndex("LessorId")
+                        .IsUnique();
 
-                    b.ToTable("Wallets", (string)null);
+                    b.ToTable("Wallets");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Wishlist", b =>
@@ -658,15 +654,7 @@ namespace Neighbor.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Neighbor.Domain.Entities.Transaction", "Wallet")
-                        .WithMany()
-                        .HasForeignKey("WalletId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Account");
-
-                    b.Navigation("Wallet");
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>
@@ -744,9 +732,10 @@ namespace Neighbor.Persistence.Migrations
             modelBuilder.Entity("Neighbor.Domain.Entities.Wallet", b =>
                 {
                     b.HasOne("Neighbor.Domain.Entities.Lessor", "Lessor")
-                        .WithMany()
-                        .HasForeignKey("LessorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne("Wallet")
+                        .HasForeignKey("Neighbor.Domain.Entities.Wallet", "LessorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Lessor");
                 });
@@ -793,6 +782,9 @@ namespace Neighbor.Persistence.Migrations
             modelBuilder.Entity("Neighbor.Domain.Entities.Lessor", b =>
                 {
                     b.Navigation("Products");
+
+                    b.Navigation("Wallet")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>

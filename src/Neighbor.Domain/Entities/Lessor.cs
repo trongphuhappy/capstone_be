@@ -24,11 +24,16 @@ public class Lessor : DomainEntity<Guid>
     public Guid AccountId { get; private set; }
     public virtual Account Account { get; private set; }
     public virtual List<Product> Products { get; private set; }
-    public virtual Transaction Wallet { get; private set; }
+    public virtual Wallet Wallet { get; private set; }
 
     public static Lessor CreateLessor(string wareHouseAddress, string shopeName, LocationType locationType, Guid accountId)
     {
-        return new Lessor(wareHouseAddress, shopeName, locationType, accountId);
+        // Create object lessor
+        var lessor = new Lessor(wareHouseAddress, shopeName, locationType, accountId);
+        // Create wallet for lessor
+        var wallet = new Wallet(lessor.Id, 0);
+        lessor.Wallet = wallet;
+        return lessor;
     }
 
     public void UpdateLessor(string? wareHouseAddress, string? shopeName, LocationType? locationType)

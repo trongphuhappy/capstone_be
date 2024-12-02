@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Neighbor.Contract.Abstractions.Shared;
@@ -17,11 +16,6 @@ public class ProductRepository : IProductRepository
         _configuration = configuration;
     }
 
-    public Task<bool>? AccountExistSystemAsync(Guid userId)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<int> AddAsync(Product entity)
     {
         throw new NotImplementedException();
@@ -32,17 +26,7 @@ public class ProductRepository : IProductRepository
         throw new NotImplementedException();
     }
 
-    public Task<bool> EmailExistSystemAsync(string email)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<IReadOnlyCollection<Product>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Account> GetByEmailAsync(string email)
     {
         throw new NotImplementedException();
     }

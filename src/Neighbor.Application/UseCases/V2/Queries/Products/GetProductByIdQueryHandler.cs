@@ -83,13 +83,13 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
 
             //Check if Product has already added to Wishlist
             bool isProductExistInWishlist = await _dpUnitOfWork.WishlistRepositories.IsProductExistInWishlist(request.AccountId.Value, product.Id);
-            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, null, isProductExistInWishlist, isProductBelongsToUser, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
+            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.RejectReason, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, null, isProductExistInWishlist, isProductBelongsToUser, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
             //Return result
             return Result.Success(new Success<ProductResponse>(MessagesList.ProductGetDetailsSuccess.GetMessage().Code, MessagesList.ProductGetDetailsSuccess.GetMessage().Message, result));
         }
         else
         {
-            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, null, false, false, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
+            var result = new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.RejectReason, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, null, false, false, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), insurance, surcharges, lessor);
             //Return result
             return Result.Success(new Success<ProductResponse>(MessagesList.ProductGetDetailsSuccess.GetMessage().Code, MessagesList.ProductGetDetailsSuccess.GetMessage().Message, result));
         }

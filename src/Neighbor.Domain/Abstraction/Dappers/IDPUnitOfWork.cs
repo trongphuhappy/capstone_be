@@ -10,4 +10,5 @@ public interface IDPUnitOfWork
     IProductRepository ProductRepositories { get; }
     ILessorRepository LessorRepositories { get; }
     IWishlistRepository WishlistRepositories { get; }
+    IOrderRepository OrderRepositories { get; }
 }

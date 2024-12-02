@@ -9,7 +9,12 @@ internal class GetAllProductsInWishlistValidator : AbstractValidator<Query.GetAl
     {
         // SortType and IsSortASC must either both exist or not exist
         RuleFor(x => x.FilterParams)
-            .Must(filter => (filter.SortBy != null && filter.SortBy.SortType != null && filter.SortBy.IsSortASC != null) || (filter.SortBy == null))
+            .Must(filter => (filter.SortType != null && filter.IsSortASC != null) || (filter.SortType == null && filter.IsSortASC == null))
             .WithMessage("SortType and IsSortASC must either both be provided or both be null.");
+
+        // MinValue and MaxValue must either both exist or not exist
+        RuleFor(x => x.FilterParams)
+            .Must(filter => (filter.MinValue != null && filter.MaxValue != null) || (filter.MinValue == null && filter.MaxValue == null))
+            .WithMessage("MinValue and MaxValue must either both be provided or both be null.");
     }
 }

@@ -353,7 +353,7 @@ public class ProductRepository : IProductRepository
         {
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
             "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
-            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.Description AS LessorDescription", "w.Id", "w.CreatedDate", "w.ModifiedDate AS WishlistModifiedDate", "c.Id", "c.Name", "c.IsVehicle"
+            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.CreatedDate AS LessorCreatedDate", "w.Id", "w.CreatedDate", "w.ModifiedDate AS WishlistModifiedDate", "c.Id", "c.Name", "c.IsVehicle"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -512,7 +512,7 @@ public class ProductRepository : IProductRepository
                     return existingProduct;
                 },
                 parameters,
-                splitOn: "ProductModifiedDate, ImageCreatedDate, LessorDescription, WishlistModifiedDate"
+                splitOn: "ProductModifiedDate, ImageCreatedDate, LessorCreatedDate, WishlistModifiedDate"
             );
 
             // Return paginated result

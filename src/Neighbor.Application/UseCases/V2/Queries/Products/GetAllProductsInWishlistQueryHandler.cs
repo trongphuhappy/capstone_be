@@ -42,7 +42,7 @@ public sealed class GetAllProductsInWishlistQueryHandler : IQueryHandler<Query.G
                 CategoryName = product.Category.Name,
                 IsVehicle = product.Category.IsVehicle,
             };
-            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.RejectReason, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, product.Wishlists[0].CreatedDate, true, false, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor));
+            listProductsDTO.Add(new ProductResponse(product.Id, product.Name, product.StatusType, product.Policies, product.Description, product.Rating, product.Price, product.Value, product.MaximumRentDays, product.ConfirmStatus, product.CreatedDate.Value, product.Wishlists[0].CreatedDate, true, false, category, product.Images.ToList().Select(x => x.ImageLink).ToList(), null, null, lessor, product.RejectReason));
         }
         //Initial result
         var result = new PagedResult<ProductResponse>(listProductsDTO, listProducts.PageIndex, listProducts.PageSize, listProducts.TotalCount, listProducts.TotalPages);

@@ -134,10 +134,10 @@ public class OrderRepository : IOrderRepository
             // Valid columns for selecting
             var validColumns = new HashSet<string>
         {
-            "o.Id", "o.RentTime", "o.ReturnTime", "o.DeliveryAddress", "o.OrderValue", "o.OrderStatus", "o.UserReasonReject", "o.LessorReasonReject", "o.IsConflict", "o.CreatedDate", "o.ModifiedDate AS OrderModifiedDate", "a.Id", "a.FirstName", "a.LastName", "a.Email", "a.PhoneNumber", "a.CropAvatarLink", "a.FullAvatarLink", "a.LoginType AS AccountLoginType",
+            "o.Id", "o.RentTime", "o.ReturnTime", "o.DeliveryAddress", "o.OrderValue", "o.OrderStatus", "o.UserReasonReject", "o.LessorReasonReject", "o.IsConflict", "o.CreatedDate", "o.ModifiedDate AS OrderModifiedDate", "a.Id", "a.FirstName", "a.LastName", "a.Email", "a.PhoneNumber", "a.CropAvatarUrl", "a.FullAvatarUrl", "a.LoginType AS AccountLoginType",
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
             "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
-            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.AccountId", "l.CreatedDate AS LessorCreatedDate", "w.Id", "w.AccountId", "w.ModifiedDate AS WishlistModifiedDate", "c.Id", "c.Name", "c.IsVehicle"
+            "p.ModifiedDate AS ProductModifiedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.AccountId", "l.CreatedDate AS LessorCreatedDate", "c.Id", "c.Name", "c.IsVehicle"
         };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
@@ -151,10 +151,8 @@ public class OrderRepository : IOrderRepository
             var queryBuilder = new StringBuilder($@"
             SELECT {selectedColumnsString} 
             FROM Orders o
-            JOIN Accounts a
+            JOIN Accounts a ON a.Id = o.AccountId
             JOIN Products p ON p.Id = o.ProductId
-            LEFT JOIN Images i ON p.Id = i.ProductId
-            LEFT JOIN Wishlists w on p.Id = w.ProductId
             JOIN Lessors l ON l.Id = p.LessorId
             JOIN Categories c ON c.Id = p.CategoryId
             WHERE 1=1");
@@ -163,10 +161,8 @@ public class OrderRepository : IOrderRepository
             var totalCountQuery = new StringBuilder($@"
             SELECT COUNT(DISTINCT o.Id) 
             FROM Orders o
-            JOIN Accounts a
+            JOIN Accounts a ON a.Id = o.AccountId
             JOIN Products p ON p.Id = o.ProductId            
-            LEFT JOIN Images i ON p.Id = i.ProductId
-            LEFT JOIN Wishlists w on p.Id = w.ProductId
             JOIN Lessors l ON l.Id = p.LessorId
             JOIN Categories c ON c.Id = p.CategoryId
             WHERE 1=1");
@@ -185,7 +181,7 @@ public class OrderRepository : IOrderRepository
                 parameters.Add("DeliveryAddress", $"%{filterParams.DeliveryAddress}%");
             }
 
-            if (filterParams?.OrderStatus != null)
+            if (filterParams?.OrderStatus.HasValue == true)
             {
                 queryBuilder.Append(" AND o.OrderStatus = @OrderStatus");
                 totalCountQuery.Append(" AND o.OrderStatus = @OrderStatus");
@@ -199,6 +195,14 @@ public class OrderRepository : IOrderRepository
                 parameters.Add("IsConflict", filterParams.IsConflict);
             }
 
+            if (filterParams?.MinValue.HasValue == true && filterParams?.MaxValue.HasValue == true)
+            {
+                queryBuilder.Append(" AND o.OrderValue <= @MaxValue AND o.OrderValue >= @MinValue");
+                totalCountQuery.Append(" AND o.OrderValue <= @MaxValue AND o.OrderValue >= @MinValue");
+                parameters.Add("MinValue", filterParams.MinValue);
+                parameters.Add("MaxValue", filterParams.MaxValue);
+            }
+
             // Get total count and pages
             var totalCount = await connection.ExecuteScalarAsync<int>(totalCountQuery.ToString(), parameters);
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
@@ -206,21 +210,21 @@ public class OrderRepository : IOrderRepository
             // Pagination logic
             var offset = (pageIndex - 1) * pageSize;
             //Check if IsSortCreatedDayASC exist then Sort by CreatedDate
-            if (filterParams?.SortBy != null)
+            if (filterParams?.SortType.HasValue == true && filterParams?.IsSortASC.HasValue == true)
             {
-                string sortType = filterParams.SortBy.IsSortASC ? "ASC" : "DESC";
+                string sortType = filterParams.IsSortASC.Value ? "ASC" : "DESC";
                 //Check if IsSortCreatedDayASC == true then Sort Created Date ASC
-                if (filterParams?.SortBy.SortType == SortType.CreatedDate)
+                if (filterParams?.SortType == SortType.CreatedDate)
                 {
                     queryBuilder.Append($" ORDER BY o.CreatedDate {sortType} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
                 }
-                else if (filterParams?.SortBy.SortType == SortType.RentTime)
+                else if (filterParams?.SortType == SortType.RentTime)
                 {
-                    queryBuilder.Append($" ORDER BY o.RentTime {sortType} DESC OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+                    queryBuilder.Append($" ORDER BY o.RentTime {sortType} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
                 }
                 else
                 {
-                    queryBuilder.Append($" ORDER BY o.ReturnTime {sortType} DESC OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
+                    queryBuilder.Append($" ORDER BY o.ReturnTime {sortType} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
                 }
             }
             else
@@ -232,25 +236,15 @@ public class OrderRepository : IOrderRepository
             var orderDictionary = new Dictionary<Guid, Order>();
 
             // Execute the query
-            var items = await connection.QueryAsync<Order, Account, Product, Images, Lessor, Wishlist, Category, Order>(
+            var items = await connection.QueryAsync<Order, Account, Product, Lessor, Category, Order>(
                 queryBuilder.ToString(),
-                (order, account, product, image, lessor, wishlist, category) =>
+                (order, account, product, lessor, category) =>
                 {
                     if (!orderDictionary.TryGetValue(order.Id, out var existingOrder))
                     {
                         existingOrder = order;
-
-                        product.UpdateImagesProduct(new List<Images>());
-                        product.UpdateWishlistsProduct(new List<Wishlist>());
                         orderDictionary.Add(order.Id, existingOrder);
                     }
-
-                    // Add image if not already added
-                    if (image != null && !product.Images.Any(img => img.ImageId == image.ImageId))
-                    {
-                        product.Images.Add(image);
-                    }
-
                     product.UpdateLessorProduct(lessor);
                     product.UpdateCategory(category);
                     existingOrder.UpdateProductOrder(product);
@@ -258,8 +252,39 @@ public class OrderRepository : IOrderRepository
                     return existingOrder;
                 },
                 parameters,
-                splitOn: "OrderModifiedDate, AccountLoginType, ProductModifiedDate, ImageCreatedDate, LessorCreatedDate, WishlistModifiedDate"
+                splitOn: "OrderModifiedDate, AccountLoginType, ProductModifiedDate, LessorCreatedDate"
             );
+
+            //Find Images and then Merge Images to Product Of Order
+            var productIds = orderDictionary.Values
+            .Select(order => order.Product.Id)
+            .Distinct()
+            .ToList();
+
+            var imagesQuery = @"
+            SELECT i.*
+            FROM Images i
+            WHERE i.ProductId IN @ProductIds";
+
+            var images = await connection.QueryAsync<Images>(imagesQuery, new { ProductIds = productIds });
+
+            var imagesGroupedByProduct = images
+            .GroupBy(img => img.ProductId)
+            .ToDictionary(group => group.Key, group => group.ToList());
+
+            foreach (var order in orderDictionary.Values)
+            {
+                var product = order.Product;
+
+                if (imagesGroupedByProduct.TryGetValue(product.Id, out var productImages))
+                {
+                    product.UpdateImagesProduct(productImages);
+                }
+                else
+                {
+                    product.UpdateImagesProduct(new List<Images>()); // No images for this product
+                }
+            }
 
             // Return paginated result
             return new PagedResult<Order>(

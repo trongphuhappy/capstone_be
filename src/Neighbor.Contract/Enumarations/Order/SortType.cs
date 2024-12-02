@@ -3,7 +3,7 @@
     public enum SortType
     {
         CreatedDate = 1,                  
-        RentTime = 1,             
-        ReturnTime = 2,           
+        RentTime = 2,             
+        ReturnTime = 3,           
     }
 }

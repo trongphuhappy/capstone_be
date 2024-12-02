@@ -6,15 +6,11 @@ namespace Neighbor.Contract.Services.Orders;
 
 public static class Query
 {
-    public record GetAllProductsQuery(int PageIndex,
+    public record GetAllOrdersQuery(int PageIndex,
         int PageSize,
-        ProductFilter FilterParams,
-        string[] SelectedColumns) : IQuery<Success<PagedResult<Response.ProductResponse>>>;
+        OrderFilter FilterParams,
+        string[] SelectedColumns) : IQuery<Success<PagedResult<Response.OrderResponse>>>;
 
-    public record GetProductByIdQuery(Guid Id, Guid? AccountId) : IQuery<Success<Response.ProductResponse>>;
-    public record GetAllProductsInWishlistQuery(Guid AccountId, int PageIndex,
-        int PageSize,
-        ProductWishlistFilter FilterParams,
-        string[] SelectedColumns) : IQuery<Success<PagedResult<Response.ProductResponse>>>;
+    public record GetOrderByIdQuery(Guid Id) : IQuery<Success<Response.OrderResponse>>;
 
 }

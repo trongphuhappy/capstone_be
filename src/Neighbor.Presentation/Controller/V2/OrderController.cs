@@ -8,6 +8,7 @@ using Neighbor.Contract.DTOs.ProductDTOs;
 using Neighbor.Contract.Services.Orders;
 using Neighbor.Presentation.Abstractions;
 using System.Security.Claims;
+using static Neighbor.Contract.Services.Orders.Filter;
 
 namespace Neighbor.Presentation.Controller.V2;
 
@@ -21,7 +22,7 @@ public class OrderController : ApiController
     [HttpPost("create_order", Name = "CreateOrder")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
-    public async Task<IActionResult> HandleUser([FromBody] OrderDTO.OrderRequestDTO order)
+    public async Task<IActionResult> CreateOrder([FromBody] OrderDTO.OrderRequestDTO order)
     {
         var userId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Command.CreateOrderBankingCommand(userId, order.ProductId, order.RentTime, order.ReturnTime));

@@ -8,6 +8,6 @@ internal class ConfirmProductValidator : AbstractValidator<Command.ConfirmProduc
     public ConfirmProductValidator()
     {
         RuleFor(x => x.ProductId).NotNull().NotEmpty();
-        RuleFor(x => x.ConfirmStatus).NotEmpty();
+        RuleFor(x => x.ConfirmStatus);
     }
 }

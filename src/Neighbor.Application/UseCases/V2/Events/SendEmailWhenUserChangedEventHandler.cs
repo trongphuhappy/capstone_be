@@ -55,4 +55,16 @@ public sealed class SendEmailWhenUserChangedEventHandler
                {"Link", $"{_clientSetting.Url}{_clientSetting.VerifyChangeEmail}/{notification.UserId}"}
        });
     }
+
+    public async Task Handle(DomainEvent.UserCreatedWithGoogle notification, CancellationToken cancellationToken)
+    {
+        await _emailService.SendMailAsync
+            (notification.Email,
+            "Register with Google",
+            "EmailRegister.html", new Dictionary<string, string> {
+            { "ToEmail", notification.Email},
+            {"LinkWeb", $"{_clientSetting.Url}"},
+            {"LinkVerifyEmail", $"{_clientSetting.Url}{_clientSetting.VerifyEmail}/{notification.Email}"}
+        });
+    }
 }

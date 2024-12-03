@@ -58,4 +58,12 @@ public static class AuthenticationException
                   MessagesList.AuthRefreshTokenNull.GetMessage().Code)
         { }
     }
+
+    public sealed class LoginGoogleFailException : BadRequestException
+    {
+        public LoginGoogleFailException()
+           : base(MessagesList.AuthLoginGoogleFail.GetMessage().Message,
+                  MessagesList.AuthLoginGoogleFail.GetMessage().Code)
+        { }
+    }
 }

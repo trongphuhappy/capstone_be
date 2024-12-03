@@ -72,6 +72,11 @@ public class Account : DomainEntity<Guid>
     {
         return new Account(firstName, lastName, email, phoneNumber, password, avatarUrl, "", avatarUrl, "", "", "", "", "", "", LoginType.Local, gender, RoleType.Member, false);
     }
+    public static Account CreateMemberAccountGoogle
+        (string firstName, string lastName, string email, string avatarUrl, GenderType gender)
+    {
+        return new Account(firstName, lastName, email, "", "", avatarUrl, "", avatarUrl, "", "", "", "", "", "", LoginType.Google, gender, RoleType.Member, false);
+    }
     public static Account CreateAccountAdminLocal(string email, string password, string avatarUrl)
     {
         return new Account("Admin", "", email, "", password, avatarUrl, "", avatarUrl, "", "", "", "", "", "", LoginType.Local, GenderType.Male, RoleType.Admin, false);

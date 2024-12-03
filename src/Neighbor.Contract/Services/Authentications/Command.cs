@@ -14,4 +14,7 @@ public static class Command
         : ICommand;
 
     public record VerifyEmailCommand(string Email) : ICommand;
+
+    public record LoginGoogleCommand(string AccessTokenGoogle) : ICommand<Response.LoginResponse>;
+
 }

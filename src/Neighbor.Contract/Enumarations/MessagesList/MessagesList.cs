@@ -32,6 +32,9 @@ public enum MessagesList
     [Message("Session has expired, please log in again", "auth_login_expired")]
     AuthRefreshTokenNull,
 
+    [Message("Login Google fail, please try again", "auth_noti_09")]
+    AuthLoginGoogleFail,
+
     [Message("All Categories: ", "category_noti_success_01")]
     CategoryGetAllCategoriesSuccess,
 

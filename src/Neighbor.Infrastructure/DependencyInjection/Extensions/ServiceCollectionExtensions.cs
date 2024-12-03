@@ -31,7 +31,8 @@ public static class ServiceCollectionExtensions
                 .AddTransient<ITokenGeneratorService, TokenGeneratorService>()
                 .AddTransient<IPasswordHashService, PasswordHashService>()
                 .AddTransient<IMediaService, MediaService>()
-                .AddTransient<IPaymentService, PaymentService>();
+                .AddTransient<IPaymentService, PaymentService>()
+                .AddTransient<IGoogleOAuthService, GoogleOAuthService>();
     }
 
     public static void AddConfigurationAppSetting

@@ -9,7 +9,9 @@ namespace Neighbor.Application.UseCases.V2.Events;
 public sealed class SendEmailWhenUserChangedEventHandler
     : IDomainEventHandler<DomainEvent.UserRegistedWithLocal>,
     IDomainEventHandler<DomainEvent.UserVerifiedEmailRegist>,
-    IDomainEventHandler<Contract.Services.Members.DomainEvent.UserEmailChanged>
+    IDomainEventHandler<Contract.Services.Members.DomainEvent.UserEmailChanged>,
+    IDomainEventHandler<DomainEvent.UserOtpChanged>,
+    IDomainEventHandler<DomainEvent.UserPasswordChanged>
 {
 
     private readonly IEmailService _emailService;
@@ -66,5 +68,27 @@ public sealed class SendEmailWhenUserChangedEventHandler
             {"LinkWeb", $"{_clientSetting.Url}"},
             {"LinkVerifyEmail", $"{_clientSetting.Url}{_clientSetting.VerifyEmail}/{notification.Email}"}
         });
+    }
+
+    public async Task Handle(DomainEvent.UserOtpChanged notification, CancellationToken cancellationToken)
+    {
+        await _emailService.SendMailAsync
+           (notification.Email,
+           "Forgot password PawFund",
+           "EmailForgotPassword.html", new Dictionary<string, string> {
+            {"ToEmail", notification.Email},
+            {"Otp", notification.Otp}
+       });
+    }
+
+    public async Task Handle(DomainEvent.UserPasswordChanged notification, CancellationToken cancellationToken)
+    {
+        await _emailService.SendMailAsync
+           (notification.Email,
+           "Change password",
+           "EmailUserChangePassword.html", new Dictionary<string, string> {
+            {"ToEmail", notification.Email},
+               {"Link", $"{_clientSetting.Url}{_clientSetting.VerifyChangePassword}/{notification.Id}"}
+       });
     }
 }

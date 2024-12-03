@@ -14,7 +14,9 @@ public static class Command
         : ICommand;
 
     public record VerifyEmailCommand(string Email) : ICommand;
-
     public record LoginGoogleCommand(string AccessTokenGoogle) : ICommand<Response.LoginResponse>;
+    public record ForgotPasswordEmailCommand(string Email) : ICommand;
+    public record ForgotPasswordOtpCommand(string Email, string Otp) : ICommand;
+    public record ForgotPasswordChangeCommand(string Email, string Password, string Otp) : ICommand;
 
 }

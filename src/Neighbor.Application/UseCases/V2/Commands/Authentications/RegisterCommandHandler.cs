@@ -39,7 +39,7 @@ public sealed class RegisterCommandHandler : ICommandHandler<Command.RegisterCom
             ($"register_{request.Email}",
             JsonSerializer.Serialize(request),
             TimeSpan.FromHours(12));
-
+        
         // Send mail to notification user registed, and wait user accept
         await Task.WhenAll(
             _publisher.Publish(new DomainEvent.UserRegistedWithLocal(Guid.NewGuid(), request.Email), cancellationToken)

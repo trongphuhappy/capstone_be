@@ -86,6 +86,49 @@ public class AuthenticationController : ApiController
         });
     }
 
+    [HttpPost("login-google", Name = "LoginGoogleCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> LoginGoogle([FromBody] Command.LoginGoogleCommand LoginGoogle)
+    {
+        var result = await Sender.Send(LoginGoogle);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+        
+        var value = result.Value;
+
+        Response.Cookies.Append("refreshToken", value.RefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            Path = "/",
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.Now.AddMinutes(131400),
+        });
+
+        var authProfileDTO = new AuthProfileDTO()
+        {
+            UserId = value.UserId,
+            FirstName = value.FirstName,
+            LastName = value.LastName,
+            CropAvatarLink = value.CropAvatarLink,
+            FullAvatarLink = value.FullAvatarLink,
+            RoleId = value.RoleId,
+        };
+
+        var tokenDto = new TokenDTO()
+        {
+            AccessToken = value.AccessToken,
+            TokenType = "Bearer"
+        };
+
+        return Ok(new
+        {
+            AuthProfile = authProfileDTO,
+            Token = tokenDto,
+        });
+    }
+
     [HttpGet("refresh-token", Name = "RefreshToken")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
@@ -114,6 +157,42 @@ public class AuthenticationController : ApiController
             TokenType = "Bearer",
             value.AccessToken,
         });
+    }
+
+    [HttpPost("forgot-password-email", Name = "ForgotPasswordEmailCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordEmail([FromBody] Command.ForgotPasswordEmailCommand ForgotPasswordEmail)
+    {
+        var result = await Sender.Send(ForgotPasswordEmail);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPost("forgot-password-otp", Name = "ForgotPasswordOtpCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordOtp([FromBody] Command.ForgotPasswordOtpCommand ForgotPasswordOtp)
+    {
+        var result = await Sender.Send(ForgotPasswordOtp);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPost("forgot-password-change", Name = "ForgotPasswordChangeCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordChange([FromBody] Command.ForgotPasswordChangeCommand ForgotPasswordChange)
+    {
+        var result = await Sender.Send(ForgotPasswordChange);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
     }
 
     [Authorize]

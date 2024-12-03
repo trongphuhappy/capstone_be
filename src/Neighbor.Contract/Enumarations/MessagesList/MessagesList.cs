@@ -32,6 +32,27 @@ public enum MessagesList
     [Message("Session has expired, please log in again", "auth_login_expired")]
     AuthRefreshTokenNull,
 
+    [Message("Login Google fail, please try again", "auth_noti_09")]
+    AuthLoginGoogleFail,
+
+    [Message("Your OTP does not match", "auth_otp_01")]
+    AuthOtpForgotPasswordNotMatchException,
+
+    [Message("Unable to change password, please try again", "auth_forgot_01")]
+    AuthErrorChangePasswordException,
+
+    [Message("Please check your email to enter otp", "auth_noti_05")]
+    AuthForgotPasswordEmailSuccess,
+
+    [Message("Please fill new password to change", "auth_noti_06")]
+    AuthForgotPasswordOtpSuccess,
+
+    [Message("Your account password has been changed successfully.", "auth_noti_07")]
+    AuthForgotPasswordChangeSuccess,
+
+    [Message("This email is already registered with Google", "auth_email_03")]
+    AuthGoogleEmailRegisted,
+
     [Message("All Categories: ", "category_noti_success_01")]
     CategoryGetAllCategoriesSuccess,
 

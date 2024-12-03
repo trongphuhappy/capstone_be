@@ -7,7 +7,7 @@ internal class UserConfirmOrderValidator : AbstractValidator<Command.UserConfirm
 {
     public UserConfirmOrderValidator()
     {
-        RuleFor(x => x.ProductId).NotNull().NotEmpty();
-        RuleFor(x => x.OrderStatus).NotNull().NotEmpty();
+        RuleFor(x => x.OrderId).NotNull().NotEmpty();
+        RuleFor(x => x.IsApproved).NotNull();
     }
 }

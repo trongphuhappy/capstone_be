@@ -51,4 +51,36 @@ public static class OrderException
                        MessagesList.OrderNotFoundException.GetMessage().Code)
         { }
     }
+
+    public sealed class OrderHaveAlreadyConfirmedException : BadRequestException
+    {
+        public OrderHaveAlreadyConfirmedException()
+                : base(MessagesList.OrderHaveAlreadyConfirmedException.GetMessage().Message,
+                       MessagesList.OrderHaveAlreadyConfirmedException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class OrderRejectWithoutReasonException : BadRequestException
+    {
+        public OrderRejectWithoutReasonException()
+                : base(MessagesList.OrderRejectWithoutReasonException.GetMessage().Message,
+                       MessagesList.OrderRejectWithoutReasonException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class OrderNotBelongToUserException : BadRequestException
+    {
+        public OrderNotBelongToUserException()
+                : base(MessagesList.OrderNotBelongToUserException.GetMessage().Message,
+                       MessagesList.OrderNotBelongToUserException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class OrderUserHasNotConfirmException : BadRequestException
+    {
+        public OrderUserHasNotConfirmException()
+                : base(MessagesList.OrderUserHasNotConfirmException.GetMessage().Message,
+                       MessagesList.OrderUserHasNotConfirmException.GetMessage().Code)
+        { }
+    }
 }

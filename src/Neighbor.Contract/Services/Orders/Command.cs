@@ -9,7 +9,7 @@ public static class Command
     public record OrderSuccessCommand(long OrderId) : ICommand<Success<Response.OrderSuccess>>;
     public record OrderFailCommand(long OrderId) : ICommand;
 
-    public record UserConfirmOrderCommand(Guid ProductId, OrderStatusType OrderStatus, string? RejectReason) : ICommand;
-    public record LessorConfirmOrderCommand(Guid ProductId, OrderStatusType OrderStatus, string? RejectReason) : ICommand;
+    public record UserConfirmOrderCommand(Guid AccountId, Guid OrderId, bool IsApproved, string? RejectReason) : ICommand;
+    public record LessorConfirmOrderCommand(Guid AccountId, Guid OrderId, bool IsApproved, string? RejectReason) : ICommand;
 }
 

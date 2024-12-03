@@ -48,6 +48,18 @@ namespace Neighbor.Domain.Entities
             return new Order(accountId, productId, rentTime, returnTime, deliveryAddress, orderValue, orderStatus, orderId, isConflict, paymentMethod);
         }
 
+        public void UpdateConfirmOrderByUser(OrderStatusType orderStatus, string? rejectReason)
+        {
+            OrderStatus = orderStatus;
+            UserReasonReject = rejectReason;
+        }
+
+        public void UpdateConfirmOrderByLessor(OrderStatusType orderStatus, string? rejectReason)
+        {
+            OrderStatus = orderStatus;
+            LessorReasonReject = rejectReason;
+        }
+
         public void UpdateProductOrder(Product product)
         {
             Product = product;

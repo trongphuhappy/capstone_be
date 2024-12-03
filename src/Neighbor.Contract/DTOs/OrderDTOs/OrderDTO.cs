@@ -11,6 +11,13 @@ public static class OrderDTO
         public DateTime ReturnTime { get; set; }
     }
 
+    public class OrderRequestConfirmDTO
+    {
+        public Guid OrderId { get; set; }
+        public bool IsApproved { get; set; }
+        public string? RejectReason { get; set; }
+    }
+
     public class OrderResponseDTO
     {
         public string Name { get; set; }

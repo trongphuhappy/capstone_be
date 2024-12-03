@@ -8,6 +8,7 @@ using Neighbor.Contract.DTOs.ProductDTOs;
 using Neighbor.Contract.Services.Orders;
 using Neighbor.Presentation.Abstractions;
 using System.Security.Claims;
+using static Neighbor.Contract.DTOs.ProductDTOs.OrderDTO;
 using static Neighbor.Contract.Services.Orders.Filter;
 
 namespace Neighbor.Presentation.Controller.V2;
@@ -44,24 +45,30 @@ public class OrderController : ApiController
         return Redirect(result.Value.Data.Url);
     }
 
+    //[Authorize]
     [HttpPut("user_confirm_order", Name = "UserConfirmOrder")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
-    public async Task<IActionResult> HandleUser([FromBody] Command.UserConfirmOrderCommand commands)
+    public async Task<IActionResult> UserConfirmOrder([FromBody] OrderRequestConfirmDTO order)
     {
-        var result = await Sender.Send(commands);
+        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
+        var userId = Guid.Parse("2B1EF652-F812-4DB0-A6FE-EEF05CDE44B8");
+        var result = await Sender.Send(new Command.UserConfirmOrderCommand(userId, order.OrderId, order.IsApproved, order.RejectReason));
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Ok(result);
     }
 
+    //[Authorize]
     [HttpPut("lessor_confirm_order", Name = "LessorConfirmOrder")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
-    public async Task<IActionResult> HandleUser([FromBody] Command.LessorConfirmOrderCommand commands)
+    public async Task<IActionResult> LessorConfirmOrder([FromBody] OrderRequestConfirmDTO order)
     {
-        var result = await Sender.Send(commands);
+        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
+        var userId = Guid.Parse("6C7C2F84-A595-4C9C-ABD6-925115FC6FA4");
+        var result = await Sender.Send(new Command.LessorConfirmOrderCommand(userId, order.OrderId, order.IsApproved, order.RejectReason));
         if (result.IsFailure)
             return HandlerFailure(result);
         

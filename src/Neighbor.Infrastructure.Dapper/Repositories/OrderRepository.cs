@@ -45,23 +45,24 @@ public class OrderRepository : IOrderRepository
             await connection.OpenAsync();
 
             // Query the product
-            var orders = await connection.QueryAsync<Order, Product, Lessor, Category, Order>(
-                @"SELECT o.Id, o.RentTime, o.ReturnTime, o.DeliveryAddress, o.OrderValue, o.OrderStatus, o.UserReasonReject, o.LessorReasonReject, o.IsConflict, o.CreatedDate, o.ModifiedDate AS OrderModifiedDate, p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId, l.Description AS LessorDescription, c.Id, c.Name, c.IsVehicle
+            var orders = await connection.QueryAsync<Order, Account, Product, Lessor, Category, Order>(
+                @"SELECT o.Id, o.RentTime, o.ReturnTime, o.DeliveryAddress, o.OrderValue, o.OrderStatus, o.UserReasonReject, o.LessorReasonReject, o.IsConflict, o.CreatedDate, o.ModifiedDate AS OrderModifiedDate, a.Id, a.FirstName, a.LastName, a.Email, a.PhoneNumber, a.CropAvatarUrl, a.FullAvatarUrl, a.LoginType AS AccountLoginType, p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId, l.CreatedDate AS LessorCreatedDate, c.Id, c.Name, c.IsVehicle
               FROM Orders o
+              JOIN Accounts a ON a.Id = o.AccountId
               JOIN Products p ON p.Id = o.ProductId
               JOIN Lessors l ON l.Id = p.LessorId
               JOIN Categories c ON c.Id = p.CategoryId
               WHERE o.Id = @Id",
-                (o, p, l, c) =>
+                (o, a, p, l, c) =>
                 {
-
                     p.UpdateLessorProduct(l);
                     p.UpdateCategory(c);
                     o.UpdateProductOrder(p);
+                    o.UpdateUserOrder(a);
                     return o;
                 },
                 new { Id = orderId },
-                splitOn: "OrderModifiedDate, ProductModifiedDate, LessorDescription");
+                splitOn: "OrderModifiedDate, AccountLoginType, ProductModifiedDate, LessorCreatedDate");
 
             if (orders == null) return null;
             var order = orders.ToList()[0];
@@ -201,6 +202,20 @@ public class OrderRepository : IOrderRepository
                 totalCountQuery.Append(" AND o.OrderValue <= @MaxValue AND o.OrderValue >= @MinValue");
                 parameters.Add("MinValue", filterParams.MinValue);
                 parameters.Add("MaxValue", filterParams.MaxValue);
+            }
+
+            if (filterParams?.AccountUserId.HasValue == true)
+            {
+                queryBuilder.Append(" AND o.AccountId = @AccountUserId");
+                totalCountQuery.Append(" AND o.AccountId = @AccountUserId");
+                parameters.Add("AccountUserId", filterParams.AccountUserId);
+            }
+
+            if (filterParams?.AccountLessorId.HasValue == true)
+            {
+                queryBuilder.Append(" AND l.AccountId = @AccountLessorId");
+                totalCountQuery.Append(" AND l.AccountId = @AccountLessorId");
+                parameters.Add("AccountLessorId", filterParams.AccountLessorId);
             }
 
             // Get total count and pages

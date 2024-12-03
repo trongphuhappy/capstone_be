@@ -16,5 +16,12 @@ internal class GetAllProductsInWishlistValidator : AbstractValidator<Query.GetAl
         RuleFor(x => x.FilterParams)
             .Must(filter => (filter.MinValue != null && filter.MaxValue != null) || (filter.MinValue == null && filter.MaxValue == null))
             .WithMessage("MinValue and MaxValue must either both be provided or both be null.");
+
+        RuleFor(x => x.FilterParams)
+                .Must(filter =>
+                    !(filter.AccountUserId.HasValue && filter.AccountLessorId.HasValue) // Both cannot be filled
+                    || (!filter.AccountUserId.HasValue && !filter.AccountLessorId.HasValue) // Neither is filled
+                )
+                .WithMessage("Only one of AccountUserId or AccountLessorId should be filled, or leave both empty.");
     }
 }

@@ -42,8 +42,9 @@ public sealed class ConfirmProductCommandHandler : ICommandHandler<Command.Confi
         {
             throw new ProductException.ProductRejectNoReasonException();
         }
+        string rejectReason = request.ConfirmStatus == ConfirmStatus.Rejected ? request.RejectReason : null;
         //Update Confirm Status to DB
-        productFound.UpdateProduct(productFound.Name, productFound.Policies, productFound.Description, productFound.Price, productFound.Value, productFound.MaximumRentDays, request.RejectReason, productFound.StatusType, request.ConfirmStatus);
+        productFound.UpdateProduct(productFound.Name, productFound.Policies, productFound.Description, productFound.Price, productFound.Value, productFound.MaximumRentDays, rejectReason, productFound.StatusType, request.ConfirmStatus);
         _efUnitOfWork.ProductRepository.Update(productFound);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         //Send email

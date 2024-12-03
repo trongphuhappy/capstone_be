@@ -131,6 +131,9 @@ public enum MessagesList
     [Message("Details Order: ", "order_noti_success_02")]
     OrderGetDetailsSuccessfully,
 
+    [Message("Confirm Order successfully", "order_noti_success_03")]
+    OrderConfirmSuccessfully,
+
     [Message("You cannot rent a product that belongs to you!", "order_noti_exception_01")]
     OrderProductBelongsToUserException,
 
@@ -148,4 +151,16 @@ public enum MessagesList
 
     [Message("Can not find this Order", "order_noti_exception_06")]
     OrderNotFoundException,
+
+    [Message("You have already confirmed this Order!", "order_noti_exception_07")]
+    OrderHaveAlreadyConfirmedException,
+
+    [Message("Reject Order must have a reason!", "order_noti_exception_08")]
+    OrderRejectWithoutReasonException,
+
+    [Message("This order does not belong to this user!", "order_noti_exception_09")]
+    OrderNotBelongToUserException,
+
+    [Message("You must wait for User confirm before you confirm this order!", "order_noti_exception_10")]
+    OrderUserHasNotConfirmException,
 }

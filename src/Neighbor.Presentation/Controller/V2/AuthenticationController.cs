@@ -159,6 +159,42 @@ public class AuthenticationController : ApiController
         });
     }
 
+    [HttpPost("forgot-password-email", Name = "ForgotPasswordEmailCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordEmail([FromBody] Command.ForgotPasswordEmailCommand ForgotPasswordEmail)
+    {
+        var result = await Sender.Send(ForgotPasswordEmail);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPost("forgot-password-otp", Name = "ForgotPasswordOtpCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordOtp([FromBody] Command.ForgotPasswordOtpCommand ForgotPasswordOtp)
+    {
+        var result = await Sender.Send(ForgotPasswordOtp);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPost("forgot-password-change", Name = "ForgotPasswordChangeCommand")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ForgotPasswordChange([FromBody] Command.ForgotPasswordChangeCommand ForgotPasswordChange)
+    {
+        var result = await Sender.Send(ForgotPasswordChange);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
     [Authorize]
     [HttpPost("logout", Name = "Logout")]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -87,6 +87,10 @@ public class Account : DomainEntity<Guid>
         IsDeleted = isDeleted;
     }
 
+    public void UpdatePassword(string password)
+    {
+        Password = password;
+    }
     public void UpdateAvatarUser(string cropAvatarUrl, string cropAvatarId, string fullAvatarUrl, string fullAvatarId)
     {
         CropAvatarId = cropAvatarId;

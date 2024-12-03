@@ -66,4 +66,28 @@ public static class AuthenticationException
                   MessagesList.AuthLoginGoogleFail.GetMessage().Code)
         { }
     }
+
+    public sealed class OtpForgotPasswordNotMatchException : NotFoundException
+    {
+        public OtpForgotPasswordNotMatchException()
+            : base(MessagesList.AuthOtpForgotPasswordNotMatchException.GetMessage().Message,
+                   MessagesList.AuthOtpForgotPasswordNotMatchException.GetMessage().Code)
+        { }
+    }
+    
+    public sealed class ErrorChangePasswordException : BadRequestException
+    {
+        public ErrorChangePasswordException()
+           : base(MessagesList.AuthErrorChangePasswordException.GetMessage().Message,
+                  MessagesList.AuthErrorChangePasswordException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class EmailGoogleRegistedException : BadRequestException
+    {
+        public EmailGoogleRegistedException()
+           : base(MessagesList.AuthGoogleEmailRegisted.GetMessage().Message,
+                  MessagesList.AuthGoogleEmailRegisted.GetMessage().Code)
+        { }
+    }
 }

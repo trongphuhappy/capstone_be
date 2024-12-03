@@ -9,7 +9,7 @@ namespace Neighbor.Domain.Entities
         public Order()
         { }
 
-        public Order(Guid accountId, Guid productId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double orderValue, OrderStatusType orderStatus, long orderId, bool IsConflict,  PaymentMethodType paymentMethodId)
+        public Order(Guid accountId, Guid productId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double orderValue, OrderStatusType orderStatus, long orderId,  PaymentMethodType paymentMethodId)
         {
             Id = Guid.NewGuid();
             AccountId = accountId;
@@ -27,10 +27,12 @@ namespace Neighbor.Domain.Entities
         public string DeliveryAddress { get; private set; }
         public double OrderValue { get; private set; }
         public OrderStatusType OrderStatus { get; private set; }
+        public OrderReportStatusType OrderReportStatus { get; private set; } = OrderReportStatusType.NotConflict;
         public string? UserReasonReject {  get; private set; }
         public string? LessorReasonReject { get; private set; }
+        public string? UserReport { get; private set; }
+        public string? AdminReasonReject { get; private set; }
         public long? OrderId { get; private set; }
-        public bool IsConflict { get; private set; }
         public virtual List<Feedback> Feedbacks { get; private set; }
         public PaymentMethodType PaymentMethodId { get; private set; }
         public virtual PaymentMethod PaymentMethod { get; private set; }
@@ -44,8 +46,7 @@ namespace Neighbor.Domain.Entities
             double orderValue = Math.Ceiling((returnTime - rentTime).TotalDays) * productPrice;
             OrderStatusType orderStatus = OrderStatusType.Pending;
             PaymentMethodType paymentMethod = PaymentMethodType.Banking;
-            bool isConflict = false;
-            return new Order(accountId, productId, rentTime, returnTime, deliveryAddress, orderValue, orderStatus, orderId, isConflict, paymentMethod);
+            return new Order(accountId, productId, rentTime, returnTime, deliveryAddress, orderValue, orderStatus, orderId, paymentMethod);
         }
 
         public void UpdateConfirmOrderByUser(OrderStatusType orderStatus, string? rejectReason)
@@ -58,6 +59,18 @@ namespace Neighbor.Domain.Entities
         {
             OrderStatus = orderStatus;
             LessorReasonReject = rejectReason;
+        }
+
+        public void UpdateConfirmOrderByAdmin(OrderReportStatusType orderReportStatus, string? rejectReason)
+        {
+            OrderReportStatus = orderReportStatus;
+            AdminReasonReject = rejectReason;
+        }
+
+        public void UpdateReportOrder(string userReport)
+        {
+            OrderReportStatus = OrderReportStatusType.PendingConflict;
+            UserReport = userReport;
         }
 
         public void UpdateProductOrder(Product product)

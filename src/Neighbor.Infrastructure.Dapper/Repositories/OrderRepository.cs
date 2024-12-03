@@ -46,7 +46,7 @@ public class OrderRepository : IOrderRepository
 
             // Query the product
             var orders = await connection.QueryAsync<Order, Account, Product, Lessor, Category, Order>(
-                @"SELECT o.Id, o.RentTime, o.ReturnTime, o.DeliveryAddress, o.OrderValue, o.OrderStatus, o.UserReasonReject, o.LessorReasonReject, o.IsConflict, o.CreatedDate, o.ModifiedDate AS OrderModifiedDate, a.Id, a.FirstName, a.LastName, a.Email, a.PhoneNumber, a.CropAvatarUrl, a.FullAvatarUrl, a.LoginType AS AccountLoginType, p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId, l.CreatedDate AS LessorCreatedDate, c.Id, c.Name, c.IsVehicle
+                @"SELECT o.Id, o.RentTime, o.ReturnTime, o.DeliveryAddress, o.OrderValue, o.OrderStatus, o.OrderReportStatus, o.UserReasonReject, o.LessorReasonReject, o.UserReport, o.AdminReasonReject, o.CreatedDate, o.ModifiedDate AS OrderModifiedDate, a.Id, a.FirstName, a.LastName, a.Email, a.PhoneNumber, a.CropAvatarUrl, a.FullAvatarUrl, a.LoginType AS AccountLoginType, p.Id, p.Name, p.StatusType, p.Policies, p.Description, p.RejectReason, p.Rating, p.Price, p.Value, p.MaximumRentDays, p.ConfirmStatus, p.LessorId, p.CreatedDate, p.ModifiedDate AS ProductModifiedDate, l.Id, l.WareHouseAddress, l.ShopName, l.AccountId, l.CreatedDate AS LessorCreatedDate, c.Id, c.Name, c.IsVehicle
               FROM Orders o
               JOIN Accounts a ON a.Id = o.AccountId
               JOIN Products p ON p.Id = o.ProductId
@@ -135,7 +135,7 @@ public class OrderRepository : IOrderRepository
             // Valid columns for selecting
             var validColumns = new HashSet<string>
         {
-            "o.Id", "o.RentTime", "o.ReturnTime", "o.DeliveryAddress", "o.OrderValue", "o.OrderStatus", "o.UserReasonReject", "o.LessorReasonReject", "o.IsConflict", "o.CreatedDate", "o.ModifiedDate AS OrderModifiedDate", "a.Id", "a.FirstName", "a.LastName", "a.Email", "a.PhoneNumber", "a.CropAvatarUrl", "a.FullAvatarUrl", "a.LoginType AS AccountLoginType",
+            "o.Id", "o.RentTime", "o.ReturnTime", "o.DeliveryAddress", "o.OrderValue", "o.OrderStatus", "o.OrderReportStatus", "o.UserReasonReject", "o.LessorReasonReject", "o.UserReport", "o.AdminReasonReject", "o.CreatedDate", "o.ModifiedDate AS OrderModifiedDate", "a.Id", "a.FirstName", "a.LastName", "a.Email", "a.PhoneNumber", "a.CropAvatarUrl", "a.FullAvatarUrl", "a.LoginType AS AccountLoginType",
             "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
             "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
             "p.ModifiedDate AS ProductModifiedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.AccountId", "l.CreatedDate AS LessorCreatedDate", "c.Id", "c.Name", "c.IsVehicle"
@@ -189,11 +189,11 @@ public class OrderRepository : IOrderRepository
                 parameters.Add("OrderStatus", filterParams.OrderStatus);
             }
 
-            if (filterParams?.IsConflict.HasValue == true)
+            if (filterParams?.OrderReportStatus.HasValue == true)
             {
-                queryBuilder.Append(" AND o.IsConflict = @IsConflict");
-                totalCountQuery.Append(" AND o.IsConflict = @IsConflict");
-                parameters.Add("IsConflict", filterParams.IsConflict);
+                queryBuilder.Append(" AND o.OrderReportStatus = @OrderReportStatus");
+                totalCountQuery.Append(" AND o.OrderReportStatus = @OrderReportStatus");
+                parameters.Add("OrderReportStatus", filterParams.OrderReportStatus);
             }
 
             if (filterParams?.MinValue.HasValue == true && filterParams?.MaxValue.HasValue == true)

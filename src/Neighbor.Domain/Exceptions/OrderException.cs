@@ -83,4 +83,20 @@ public static class OrderException
                        MessagesList.OrderUserHasNotConfirmException.GetMessage().Code)
         { }
     }
+
+    public sealed class OrderLessorHasNotConfirmException : BadRequestException
+    {
+        public OrderLessorHasNotConfirmException()
+                : base(MessagesList.OrderLessorHasNotConfirmException.GetMessage().Message,
+                       MessagesList.OrderLessorHasNotConfirmException.GetMessage().Code)
+        { }
+    }
+
+    public sealed class OrderDoesNotConflictException : BadRequestException
+    {
+        public OrderDoesNotConflictException()
+                : base(MessagesList.OrderDoesNotConflictException.GetMessage().Message,
+                       MessagesList.OrderDoesNotConflictException.GetMessage().Code)
+        { }
+    }
 }

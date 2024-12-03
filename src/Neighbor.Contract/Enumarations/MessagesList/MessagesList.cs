@@ -134,6 +134,9 @@ public enum MessagesList
     [Message("Confirm Order successfully", "order_noti_success_03")]
     OrderConfirmSuccessfully,
 
+    [Message("Report Order successfully", "order_noti_success_03")]
+    OrderReportSuccessfully,
+
     [Message("You cannot rent a product that belongs to you!", "order_noti_exception_01")]
     OrderProductBelongsToUserException,
 
@@ -163,4 +166,11 @@ public enum MessagesList
 
     [Message("You must wait for User confirm before you confirm this order!", "order_noti_exception_10")]
     OrderUserHasNotConfirmException,
+
+    [Message("You must wait for Lessor confirm before you report this order!", "order_noti_exception_11")]
+    OrderLessorHasNotConfirmException,
+
+    [Message("This Order does not have any conflict!", "order_noti_exception_12")]
+    OrderDoesNotConflictException,
+
 }

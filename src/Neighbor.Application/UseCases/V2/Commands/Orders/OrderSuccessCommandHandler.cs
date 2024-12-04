@@ -38,10 +38,10 @@ public sealed class OrderSuccessCommandHandler : ICommandHandler<Command.OrderSu
         var product = await _efUnitOfWork.ProductRepository.FindByIdAsync(orderObject.ProductId) ?? throw new ProductException.ProductNotFoundException();
 
         // Find lessor
-        var lessor = await _efUnitOfWork.LessorRepository.FindByIdAsync(orderObject.AccountId, cancellationToken, x => x.Id);
+        //var lessor = await _efUnitOfWork.LessorRepository.FindByIdAsync(product.LessorId, cancellationToken);
         
         //Find wallet
-        var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(lessor.Id);
+        var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(product.LessorId);
         
         var orderCreated = Order.CreateOrder(orderObject.AccountId, orderObject.ProductId, orderObject.RentTime, orderObject.ReturnTime, product.Lessor.WareHouseAddress, product.Price, request.OrderId);
         _efUnitOfWork.OrderRepository.Add(orderCreated);
@@ -61,7 +61,7 @@ public sealed class OrderSuccessCommandHandler : ICommandHandler<Command.OrderSu
         // await Task.WhenAll(
         //    _publisher.Publish(new DomainEvent.NotiUserOrderSuccess(orderCreated.Id, accountFound.Email, productFound.Name, productFound.Lessor.WareHouseAddress, request.RentTime), cancellationToken)
         //);
-        var result = new Response.OrderSuccess($"{_clientSetting.Url}{_clientSetting.OrderSuccess}/{request.OrderId}");
+        var result = new Response.OrderSuccess($"{_clientSetting.Url}{_clientSetting.OrderSuccess}");
         return Result.Success(new Success<Response.OrderSuccess>("", "", result));
     }
 }

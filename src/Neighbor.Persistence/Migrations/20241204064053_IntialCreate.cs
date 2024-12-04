@@ -112,7 +112,6 @@ namespace Neighbor.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WareHouseAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShopName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LocationType = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -142,8 +141,8 @@ namespace Neighbor.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RejectReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<double>(type: "float", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    Value = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false),
                     MaximumRentDays = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     ConfirmStatus = table.Column<int>(type: "int", nullable: false),
@@ -163,6 +162,28 @@ namespace Neighbor.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Products_Lessors_LessorId",
+                        column: x => x.LessorId,
+                        principalTable: "Lessors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Wallets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LessorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Balance = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Wallets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Wallets_Lessors_LessorId",
                         column: x => x.LessorId,
                         principalTable: "Lessors",
                         principalColumn: "Id",
@@ -204,7 +225,7 @@ namespace Neighbor.Persistence.Migrations
                     OrderValue = table.Column<double>(type: "float", nullable: false),
                     OrderStatus = table.Column<int>(type: "int", nullable: false),
                     UserReasonReject = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LessorReaonReject = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LessorReasonReject = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderId = table.Column<long>(type: "bigint", nullable: true),
                     IsConflict = table.Column<bool>(type: "bit", nullable: false),
                     PaymentMethodId = table.Column<int>(type: "int", nullable: false),
@@ -288,6 +309,30 @@ namespace Neighbor.Persistence.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WalletId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Wallets_WalletId",
+                        column: x => x.WalletId,
+                        principalTable: "Wallets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -418,6 +463,17 @@ namespace Neighbor.Persistence.Migrations
                 column: "SurchargeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Transactions_WalletId",
+                table: "Transactions",
+                column: "WalletId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wallets_LessorId",
+                table: "Wallets",
+                column: "LessorId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Wishlists_AccountId",
                 table: "Wishlists",
                 column: "AccountId");
@@ -438,6 +494,9 @@ namespace Neighbor.Persistence.Migrations
                 name: "ProductSurcharges");
 
             migrationBuilder.DropTable(
+                name: "Transactions");
+
+            migrationBuilder.DropTable(
                 name: "Wishlists");
 
             migrationBuilder.DropTable(
@@ -448,6 +507,9 @@ namespace Neighbor.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Surcharges");
+
+            migrationBuilder.DropTable(
+                name: "Wallets");
 
             migrationBuilder.DropTable(
                 name: "Orders");

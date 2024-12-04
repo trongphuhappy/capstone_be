@@ -46,14 +46,25 @@ public class OrderController : ApiController
         return Redirect(result.Value.Data.Url);
     }
 
-    //[Authorize]
+    [HttpGet("order_fail", Name = "OrderFail")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> OrderFail([FromQuery] long orderId)
+    {
+        var result = await Sender.Send(new Command.OrderFailCommand(orderId));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+        
+        return Redirect(result.Value.Data.Url);
+    }
+
+    [Authorize]
     [HttpPut("user_confirm_order", Name = "UserConfirmOrder")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
     public async Task<IActionResult> UserConfirmOrder([FromBody] OrderRequestConfirmDTO order)
     {
-        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("45d1dcaa-5cac-4c49-8332-6e9a7c80a3c9");
+        var userId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Command.UserConfirmOrderCommand(userId, order.OrderId, order.IsApproved, order.RejectReason));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -61,14 +72,13 @@ public class OrderController : ApiController
         return Ok(result);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpPut("lessor_confirm_order", Name = "LessorConfirmOrder")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
     public async Task<IActionResult> LessorConfirmOrder([FromBody] OrderRequestConfirmDTO order)
     {
-        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("C60C5757-D94B-4224-ACBF-21F8DBF149C9");
+        var userId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Command.LessorConfirmOrderCommand(userId, order.OrderId, order.IsApproved, order.RejectReason));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -76,14 +86,13 @@ public class OrderController : ApiController
         return Ok(result);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpPut("user_report_order", Name = "UserReportOrder")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
     public async Task<IActionResult> UserReportOrder([FromBody] OrderRequestReportDTO order)
     {
-        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("45D1DCAA-5CAC-4C49-8332-6E9A7C80A3C9");
+        var userId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Command.UserReportOrderCommand(userId, order.OrderId, order.UserReport));
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -91,7 +100,7 @@ public class OrderController : ApiController
         return Ok(result);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpPut("admin_confirm_order", Name = "AdminConfirmOrder")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]

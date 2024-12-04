@@ -18,6 +18,12 @@ public static class OrderDTO
         public string? RejectReason { get; set; }
     }
 
+    public class OrderRequestReportDTO
+    {
+        public Guid OrderId { get; set; }
+        public string? UserReport { get; set; }
+    }
+
     public class OrderResponseDTO
     {
         public string Name { get; set; }

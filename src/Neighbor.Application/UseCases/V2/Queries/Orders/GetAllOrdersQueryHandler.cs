@@ -68,7 +68,7 @@ public sealed class GetAllOrdersQueryHandler : IQueryHandler<Query.GetAllOrdersQ
                 ShopName = order.Product.Lessor.ShopName,
                 WareHouseAddress = order.Product.Lessor.WareHouseAddress
             };
-            listOrdersDTO.Add(new OrderResponse(order.Id, order.RentTime, order.ReturnTime, order.DeliveryAddress, order.OrderValue, order.OrderStatus, order.UserReasonReject, order.LessorReasonReject, order.IsConflict, order.CreatedDate.Value, product, user, lessor));
+            listOrdersDTO.Add(new OrderResponse(order.Id, order.RentTime, order.ReturnTime, order.DeliveryAddress, order.OrderValue, order.OrderStatus, order.OrderReportStatus, order.UserReasonReject, order.LessorReasonReject, order.UserReport, order.AdminReasonReject, order.CreatedDate.Value, product, user, lessor));
         });
         //Initial result
         var result = new PagedResult<OrderResponse>(listOrdersDTO, listOrders.PageIndex, listOrders.PageSize, listOrders.TotalCount, listOrders.TotalPages);

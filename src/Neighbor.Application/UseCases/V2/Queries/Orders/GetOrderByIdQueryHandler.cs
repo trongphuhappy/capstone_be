@@ -100,7 +100,7 @@ public sealed class GetOrderByIdQueryHandler : IQueryHandler<Query.GetOrderByIdQ
             ShopName = orderFound.Product.Lessor.ShopName,
             WareHouseAddress = orderFound.Product.Lessor.WareHouseAddress
         };
-        var result = new OrderResponse(orderFound.Id, orderFound.RentTime, orderFound.ReturnTime, orderFound.DeliveryAddress, orderFound.OrderValue, orderFound.OrderStatus, orderFound.UserReasonReject, orderFound.LessorReasonReject, orderFound.IsConflict, orderFound.CreatedDate.Value, productDTO, user, lessor);
+        var result = new OrderResponse(orderFound.Id, orderFound.RentTime, orderFound.ReturnTime, orderFound.DeliveryAddress, orderFound.OrderValue, orderFound.OrderStatus, orderFound.OrderReportStatus, orderFound.UserReasonReject, orderFound.LessorReasonReject, orderFound.UserReport, orderFound.AdminReasonReject, orderFound.CreatedDate.Value, productDTO, user, lessor);
         return Result.Success(new Success<OrderResponse>(MessagesList.OrderGetDetailsSuccessfully.GetMessage().Code, MessagesList.OrderGetDetailsSuccessfully.GetMessage().Message, result));
     }
 }

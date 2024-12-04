@@ -53,12 +53,19 @@ public sealed class LessorConfirmOrderCommandHandler : ICommandHandler<Command.L
         orderFound.UpdateConfirmOrderByLessor(orderStatus, rejectReason);
         _efUnitOfWork.OrderRepository.Update(orderFound);
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
+        //Check if Order Not Completed then Update Product Available for rented
         if(orderStatus != OrderStatusType.CompletedRented)
         {
             var productFound = await _efUnitOfWork.ProductRepository.FindByIdAsync(orderFound.Product.Id);
             productFound.UpdateStatusType(StatusType.Available);
             _efUnitOfWork.ProductRepository.Update(productFound);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        //Refund money to User if User Rejected Order and Lessor Approved this Rejected
+        if(request.IsApproved && orderFound.OrderStatus == OrderStatusType.UserRejected)
+        {
+
         }
         //Send email
         if (request.IsApproved)

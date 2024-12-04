@@ -11,7 +11,6 @@ public static class Command
     public record UserConfirmOrderCommand(Guid AccountId, Guid OrderId, bool IsApproved, string? RejectReason) : ICommand;
     public record UserReportOrderCommand(Guid AccountId, Guid OrderId, string UserReport) : ICommand;
     public record AdminConfirmOrderCommand(Guid OrderId, bool IsApproved, string? RejectReason) : ICommand;
-
     public record LessorConfirmOrderCommand(Guid AccountId, Guid OrderId, bool IsApproved, string? RejectReason) : ICommand;
 }
 

@@ -5,6 +5,6 @@
         NotConflict = 0,                
         PendingConflict = 1,             
         ApprovedReport = 2,           
-        RejectedReport = -1,            
+        RejectedReport = -1,    
     }
 }

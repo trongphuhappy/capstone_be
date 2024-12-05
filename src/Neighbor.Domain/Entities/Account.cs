@@ -115,4 +115,20 @@ public class Account : DomainEntity<Guid>
         if (phoneNumber != null) PhoneNumber = phoneNumber;
         if (email != null) Email = email;
     }
+
+    public static Account CreateAccountForConfirmProductCommandHandlerTest(string email)
+    {
+        return new Account()
+        {
+            Email = email
+        };
+    }
+
+    public static Account CreateAccountForAddToWishlistCommandHandlerTest(Guid accountId)
+    {
+        return new Account()
+        {
+            Id = accountId
+        };
+    }
 }

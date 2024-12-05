@@ -10,6 +10,7 @@ using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Entities;
 using Neighbor.Domain.Exceptions;
 using System.Linq.Expressions;
+namespace Neighbor.Application.UnitTests.UseCases.V2.Commands.Authentications;
 
 public class RegisterCommandHandlerTests
 {

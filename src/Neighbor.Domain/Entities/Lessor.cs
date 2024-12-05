@@ -42,4 +42,29 @@ public class Lessor : DomainEntity<Guid>
         if (shopeName != null) ShopName = shopeName;
         if (locationType != null) LocationType = (LocationType)locationType;
     }
+
+    public static Lessor CreateLessorForConfirmProductCommandHandlerTest(Account account)
+    {
+        return new Lessor()
+        {
+            Account = account
+        };
+    }
+
+    public static Lessor CreateLessorForAddToWishlistCommandHandlerTest(Guid accountId)
+    {
+        return new Lessor()
+        {
+            AccountId = accountId
+        };
+    }
+
+    public static Lessor CreateLessorForOrderSuccessCommandHandlerTest(Guid accountId)
+    {
+        return new Lessor()
+        {
+            Id = Guid.NewGuid(),
+            AccountId = accountId
+        };
+    }
 }

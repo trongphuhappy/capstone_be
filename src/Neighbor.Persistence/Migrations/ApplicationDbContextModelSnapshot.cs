@@ -141,6 +141,9 @@ namespace Neighbor.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -160,7 +163,12 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("OrderId");
 
@@ -257,9 +265,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -292,6 +297,9 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<Guid?>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AdminReasonReject")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -299,13 +307,10 @@ namespace Neighbor.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsConflict")
-                        .HasColumnType("bit");
-
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LessorReaonReject")
+                    b.Property<string>("LessorReasonReject")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedDate")
@@ -313,6 +318,9 @@ namespace Neighbor.Persistence.Migrations
 
                     b.Property<long?>("OrderId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("OrderReportStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -333,6 +341,9 @@ namespace Neighbor.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserReasonReject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserReport")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -399,8 +410,8 @@ namespace Neighbor.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
@@ -411,8 +422,8 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<int>("StatusType")
                         .HasColumnType("int");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -498,6 +509,70 @@ namespace Neighbor.Persistence.Migrations
                     b.ToTable("Surcharges");
                 });
 
+            modelBuilder.Entity("Neighbor.Domain.Entities.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Wallet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Balance")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LessorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessorId")
+                        .IsUnique();
+
+                    b.ToTable("Wallets");
+                });
+
             modelBuilder.Entity("Neighbor.Domain.Entities.Wishlist", b =>
                 {
                     b.Property<Guid>("Id")
@@ -541,11 +616,19 @@ namespace Neighbor.Persistence.Migrations
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Feedback", b =>
                 {
+                    b.HasOne("Neighbor.Domain.Entities.Account", "Account")
+                        .WithMany("Feedback")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Neighbor.Domain.Entities.Order", "Order")
                         .WithMany("Feedbacks")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Account");
 
                     b.Navigation("Order");
                 });
@@ -553,7 +636,7 @@ namespace Neighbor.Persistence.Migrations
             modelBuilder.Entity("Neighbor.Domain.Entities.Images", b =>
                 {
                     b.HasOne("Neighbor.Domain.Entities.Feedback", "Feedback")
-                        .WithMany("Images")
+                        .WithMany()
                         .HasForeignKey("FeedBackId");
 
                     b.HasOne("Neighbor.Domain.Entities.Insurance", "Insurance")
@@ -654,6 +737,28 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Surcharge");
                 });
 
+            modelBuilder.Entity("Neighbor.Domain.Entities.Transaction", b =>
+                {
+                    b.HasOne("Neighbor.Domain.Entities.Wallet", "Wallet")
+                        .WithMany("Transactions")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Wallet", b =>
+                {
+                    b.HasOne("Neighbor.Domain.Entities.Lessor", "Lessor")
+                        .WithOne("Wallet")
+                        .HasForeignKey("Neighbor.Domain.Entities.Wallet", "LessorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lessor");
+                });
+
             modelBuilder.Entity("Neighbor.Domain.Entities.Wishlist", b =>
                 {
                     b.HasOne("Neighbor.Domain.Entities.Account", "Account")
@@ -671,6 +776,8 @@ namespace Neighbor.Persistence.Migrations
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Account", b =>
                 {
+                    b.Navigation("Feedback");
+
                     b.Navigation("Lessor");
 
                     b.Navigation("Orders");
@@ -683,11 +790,6 @@ namespace Neighbor.Persistence.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Neighbor.Domain.Entities.Feedback", b =>
-                {
-                    b.Navigation("Images");
-                });
-
             modelBuilder.Entity("Neighbor.Domain.Entities.Insurance", b =>
                 {
                     b.Navigation("Images");
@@ -696,6 +798,9 @@ namespace Neighbor.Persistence.Migrations
             modelBuilder.Entity("Neighbor.Domain.Entities.Lessor", b =>
                 {
                     b.Navigation("Products");
+
+                    b.Navigation("Wallet")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Order", b =>
@@ -729,6 +834,11 @@ namespace Neighbor.Persistence.Migrations
             modelBuilder.Entity("Neighbor.Domain.Entities.Surcharge", b =>
                 {
                     b.Navigation("productSurcharges");
+                });
+
+            modelBuilder.Entity("Neighbor.Domain.Entities.Wallet", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,4 @@
-﻿namespace PawFund.Contract.Settings;
+﻿namespace Neighbor.Contract.Abstractions.Services;
 
 public class PayOSSetting
 {

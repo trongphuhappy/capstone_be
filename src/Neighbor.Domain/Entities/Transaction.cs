@@ -23,4 +23,9 @@ public class Transaction : DomainEntity<Guid>
     {
         return new Transaction(amount, TransactionType.Deposit, description, walletId);
     }
+
+    public static Transaction CreateTransactionWithTypeRefund(int amount, string description, Guid walletId)
+    {
+        return new Transaction(amount, TransactionType.Refund, description, walletId);
+    }
 }

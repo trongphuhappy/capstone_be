@@ -33,23 +33,24 @@ public sealed class OrderSuccessCommandHandler : ICommandHandler<Command.OrderSu
         var orderMemory = await _responseCacheService.GetCacheResponseAsync($"order_{request.OrderId}");
         // Conver JSON to object
         var orderObject = JsonConvert.DeserializeObject<Command.CreateOrderBankingCommand>(orderMemory);
-      
+
         // Find product
         var product = await _efUnitOfWork.ProductRepository.FindByIdAsync(orderObject.ProductId) ?? throw new ProductException.ProductNotFoundException();
 
         // Find lessor
-        var lessor = await _efUnitOfWork.LessorRepository.FindByIdAsync(orderObject.AccountId, cancellationToken, x => x.Id);
-        
+        //var lessor = await _efUnitOfWork.LessorRepository.FindByIdAsync(product.LessorId, cancellationToken);
+
         //Find wallet
-        var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(lessor.Id);
-        
+        var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(product.LessorId);
+
         var orderCreated = Order.CreateOrder(orderObject.AccountId, orderObject.ProductId, orderObject.RentTime, orderObject.ReturnTime, product.Lessor.WareHouseAddress, product.Price, request.OrderId);
         _efUnitOfWork.OrderRepository.Add(orderCreated);
         // Change status type product
         product.UpdateStatusType(StatusType.Not_Available);
         _efUnitOfWork.ProductRepository.Update(product);
         // Update wallet
-        wallet.AddMoney(orderObject.RentTime, orderObject.ReturnTime, product.Price, $"Member {orderObject.AccountId} rent {product.Id}");
+        int orderValue = (int)((orderObject.ReturnTime - orderObject.RentTime).TotalDays) * product.Price;
+        wallet.AddMoney((int)(orderValue * 0.3), $"Member {orderObject.AccountId} rent {product.Id}");
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         // Delete cache order
         await _responseCacheService.DeleteCacheResponseAsync($"order_{request.OrderId}");
@@ -61,7 +62,7 @@ public sealed class OrderSuccessCommandHandler : ICommandHandler<Command.OrderSu
         // await Task.WhenAll(
         //    _publisher.Publish(new DomainEvent.NotiUserOrderSuccess(orderCreated.Id, accountFound.Email, productFound.Name, productFound.Lessor.WareHouseAddress, request.RentTime), cancellationToken)
         //);
-        var result = new Response.OrderSuccess($"{_clientSetting.Url}{_clientSetting.OrderSuccess}/{request.OrderId}");
+        var result = new Response.OrderSuccess($"{_clientSetting.Url}{_clientSetting.OrderSuccess}");
         return Result.Success(new Success<Response.OrderSuccess>("", "", result));
     }
 }

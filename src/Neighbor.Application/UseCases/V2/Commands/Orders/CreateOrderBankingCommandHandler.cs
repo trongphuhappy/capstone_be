@@ -8,7 +8,6 @@ using Neighbor.Contract.Enumarations.Product;
 using Neighbor.Contract.Services.Orders;
 using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Exceptions;
-using PawFund.Contract.Settings;
 
 namespace Neighbor.Application.UseCases.V2.Commands.Orders;
 
@@ -55,7 +54,8 @@ public sealed class CreateOrderBankingCommandHandler : ICommandHandler<Command.C
         long orderId = new Random().Next(1, 100000);
 
         // Create payment dto
-        List<ItemDTO> itemDTOs = new() { new ItemDTO($"Order_{orderId}", 1, product.Price) };
+        double orderValue = Math.Ceiling((request.ReturnTime - request.RentTime).TotalDays) * product.Price;
+        List<ItemDTO> itemDTOs = new() { new ItemDTO($"Order_{orderId}", 1, (int)(orderValue * 0.3)) };
         var createPaymentDto = new CreatePaymentDTO(orderId, $"Rent {product.Name}", itemDTOs, _payOSSetting.ErrorUrl, _payOSSetting.SuccessUrl + $"?orderId={orderId}");
         var result = await _paymentService.CreatePaymentLink(createPaymentDto);
         // Save memory to when success or fail will know value

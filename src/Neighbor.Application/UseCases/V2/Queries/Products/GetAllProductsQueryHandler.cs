@@ -13,7 +13,6 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
 {
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IMapper _mapper;
-
     public GetAllProductsQueryHandler(IDPUnitOfWork dpUnitOfWork, IMapper mapper)
     {
         _dpUnitOfWork = dpUnitOfWork;
@@ -42,6 +41,7 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
             //Mapping Lessor of Product
             var lessor = new LessorDTO()
             {
+                AccountId = product.Lessor.AccountId,
                 LessorId = product.LessorId,
                 ShopName = product.Lessor.ShopName,
                 WareHouseAddress = product.Lessor.WareHouseAddress
@@ -62,7 +62,6 @@ public sealed class GetAllProductsQueryHandler : IQueryHandler<Query.GetAllProdu
         if (listProducts.Items.Count == 0)
         {
             return Result.Success(new Success<PagedResult<ProductResponse>>(MessagesList.ProductNotFoundAnyException.GetMessage().Code, MessagesList.ProductNotFoundAnyException.GetMessage().Message, result));
-
         }
         //Return result
         return Result.Success(new Success<PagedResult<ProductResponse>>(MessagesList.ProductGetAllSuccess.GetMessage().Code, MessagesList.ProductGetAllSuccess.GetMessage().Message, result));

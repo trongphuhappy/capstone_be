@@ -6,6 +6,7 @@ using Neighbor.Contract.Enumarations.Order;
 using Neighbor.Contract.Enumarations.Product;
 using Neighbor.Contract.Services.Orders;
 using Neighbor.Domain.Abstraction.EntitiyFramework;
+using Neighbor.Domain.Entities;
 using Neighbor.Domain.Exceptions;
 
 namespace Neighbor.Application.UseCases.V2.Commands.Orders;
@@ -44,9 +45,17 @@ public sealed class LessorConfirmOrderCommandHandler : ICommandHandler<Command.L
             throw new OrderException.OrderRejectWithoutReasonException();
         }
         string rejectReason = !request.IsApproved ? request.RejectReason : null;
+        //Refund money to User if User Rejected Order and Lessor Approved this Rejected
+        if (request.IsApproved && orderFound.OrderStatus == OrderStatusType.UserRejected)
+        {
+            var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(orderFound.Product.Lessor.Id);
+            int orderValue = (int)((orderFound.ReturnTime - orderFound.RentTime).TotalDays) * orderFound.Product.Price;
+            wallet.WithdrawMoney((int)(orderValue * 0.3), $"Lessor with accountId {request.AccountId} refund order {request.OrderId}");
+            _efUnitOfWork.WalletRepository.Update(wallet);
+        }
         //Check IsApproved to assign value to order status
         //If IsApproved then Check if User has Approved or Rejected this Order before
-        var orderStatus = request.IsApproved 
+        var orderStatus = request.IsApproved
             ?
             (orderFound.OrderStatus == OrderStatusType.UserApproved ? OrderStatusType.CompletedRented : OrderStatusType.RejectionValidated) 
             : OrderStatusType.RejectionInvalidated;
@@ -61,12 +70,7 @@ public sealed class LessorConfirmOrderCommandHandler : ICommandHandler<Command.L
             _efUnitOfWork.ProductRepository.Update(productFound);
             await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         }
-
-        //Refund money to User if User Rejected Order and Lessor Approved this Rejected
-        if(request.IsApproved && orderFound.OrderStatus == OrderStatusType.UserRejected)
-        {
-
-        }
+        
         //Send email
         if (request.IsApproved)
         {

@@ -18,4 +18,8 @@
 		<ProjectReference Include="..\Neighbor.Persistence\Neighbor.Persistence.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Hubs\" />
+	</ItemGroup>
+
 </Project>

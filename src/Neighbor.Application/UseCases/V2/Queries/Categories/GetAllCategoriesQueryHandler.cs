@@ -27,7 +27,6 @@ public sealed class GetAllSurchargesQueryHandler : IQueryHandler<Query.GetAllCat
         if (listCategories.Items.Count == 0)
         {
             return Result.Success(new Success<PagedResult<Response.CategoryResponse>>(MessagesList.CategoryNotFoundAnyException.GetMessage().Code, MessagesList.CategoryNotFoundAnyException.GetMessage().Message, result));
-
         }
         //Return result
         return Result.Success(new Success<PagedResult<Response.CategoryResponse>>(MessagesList.CategoryGetAllCategoriesSuccess.GetMessage().Code, MessagesList.CategoryGetAllCategoriesSuccess.GetMessage().Message, result));

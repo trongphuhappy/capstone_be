@@ -59,7 +59,7 @@ public class AuthenticationController : ApiController
             HttpOnly = true,
             Secure = true,
             Path = "/",
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None,
             Expires = DateTime.Now.AddMinutes(131400),
         });
 
@@ -102,7 +102,7 @@ public class AuthenticationController : ApiController
             HttpOnly = true,
             Secure = true,
             Path = "/",
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None,
             Expires = DateTime.Now.AddMinutes(131400),
         });
 
@@ -148,7 +148,7 @@ public class AuthenticationController : ApiController
             HttpOnly = true,
             Secure = true,
             Path = "/",
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None,
             Expires = DateTime.Now.AddMinutes(131400),
         });
 

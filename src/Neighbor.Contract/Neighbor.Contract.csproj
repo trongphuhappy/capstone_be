@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Services\Feedbacks\Validators\" />
 	  <Folder Include="Services\Members\Validators\" />
 	</ItemGroup>
 

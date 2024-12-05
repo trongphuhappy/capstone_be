@@ -26,12 +26,19 @@ public class Wallet : DomainEntity<Guid>
         return wallet;
     }
 
-    public void AddMoney(DateTime startDate, DateTime endDate, int rentMoney, string description)
+    public void AddMoney(int rentMoney, string description)
     {
-        var money = (endDate - startDate).Days * rentMoney;
-        Balance += money;
+        Balance += rentMoney;
         // Create new transactions
-        var transaction = Transaction.CreateTransactionWithTypeDeposit(money, description, Id);
+        var transaction = Transaction.CreateTransactionWithTypeDeposit(rentMoney, description, Id);
+        Transactions.Add(transaction);
+    }
+
+    public void WithdrawMoney(int rentMoney, string description)
+    {
+        Balance -= rentMoney;
+        // Create new transactions
+        var transaction = Transaction.CreateTransactionWithTypeRefund(rentMoney, description, Id);
         Transactions.Add(transaction);
     }
 

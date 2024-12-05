@@ -17,7 +17,6 @@ public class Lessor : DomainEntity<Guid>
         LocationType = locationType;
         AccountId = accountId;
     }
-    
     public string WareHouseAddress { get; private set; }
     public string? ShopName { get; private set; }
     public LocationType LocationType { get; private set; }
@@ -35,7 +34,6 @@ public class Lessor : DomainEntity<Guid>
         lessor.Wallet = wallet;
         return lessor;
     }
-
     public void UpdateLessor(string? wareHouseAddress, string? shopeName, LocationType? locationType)
     {
         if (wareHouseAddress != null) WareHouseAddress = wareHouseAddress;

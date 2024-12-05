@@ -99,4 +99,41 @@ public class Product : DomainEntity<Guid>
     {
         StatusType = statusType;
     }
+
+    public static Product CreateProductForConfirmProductCommandHandlerTest(Lessor lessor)
+    {
+        return new Product()
+        {
+            Lessor = lessor
+        };
+    }
+
+    public static Product CreateProductForAddToWishlistCommandHandlerTest(Lessor lessor)
+    {
+        return new Product()
+        {
+            Lessor = lessor
+        };
+    }
+
+    public static Product CreateProductForCreateOrderBankingCommandHandlerTest(Lessor lessor)
+    {
+        return new Product()
+        {
+            Lessor = lessor,
+            StatusType = StatusType.Available,
+            ConfirmStatus = ConfirmStatus.Approved,
+        };
+    }
+
+    public static Product CreateProductForOrderSuccessCommandHandlerTest(Guid Id, Lessor lessor, int price, StatusType statusType)
+    {
+        return new Product()
+        {
+            Id = Id,
+            Lessor = lessor,
+            Price = price,
+            StatusType = StatusType.Available,
+        };
+    }
 }

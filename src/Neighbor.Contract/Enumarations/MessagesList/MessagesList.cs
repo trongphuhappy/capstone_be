@@ -194,4 +194,9 @@ public enum MessagesList
     [Message("This Order does not have any conflict!", "order_noti_exception_12")]
     OrderDoesNotConflictException,
 
+    [Message("You have already given feedback, no more feedback is allowed.", "feedback_01")]
+    AccountHasFeedbackException,
+
+    [Message("You have successfully created a comment, thank you for your comments.", "feedback_02")]
+    CreateFeedbackSuccessfully,
 }

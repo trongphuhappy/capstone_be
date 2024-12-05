@@ -12,5 +12,4 @@ public static class Query
         string[] SelectedColumns) : IQuery<Success<PagedResult<Response.OrderResponse>>>;
 
     public record GetOrderByIdQuery(Guid Id) : IQuery<Success<Response.OrderResponse>>;
-
 }

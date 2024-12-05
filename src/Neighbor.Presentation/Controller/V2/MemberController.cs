@@ -31,6 +31,18 @@ public class MemberController : ApiController
         return Ok(result);
     }
 
+    [HttpGet("get_profile_by_id", Name = "GetProfileById")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> GetProfileById([FromQuery] Guid AccountId)
+    {
+        var result = await Sender.Send(new Query.GetProfileQuery(AccountId));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
     [Authorize]
     [HttpGet("get_infor_lessor", Name = "GetInformationLessor")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
@@ -39,6 +51,18 @@ public class MemberController : ApiController
     {
         var userId = User.FindFirstValue("UserId");
         var result = await Sender.Send(new Query.GetInforLessorQuery(Guid.Parse(userId), publicLessor));
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpGet("get_infor_lessor_by_id", Name = "GetInformationLessorById")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
+    public async Task<IActionResult> GetInformationLessorById([FromQuery] Guid AccountId)
+    {
+        var result = await Sender.Send(new Query.GetInforLessorQuery(AccountId, true));
         if (result.IsFailure)
             return HandlerFailure(result);
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Neighbor.Persistence;
 
@@ -11,9 +12,11 @@ using Neighbor.Persistence;
 namespace Neighbor.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241205154744_AddOrderEmail")]
+    partial class AddOrderEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace Neighbor.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Biography")
@@ -98,6 +104,8 @@ namespace Neighbor.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId");
+
                     b.HasIndex("RoleUserId");
 
                     b.ToTable("Accounts", (string)null);
@@ -161,9 +169,6 @@ namespace Neighbor.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -605,6 +610,10 @@ namespace Neighbor.Persistence.Migrations
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Account", b =>
                 {
+                    b.HasOne("Neighbor.Domain.Entities.Account", null)
+                        .WithMany("Accounts")
+                        .HasForeignKey("AccountId");
+
                     b.HasOne("Neighbor.Domain.Entities.RoleUser", "RoleUser")
                         .WithMany("Accounts")
                         .HasForeignKey("RoleUserId")
@@ -617,7 +626,7 @@ namespace Neighbor.Persistence.Migrations
             modelBuilder.Entity("Neighbor.Domain.Entities.Feedback", b =>
                 {
                     b.HasOne("Neighbor.Domain.Entities.Account", "Account")
-                        .WithMany("Feedback")
+                        .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -776,7 +785,7 @@ namespace Neighbor.Persistence.Migrations
 
             modelBuilder.Entity("Neighbor.Domain.Entities.Account", b =>
                 {
-                    b.Navigation("Feedback");
+                    b.Navigation("Accounts");
 
                     b.Navigation("Lessor");
 

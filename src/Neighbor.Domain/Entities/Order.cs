@@ -8,7 +8,6 @@ namespace Neighbor.Domain.Entities
     {
         public Order()
         { }
-
         public Order(Guid accountId, Guid productId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double orderValue, OrderStatusType orderStatus, long orderId,  PaymentMethodType paymentMethodId)
         {
             Id = Guid.NewGuid();

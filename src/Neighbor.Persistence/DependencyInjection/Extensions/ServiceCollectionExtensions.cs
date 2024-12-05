@@ -54,6 +54,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<IWishlistRepository, WishlistRepository>()
             .AddTransient<IOrderRepository, OrderRepository>()
             .AddTransient<IWalletRepository, WalletRepository>()
-            .AddTransient<ITransactionRepository, TransactionRepository>();
+            .AddTransient<ITransactionRepository, TransactionRepository>()
+            .AddTransient<IFeedbackRepository, FeedbackRepository>();
     }
 }

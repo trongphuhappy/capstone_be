@@ -3,7 +3,6 @@ using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.DTOs.PaymentDTOs;
 using Net.payOS.Types;
 using Net.payOS;
-using PawFund.Contract.Settings;
 
 namespace Neighbor.Infrastructure.Services;
 

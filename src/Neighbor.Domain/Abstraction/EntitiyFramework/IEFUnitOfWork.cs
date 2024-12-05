@@ -17,4 +17,5 @@ public interface IEFUnitOfWork : IAsyncDisposable
     IOrderRepository OrderRepository { get; }
     IWalletRepository WalletRepository { get; }
     ITransactionRepository TransactionRepository { get; }
+    IFeedbackRepository FeedbackRepository { get; }
 }

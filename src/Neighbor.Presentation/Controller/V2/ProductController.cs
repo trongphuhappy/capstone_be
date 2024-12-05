@@ -127,7 +127,7 @@ public class ProductController : ApiController
         return Ok(result);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpGet("get_all_products_from_wishlist", Name = "GetAllProductsFromWishlist")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<Success>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Error>))]
@@ -136,8 +136,7 @@ public class ProductController : ApiController
     [FromQuery] int pageSize = 10,
     [FromQuery] string[] selectedColumns = null)
     {
-        //var userId = Guid.Parse(User.FindFirstValue("UserId"));
-        var userId = Guid.Parse("BF439F13-868B-4B71-B783-2DAC3DDBBC83");
+        var userId = Guid.Parse(User.FindFirstValue("UserId"));
         var result = await Sender.Send(new Query.GetAllProductsInWishlistQuery(userId, pageIndex, pageSize, filterParams, selectedColumns));
         if (result.IsFailure)
             return HandlerFailure(result);

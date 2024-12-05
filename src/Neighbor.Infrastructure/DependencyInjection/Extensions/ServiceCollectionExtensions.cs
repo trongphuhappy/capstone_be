@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Settings;
 using Neighbor.Infrastructure.Services;
-using PawFund.Contract.Settings;
 using StackExchange.Redis;
 
 namespace Neighbor.Infrastructure.DependencyInjection.Extensions;

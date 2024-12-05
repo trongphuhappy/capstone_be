@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Neighbor.Contract.DTOs.ProductDTOs;
 using static Neighbor.Contract.DTOs.ProductDTOs.InsuranceDTO;
 
-namespace Neighbor.Contract.DTOs.ProductDTOs;
+namespace Neighbor.Contract.DTOs.OrderDTOs;
 public static class OrderDTO
 {
     public class OrderRequestDTO

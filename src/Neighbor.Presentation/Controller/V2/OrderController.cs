@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neighbor.Contract.Abstractions.Shared;
-using Neighbor.Contract.DTOs.ProductDTOs;
+using Neighbor.Contract.DTOs.OrderDTOs;
 using Neighbor.Contract.Services.Orders;
 using Neighbor.Presentation.Abstractions;
 using System.Security.Claims;
-using static Neighbor.Contract.DTOs.ProductDTOs.OrderDTO;
+using static Neighbor.Contract.DTOs.OrderDTOs.OrderDTO;
 using static Neighbor.Contract.Services.Orders.Command;
 using static Neighbor.Contract.Services.Orders.Filter;
 

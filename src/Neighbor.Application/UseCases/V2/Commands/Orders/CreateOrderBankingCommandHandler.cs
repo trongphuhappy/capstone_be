@@ -8,7 +8,6 @@ using Neighbor.Contract.Enumarations.Product;
 using Neighbor.Contract.Services.Orders;
 using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Exceptions;
-using PawFund.Contract.Settings;
 
 namespace Neighbor.Application.UseCases.V2.Commands.Orders;
 

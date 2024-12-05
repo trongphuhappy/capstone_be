@@ -16,5 +16,6 @@ public static class ServiceCollectionExtensions
                    .AddTransient<ILessorRepository, LessorRepository>()
                    .AddTransient<ICategoryRepository, CategoryRepository>()
                    .AddTransient<IWishlistRepository, WishlistRepository>()
-                   .AddTransient<IOrderRepository, OrderRepository>();
+                   .AddTransient<IOrderRepository, OrderRepository>()
+                    .AddTransient<IFeedbackRepository, FeedbackRepository>();
 }

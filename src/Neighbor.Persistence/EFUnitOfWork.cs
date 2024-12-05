@@ -6,7 +6,7 @@ public class EFUnitOfWork : IEFUnitOfWork
 {
     private readonly ApplicationDbContext _context;
 
-    public EFUnitOfWork(ApplicationDbContext context, IAccountRepository accountRepository, ISurchargeRepository surchargeRepository, IProductRepository productRepository, IProductSurchargeRepository productSurchargeRepository, IInsuranceRepository insuranceRepository, IImagesRepository imagesRepository, ICategoryRepository categoryRepository, ILessorRepository lessorRepository, IWishlistRepository wishlistRepository, IOrderRepository orderRepository, IWalletRepository walletRepository, ITransactionRepository transactionRepository)
+    public EFUnitOfWork(ApplicationDbContext context, IAccountRepository accountRepository, ISurchargeRepository surchargeRepository, IProductRepository productRepository, IProductSurchargeRepository productSurchargeRepository, IInsuranceRepository insuranceRepository, IImagesRepository imagesRepository, ICategoryRepository categoryRepository, ILessorRepository lessorRepository, IWishlistRepository wishlistRepository, IOrderRepository orderRepository, IWalletRepository walletRepository, ITransactionRepository transactionRepository, IFeedbackRepository feedbackRepository)
     {
         _context = context;
         AccountRepository = accountRepository;
@@ -21,6 +21,7 @@ public class EFUnitOfWork : IEFUnitOfWork
         OrderRepository = orderRepository;
         WalletRepository = walletRepository;
         TransactionRepository = transactionRepository;
+        FeedbackRepository = feedbackRepository;
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -46,4 +47,6 @@ public class EFUnitOfWork : IEFUnitOfWork
     public IWalletRepository WalletRepository { get; }
 
     public ITransactionRepository TransactionRepository { get; }
+
+    public IFeedbackRepository FeedbackRepository { get; }
 }

@@ -16,7 +16,6 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
 {
     private readonly IDPUnitOfWork _dpUnitOfWork;
     private readonly IMapper _mapper;
-
     public GetProductByIdQueryHandler(IDPUnitOfWork dpUnitOfWork, IMapper mapper)
     {
         _dpUnitOfWork = dpUnitOfWork;
@@ -85,6 +84,5 @@ public sealed class GetProductByIdQueryHandler : IQueryHandler<Query.GetProductB
             //Return result
             return Result.Success(new Success<ProductResponse>(MessagesList.ProductGetDetailsSuccess.GetMessage().Code, MessagesList.ProductGetDetailsSuccess.GetMessage().Message, result));
         }
-
     }
 }

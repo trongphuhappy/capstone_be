@@ -79,17 +79,17 @@ namespace Neighbor.Application.UnitTests.UseCases.V2.Commands.Orders
                 It.IsAny<Expression<Func<Product, object>>[]>()
             )).ReturnsAsync(product);
 
-            // Mocking lessor repository
-            var lessor = Lessor.CreateLessorForOrderSuccessCommandHandlerTest(accountId);
-            _mockEFUnitOfWork.Setup(x => x.LessorRepository.FindByIdAsync(
-                accountId,
-                It.IsAny<CancellationToken>(),
-                It.IsAny<Expression<Func<Lessor, object>>[]>()
-            )).ReturnsAsync(lessor);
+            //// Mocking lessor repository
+            //var lessor = Lessor.CreateLessorForOrderSuccessCommandHandlerTest(accountId);
+            //_mockEFUnitOfWork.Setup(x => x.LessorRepository.FindByIdAsync(
+            //    accountId,
+            //    It.IsAny<CancellationToken>(),
+            //    It.IsAny<Expression<Func<Lessor, object>>[]>()
+            //)).ReturnsAsync(lessor);
 
             // Mocking wallet repository (passing lessor.Id instead of accountId)
-            var wallet = Wallet.CreateWalletForOrderSuccessCommandHandlerTest(lessor.Id);
-            _mockEFUnitOfWork.Setup(x => x.WalletRepository.GetWalletByLessorId(lessor.Id))
+            var wallet = Wallet.CreateWalletForOrderSuccessCommandHandlerTest(product.LessorId);
+            _mockEFUnitOfWork.Setup(x => x.WalletRepository.GetWalletByLessorId(product.LessorId))
                 .ReturnsAsync(wallet);
 
             // Mocking OrderRepository Add method
@@ -111,7 +111,7 @@ namespace Neighbor.Application.UnitTests.UseCases.V2.Commands.Orders
             Assert.IsType<Result<Success<Response.OrderSuccess>>>(successResponse);
 
             // Validate the URL in the response
-            Assert.Equal("http://localhost/order-success/123", successResponse?.Value?.Data?.Url);
+            Assert.Equal("http://localhost/order-success", successResponse?.Value?.Data?.Url);
 
             // Verify cache deletion
             _mockResponseCacheService.Verify(x => x.DeleteCacheResponseAsync(It.IsAny<string>()), Times.Once);

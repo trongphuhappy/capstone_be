@@ -10,7 +10,6 @@ using Neighbor.Contract.Services.Orders;
 using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Entities;
 using Neighbor.Domain.Exceptions;
-using PawFund.Contract.Settings;
 using System.Linq.Expressions;
 namespace Neighbor.Application.UnitTests.UseCases.V2.Commands.Orders;
 public class CreateOrderBankingCommandHandlerTests

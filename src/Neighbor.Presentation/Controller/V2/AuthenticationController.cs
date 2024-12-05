@@ -27,7 +27,7 @@ public class AuthenticationController : ApiController
         var result = await Sender.Send(commands);
         if (result.IsFailure)
             return HandlerFailure(result);
-
+        
         return Ok(result);
     }
 
@@ -58,7 +58,6 @@ public class AuthenticationController : ApiController
         {
             HttpOnly = true,
             Secure = true,
-            Path = "/",
             SameSite = SameSiteMode.None,
             Expires = DateTime.Now.AddMinutes(131400),
         });
@@ -101,7 +100,6 @@ public class AuthenticationController : ApiController
         {
             HttpOnly = true,
             Secure = true,
-            Path = "/",
             SameSite = SameSiteMode.None,
             Expires = DateTime.Now.AddMinutes(131400),
         });
@@ -147,7 +145,6 @@ public class AuthenticationController : ApiController
         {
             HttpOnly = true,
             Secure = true,
-            Path = "/",
             SameSite = SameSiteMode.None,
             Expires = DateTime.Now.AddMinutes(131400),
         });

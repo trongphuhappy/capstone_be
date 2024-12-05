@@ -155,5 +155,4 @@ public class CreateOrderBankingCommandHandlerTests
         await Assert.ThrowsAsync<OrderException.ProductBelongsToUserException>(() =>
             _handler.Handle(command, CancellationToken.None));
     }
-
 }

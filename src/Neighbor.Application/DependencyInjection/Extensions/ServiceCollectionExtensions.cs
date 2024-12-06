@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Neighbor.Application.Behaviors;
+using Neighbor.Application.Mapper;
 
 namespace Neighbor.Application.DependencyInjection.Extensions;
 public static class ServiceCollectionExtensions
@@ -14,7 +15,17 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddConfigurationAutoMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddAutoMapper(
+                cfg =>
+                {
+                    cfg.AddProfile<AccountProfile>();
+                    cfg.AddProfile<CategoryProfile>();
+                    cfg.AddProfile<FeedbackProfile>();
+                    cfg.AddProfile<LessorProfile>();
+                    cfg.AddProfile<ProductProfile>();
+                    cfg.AddProfile<SurchargeProfile>();
+                }
+        );
         return services;
     }
 }

@@ -5,10 +5,6 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
-
-	<PropertyGroup>
-		<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
-	</PropertyGroup>
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Neighbor.Application\Neighbor.Application.csproj" />
@@ -42,5 +38,11 @@
 		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Tokens.dll" />
 		<FunctionsPreservedDependencies Include="System.IdentityModel.Tokens.Jwt.dll" />
 	</ItemGroup>
+
+	<Target Name="Build">
+		<PropertyGroup>
+			<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+		</PropertyGroup>
+	</Target>
 	
 </Project>

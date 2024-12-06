@@ -2,9 +2,7 @@
 using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Services;
 using Neighbor.Contract.Abstractions.Shared;
-using Neighbor.Contract.DTOs.ProductDTOs;
 using Neighbor.Contract.Enumarations.MessagesList;
-using Neighbor.Contract.Enumarations.Product;
 using Neighbor.Contract.Services.Admins;
 using Neighbor.Domain.Abstraction.EntitiyFramework;
 using Neighbor.Domain.Exceptions;

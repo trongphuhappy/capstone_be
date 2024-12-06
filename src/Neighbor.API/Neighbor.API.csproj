@@ -6,6 +6,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<ProjectReference Include="..\Neighbor.Application\Neighbor.Application.csproj" />
 		<ProjectReference Include="..\Neighbor.Contract\Neighbor.Contract.csproj" />
@@ -30,5 +34,5 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.7.3" />
 	</ItemGroup>
-
+	
 </Project>

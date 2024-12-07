@@ -19,4 +19,19 @@
 		<PackageReference Include="payOS" Version="1.0.7" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.JsonWebTokens.dll" />
+		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Logging.dll" />
+		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Protocols.dll" />
+		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" />
+		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Tokens.dll" />
+		<FunctionsPreservedDependencies Include="System.IdentityModel.Tokens.Jwt.dll" />
+	</ItemGroup>
+
+	<Target Name="Build">
+		<PropertyGroup>
+			<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+		</PropertyGroup>
+	</Target>
+	
 </Project>

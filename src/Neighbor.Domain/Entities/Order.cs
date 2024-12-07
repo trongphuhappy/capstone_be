@@ -81,6 +81,37 @@ namespace Neighbor.Domain.Entities
         {
             Account = account;
         }
+
+        public static Order CreateOrderWithIdAndAccountAndOrderStatus(Guid orderId, Account account, OrderStatusType orderStatus)
+        {
+            return new Order()
+            {
+                Id = orderId,
+                Account = account,
+                OrderStatus = orderStatus
+            };
+        }
+
+        public static Order CreateOrderWithIdAndAccountAndOrderStatusAndProduct(Guid orderId, Account account, OrderStatusType orderStatus, Product product)
+        {
+            return new Order()
+            {
+                Id = orderId,
+                Account = account,
+                OrderStatus = orderStatus,
+                Product = product
+            };
+        }
+
+        public static Order CreateOrderWithIdAndProductAndOrderStatus(Guid orderId, Product product, OrderStatusType orderStatus)
+        {
+            return new Order()
+            {
+                Id = orderId,
+                Product = product,
+                OrderStatus = orderStatus,
+            };
+        }
     }
 
 

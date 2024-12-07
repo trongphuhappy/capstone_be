@@ -19,10 +19,10 @@ jobs:
           dotnet-version: '8.0.x'
           
       - name: Restore
-        run: dotnet restore ./Neighbor.API.sln
+        run: dotnet restore ./src/Neighbor.API/Neighbor.API.sln
         
       - name: Build
-        run: dotnet build ./Neighbor.API.sln --configuration Release --no-restore
+        run: dotnet build ./src/Neighbor.API/Neighbor.API.sln --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish ./Neighbor.API.sln --configuration Release --no-build
+        run: dotnet publish ./src/Neighbor.API/Neighbor.API.sln --configuration Release --no-build

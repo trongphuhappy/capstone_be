@@ -25,6 +25,9 @@ jobs:
       - name: Restore
         run: dotnet restore ./Neighbor.sln
         
+      - name: Clean
+        run: dotnet clean ./Neighbor.sln
+        
       - name: Build
         run: dotnet build ./Neighbor.sln --configuration Release --no-restore
         

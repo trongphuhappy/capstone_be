@@ -1,5 +1,6 @@
 ﻿using Neighbor.Contract.Enumarations.Authentication;
 using Neighbor.Domain.Abstraction.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Neighbor.Domain.Entities;
 public class Account : DomainEntity<Guid>
@@ -131,6 +132,22 @@ public class Account : DomainEntity<Guid>
         return new Account()
         {
             Id = accountId
+        };
+    }
+
+    public static Account CreateAccountWithAccountId(Guid accountId)
+    {
+        return new Account()
+        {
+            Id = accountId
+        };
+    }
+
+    public static Account CreateAccountWithEmail(string email)
+    {
+        return new Account()
+        {
+            Email = email
         };
     }
 }

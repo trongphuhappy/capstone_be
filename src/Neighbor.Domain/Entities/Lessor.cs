@@ -65,4 +65,12 @@ public class Lessor : DomainEntity<Guid>
             AccountId = accountId
         };
     }
+
+    public static Lessor CreateLessorWithAccount(Account account)
+    {
+        return new Lessor()
+        {
+            Account = account
+        };
+    }
 }

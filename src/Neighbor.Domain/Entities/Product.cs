@@ -136,4 +136,22 @@ public class Product : DomainEntity<Guid>
             StatusType = StatusType.Available,
         };
     }
+
+    public static Product CreateProductWithNameAndLessors(string name, Lessor lessor)
+    {
+        return new Product()
+        {
+            Name = name,
+            Lessor = lessor,
+        };
+    }
+
+    public static Product CreateProductWithIdAndLessors(Guid id, Lessor lessor)
+    {
+        return new Product()
+        {
+            Id = id,
+            Lessor = lessor,
+        };
+    }
 }

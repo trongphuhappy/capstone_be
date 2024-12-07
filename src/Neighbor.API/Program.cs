@@ -13,15 +13,15 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration().ReadFrom
-    .Configuration(builder.Configuration)
-    .CreateLogger();
+//Log.Logger = new LoggerConfiguration().ReadFrom
+//    .Configuration(builder.Configuration)
+//    .CreateLogger();
 
-builder.Logging
-    .ClearProviders()
-    .AddSerilog();
+//builder.Logging
+//    .ClearProviders()
+//    .AddSerilog();
 
-builder.Host.UseSerilog();
+//builder.Host.UseSerilog();
 
 builder.Services.AddConfigureMediatR();
 
@@ -88,7 +88,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
-    
+
     SeedData.Seed(context, builder.Configuration, new PasswordHashService());
 }
 
@@ -104,8 +104,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 
-if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
-    app.ConfigureSwagger();
+//if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+app.ConfigureSwagger();
 
 try
 {

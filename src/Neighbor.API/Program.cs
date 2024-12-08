@@ -101,6 +101,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseCors("AllowSpecificOrigin");
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

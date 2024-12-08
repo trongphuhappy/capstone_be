@@ -17,25 +17,27 @@ public static class ServiceCollectionExtensions
 
         var authenticationSetting = new AuthenticationSetting();
         configuration.GetSection(AuthenticationSetting.SectionName).Bind(authenticationSetting);
-
+        var accessToken = "1VNNyAnz2r67DZTJGQQ-qveWKseDRZsLHei9O02XeP9kpbiSBeQx-Bqm0c9cdtIn3DZdrwzPIMfVSVN1Z6dhJakqbjQPAtZ-sm3FzwPSvnsRsuqIWxOQ-KgD1MvJqpa48cWCUBOtXBy5f6hk-zU6qIyIjCeeruZxDFq39MhlHOs";
+        var refreshToken = "41MX2T8DXnQb8S47bZstndK-bKAp2ZNnDcboDGTUlEdvQtzGJEcZx1sAyU2Q9lDFDMykxTiq-SI5yhIC_LvOdu8fY0RXt_nEnu90UDQWGVNn6qRa-jQPrvSoYEai8EEWvGFr-79JMpYdolr3UcWpwXjoZulxzQ-Wq14ew3z0VIM";
 
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
+    
        .AddJwtBearer(options =>
        {
            options.SaveToken = true;
            options.TokenValidationParameters = new TokenValidationParameters
            {
-               ValidateIssuer = false,
-               ValidateAudience = false,
+               ValidateIssuer = true,
+               ValidateAudience = true,
                ValidateLifetime = true,
                ValidateIssuerSigningKey = true,
-               ValidIssuer = authenticationSetting.Issuer,
-               ValidAudience = authenticationSetting.Audience,
-               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSetting.AccessSecretToken)),
+               ValidIssuer = authenticationSetting.Issuer ?? "Jwt",
+               ValidAudience = authenticationSetting.Audience ?? "Jwt",
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSetting.AccessSecretToken ?? refreshToken)),
                ClockSkew = TimeSpan.Zero
            };
 
@@ -43,6 +45,7 @@ public static class ServiceCollectionExtensions
            {
                OnAuthenticationFailed = context =>
                {
+                   Console.WriteLine($"Authentication failed: {context.Exception.Message}");
                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                    {
                        context.Response.Headers.Add("IS-TOKEN-EXPIRED", "true");

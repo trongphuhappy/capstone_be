@@ -23,6 +23,10 @@ Log.Logger = new LoggerConfiguration().ReadFrom
 
 //builder.Host.UseSerilog();
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
 builder.Services.AddConfigureMediatR();
 
 builder

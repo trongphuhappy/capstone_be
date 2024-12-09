@@ -18,33 +18,14 @@
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
 		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.1.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.1" />
 		<PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.3.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
-		<PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.7.3" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.JsonWebTokens.dll" />
-		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Logging.dll" />
-		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Protocols.dll" />
-		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" />
-		<FunctionsPreservedDependencies Include="Microsoft.IdentityModel.Tokens.dll" />
-		<FunctionsPreservedDependencies Include="System.IdentityModel.Tokens.Jwt.dll" />
-	</ItemGroup>
-
-	<Target Name="Build">
-		<PropertyGroup>
-			<_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
-		</PropertyGroup>
-	</Target>
-	
 </Project>

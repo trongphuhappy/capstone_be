@@ -15,7 +15,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Neighbor.Domain\Neighbor.Domain.csproj" />
-		<ProjectReference Include="..\Neighbor.Infrastructure.Dapper\Neighbor.Infrastructure.Dapper.csproj" />
 	</ItemGroup>
 
 </Project>

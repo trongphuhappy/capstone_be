@@ -62,4 +62,4 @@ jobs:
           app-name: 'eneighborbkapi'
           slot-name: 'Production'
           package: .
-          
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EED63E383C5C46059B4DAEFE77E728EE }}

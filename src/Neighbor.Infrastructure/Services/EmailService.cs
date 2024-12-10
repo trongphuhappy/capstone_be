@@ -26,7 +26,7 @@ public class EmailService : IEmailService
 
         var bodyBuilder = new BodyBuilder();
 
-        var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", templateName);
+        var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/EmailTemplates", templateName);
         var template = File.ReadAllText(templatePath);
 
         bodyBuilder.HtmlBody = File.ReadAllText(templatePath);

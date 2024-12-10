@@ -103,6 +103,17 @@ namespace Neighbor.Domain.Entities
             };
         }
 
+        public static Order CreateOrderWithIdAndAccountAndOrderReportStatusAndProduct(Guid orderId, Account account, OrderReportStatusType orderReportStatus, Product product)
+        {
+            return new Order()
+            {
+                Id = orderId,
+                Account = account,
+                OrderReportStatus = orderReportStatus,
+                Product = product
+            };
+        }
+
         public static Order CreateOrderWithIdAndProductAndOrderStatus(Guid orderId, Product product, OrderStatusType orderStatus)
         {
             return new Order()
@@ -110,6 +121,14 @@ namespace Neighbor.Domain.Entities
                 Id = orderId,
                 Product = product,
                 OrderStatus = orderStatus,
+            };
+        }
+
+        public static Order CreateOrderWithOrderReportStatusType(OrderReportStatusType orderReportStatus)
+        {
+            return new Order()
+            {
+                OrderReportStatus = orderReportStatus
             };
         }
     }

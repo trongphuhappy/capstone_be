@@ -17,6 +17,8 @@ using System.Linq.Expressions;
 using Azure.Core;
 using Microsoft.Identity.Client;
 
+namespace Neighbor.Application.UnitTests.UseCases.V2.Commands.Orders;
+
 public class LessorConfirmOrderCommandHandlerTests
 {
     private readonly Mock<IEFUnitOfWork> _mockEFUnitOfWork;

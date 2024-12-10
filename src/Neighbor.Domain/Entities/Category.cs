@@ -25,4 +25,15 @@ public class Category : DomainEntity<int>
     {
         return new Category(name, image, isVehicle, isDeleted);
     }
+
+    public static Category CreateCategoryForTest(int id, string name, bool isVehicle, string? image)
+    {
+        return new Category()
+        {
+            Id = id,
+            Name = name,
+            IsVehicle = isVehicle,
+            Image = image
+        };
+    }
 }

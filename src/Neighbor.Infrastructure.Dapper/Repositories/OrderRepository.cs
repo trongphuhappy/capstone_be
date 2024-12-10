@@ -224,28 +224,6 @@ public class OrderRepository : IOrderRepository
 
             // Pagination logic
             var offset = (pageIndex - 1) * pageSize;
-            //Check if IsSortCreatedDayASC exist then Sort by CreatedDate
-            if (filterParams?.SortType.HasValue == true && filterParams?.IsSortASC.HasValue == true)
-            {
-                string sortType = filterParams.IsSortASC.Value ? "ASC" : "DESC";
-                //Check if IsSortCreatedDayASC == true then Sort Created Date ASC
-                if (filterParams?.SortType == SortType.CreatedDate)
-                {
-                    queryBuilder.Append($" ORDER BY o.CreatedDate {sortType} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-                }
-                else if (filterParams?.SortType == SortType.RentTime)
-                {
-                    queryBuilder.Append($" ORDER BY o.RentTime {sortType} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-                }
-                else
-                {
-                    queryBuilder.Append($" ORDER BY o.ReturnTime {sortType} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-                }
-            }
-            else
-            {
-                queryBuilder.Append($" ORDER BY o.Id OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-            }
 
             // Dictionary for mapping products and their images
             var orderDictionary = new Dictionary<Guid, Order>();
@@ -270,6 +248,33 @@ public class OrderRepository : IOrderRepository
                 splitOn: "OrderModifiedDate, AccountLoginType, ProductModifiedDate, LessorCreatedDate"
             );
 
+            // Apply sorting based on filterParams
+            var result = orderDictionary.Values.ToList();
+            if (filterParams?.SortType.HasValue == true && filterParams?.IsSortASC.HasValue == true)
+            {
+                string sortType = filterParams.IsSortASC.Value ? "ASC" : "DESC";
+                //Check if IsSortCreatedDayASC == true then Sort Created Date ASC
+                if (filterParams?.SortType == SortType.CreatedDate)
+                {
+                    result = filterParams.IsSortASC.Value ? result.OrderBy(o => o.CreatedDate).ToList() : result.OrderByDescending(o => o.CreatedDate).ToList();
+                }
+                else if (filterParams?.SortType == SortType.RentTime)
+                {
+                    result = filterParams.IsSortASC.Value ? result.OrderBy(o => o.RentTime).ToList() : result.OrderByDescending(o => o.RentTime).ToList();
+                }
+                else
+                {
+                    result = filterParams.IsSortASC.Value ? result.OrderBy(o => o.ReturnTime).ToList() : result.OrderByDescending(o => o.ReturnTime).ToList();
+                }
+            }
+            else
+            {
+                result = result.OrderBy(o => o.Id).ToList();
+            }
+
+            // Apply pagination
+            result = result.Skip(offset).Take(pageSize).ToList();
+
             //Find Images and then Merge Images to Product Of Order
             var productIds = orderDictionary.Values
             .Select(order => order.Product.Id)
@@ -287,7 +292,7 @@ public class OrderRepository : IOrderRepository
             .GroupBy(img => img.ProductId)
             .ToDictionary(group => group.Key, group => group.ToList());
 
-            foreach (var order in orderDictionary.Values)
+            foreach (var order in result)
             {
                 var product = order.Product;
 
@@ -303,7 +308,7 @@ public class OrderRepository : IOrderRepository
 
             // Return paginated result
             return new PagedResult<Order>(
-                orderDictionary.Values.ToList(),
+                result,
                 pageIndex,
                 pageSize,
                 totalCount,

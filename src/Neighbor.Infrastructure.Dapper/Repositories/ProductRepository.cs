@@ -268,23 +268,6 @@ public class ProductRepository : IProductRepository
 
             // Pagination logic
             var offset = (pageIndex - 1) * pageSize;
-            //Check if IsSortCreatedDayASC exist then Sort by CreatedDate
-            if (filterParams?.IsSortCreatedDateASC.HasValue == true)
-            {
-                //Check if IsSortCreatedDayASC == true then Sort Created Date ASC
-                if (filterParams?.IsSortCreatedDateASC == true)
-                {
-                    queryBuilder.Append($" ORDER BY p.CreatedDate OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-                }
-                else
-                {
-                    queryBuilder.Append($" ORDER BY p.CreatedDate DESC OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-                }
-            }
-            else
-            {
-                queryBuilder.Append($" ORDER BY p.Id OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-            }
 
             // Dictionary for mapping products and their images
             var productDictionary = new Dictionary<Guid, Product>();
@@ -329,9 +312,32 @@ public class ProductRepository : IProductRepository
                 splitOn: "ProductModifiedDate, ImageCreatedDate, LessorCreatedDate, WishlistModifiedDate"
             );
 
+            // Apply sorting based on filterParams
+            var result = productDictionary.Values.ToList();
+            if (filterParams?.IsSortCreatedDateASC.HasValue == true)
+            {
+                // Check if IsSortCreatedDateASC is true to sort ascending, otherwise descending
+                if (filterParams.IsSortCreatedDateASC == true)
+                {
+                    result = result.OrderBy(p => p.CreatedDate).ToList();
+                }
+                else
+                {
+                    result = result.OrderByDescending(p => p.CreatedDate).ToList();
+                }
+            }
+            else
+            {
+                // Default sort by Id
+                result = result.OrderBy(p => p.Id).ToList();
+            }
+
+            // Apply pagination
+            result = result.Skip(offset).Take(pageSize).ToList();
+
             // Return paginated result
             return new PagedResult<Product>(
-                productDictionary.Values.ToList(),
+                result,
                 pageIndex,
                 pageSize,
                 totalCount,
@@ -465,23 +471,7 @@ public class ProductRepository : IProductRepository
 
             // Pagination logic
             var offset = (pageIndex - 1) * pageSize;
-            //Check if IsSortCreatedDayASC exist then Sort by CreatedDate
-            if (filterParams?.IsSortAddToWishlistDateASC.HasValue == true)
-            {
-                //Check if IsSortCreatedDayASC == true then Sort Created Date ASC
-                if (filterParams?.IsSortAddToWishlistDateASC == true)
-                {
-                    queryBuilder.Append($" ORDER BY w.CreatedDate OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-                }
-                else
-                {
-                    queryBuilder.Append($" ORDER BY w.CreatedDate DESC OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-                }
-            }
-            else
-            {
-                queryBuilder.Append($" ORDER BY p.Id OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY");
-            }
+
             // Dictionary for mapping products and their images
             var productDictionary = new Dictionary<Guid, Product>();
 
@@ -515,9 +505,32 @@ public class ProductRepository : IProductRepository
                 splitOn: "ProductModifiedDate, ImageCreatedDate, LessorCreatedDate, WishlistModifiedDate"
             );
 
+            // Apply sorting based on filterParams
+            var result = productDictionary.Values.ToList();
+            if (filterParams?.IsSortAddToWishlistDateASC.HasValue == true)
+            {
+                // Check if IsSortCreatedDateASC is true to sort ascending, otherwise descending
+                if (filterParams.IsSortAddToWishlistDateASC == true)
+                {
+                    result = result.OrderBy(p => p.Wishlists?[0].CreatedDate).ToList();
+                }
+                else
+                {
+                    result = result.OrderByDescending(p => p.Wishlists?[0].CreatedDate).ToList();
+                }
+            }
+            else
+            {
+                // Default sort by Id
+                result = result.OrderBy(p => p.Id).ToList();
+            }
+
+            // Apply pagination
+            result = result.Skip(offset).Take(pageSize).ToList();
+
             // Return paginated result
             return new PagedResult<Product>(
-                productDictionary.Values.ToList(),
+                result,
                 pageIndex,
                 pageSize,
                 totalCount,

@@ -92,8 +92,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
-app.ConfigureSwagger();
+if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+    app.ConfigureSwagger();
 
 try
 {

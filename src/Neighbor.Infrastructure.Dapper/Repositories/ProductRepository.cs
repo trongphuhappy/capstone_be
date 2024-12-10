@@ -262,11 +262,12 @@ public class ProductRepository : IProductRepository
                 parameters.Add("IsVehicle", filterParams.IsVehicle);
             }
 
-            // Get total count and pages
+            // Count TotalCount
             var totalCount = await connection.ExecuteScalarAsync<int>(totalCountQuery.ToString(), parameters);
+
+            // Calculate TotalPages
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-            // Pagination logic
             var offset = (pageIndex - 1) * pageSize;
             //Check if IsSortCreatedDayASC exist then Sort by CreatedDate
             if (filterParams?.IsSortCreatedDateASC.HasValue == true)

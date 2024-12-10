@@ -9,23 +9,8 @@ using Neighbor.Persistence;
 using Neighbor.Persistence.DependencyInjection.Extensions;
 using Neighbor.Persistence.DependencyInjection.Options;
 using Neighbor.Persistence.SeedData;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
-Log.Logger = new LoggerConfiguration().ReadFrom
-    .Configuration(builder.Configuration)
-    .CreateLogger();
-
-//builder.Logging
-//    .ClearProviders()
-//    .AddSerilog();
-
-//builder.Host.UseSerilog();
-
-builder.Configuration
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddEnvironmentVariables();
 
 builder.Services.AddConfigureMediatR();
 
@@ -108,23 +93,19 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-
 //if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
 app.ConfigureSwagger();
 
 try
 {
     await app.RunAsync();
-    Log.Information("Stopped cleanly");
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "An unhandled exception occured during bootstrapping");
     await app.StopAsync();
 }
 finally
 {
-    Log.CloseAndFlush();
     await app.DisposeAsync();
 }
 

@@ -20,18 +20,38 @@
 
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
-		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="8.0.1" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
-		<PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+		<PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.3.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.7.3" />
 	</ItemGroup>
-	
+
+	<ItemGroup>
+	  <None Include="wwwroot\EmailTemplates\EmailAccountBanned.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailAccountUnbanned.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailForgotPassword.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiLessorAboutAdminApprovedReportedOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiLessorAboutAdminRejectedReportedOrderSuccess.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiLessorAboutUserApprovedOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiLessorAboutUserRejectedOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiLessorAboutUserReportedOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiLessorOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiUserAboutAdminApprovedReportedOrderSuccess.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiUserAboutAdminRejectedReportedOrderSuccess.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiUserAboutLessorApprovedCompletedOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiUserAboutLessorApprovedRejectReasonOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiUserAboutLessorRejectedOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailNotiUserOrder.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailProductApproved.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailProductRejected.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailRegister.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailUserChangeEmail.html" />
+	  <None Include="wwwroot\EmailTemplates\EmailUserChangePassword.html" />
+	</ItemGroup>
 </Project>

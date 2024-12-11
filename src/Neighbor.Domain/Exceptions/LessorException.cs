@@ -11,4 +11,11 @@ public static class LessorException
                    MessagesList.LessorNotFoundException.GetMessage().Code)
         { }
     }
+    public sealed class LessorNotRegisterdException : NotFoundException
+    {
+        public LessorNotRegisterdException()
+            : base(MessagesList.LessorNotRegisterdException.GetMessage().Message,
+                   MessagesList.LessorNotRegisterdException.GetMessage().Code)
+        { }
+    }
 }

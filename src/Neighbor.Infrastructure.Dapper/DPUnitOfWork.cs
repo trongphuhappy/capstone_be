@@ -4,7 +4,7 @@ using Neighbor.Domain.Abstraction.Dappers.Repositories;
 namespace Neighbor.Infrastructure.Dapper;
 public class DPUnitOfWork : IDPUnitOfWork
 {
-    public DPUnitOfWork(IAccountRepository accountRepository, ICategoryRepository categoryRepository, ISurchargeRepository surchargeRepository, IProductRepository productRepository, ILessorRepository lessorRepository, IWishlistRepository wishlistRepositories, IOrderRepository orderRepositories, IFeedbackRepository feedbackRepository)
+    public DPUnitOfWork(IAccountRepository accountRepository, ICategoryRepository categoryRepository, ISurchargeRepository surchargeRepository, IProductRepository productRepository, ILessorRepository lessorRepository, IWishlistRepository wishlistRepositories, IOrderRepository orderRepositories, IFeedbackRepository feedbackRepository, IStatisticRepository statisticRepositories, IWalletRepository walletRepositories)
     {
         AccountRepositories = accountRepository;
         CategoryRepositories = categoryRepository;
@@ -14,6 +14,8 @@ public class DPUnitOfWork : IDPUnitOfWork
         WishlistRepositories = wishlistRepositories;
         OrderRepositories = orderRepositories;
         FeedbackRepositories = feedbackRepository;
+        StatisticRepositories = statisticRepositories;
+        WalletRepositories = walletRepositories;
     }
     public IAccountRepository AccountRepositories { get; }
 
@@ -24,6 +26,7 @@ public class DPUnitOfWork : IDPUnitOfWork
     public ILessorRepository LessorRepositories { get; }
     public IWishlistRepository WishlistRepositories { get; }
     public IOrderRepository OrderRepositories { get; }
-
     public IFeedbackRepository FeedbackRepositories { get; }
+    public IStatisticRepository StatisticRepositories { get; }
+    public IWalletRepository WalletRepositories { get; }
 }

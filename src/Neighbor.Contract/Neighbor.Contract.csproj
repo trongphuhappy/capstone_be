@@ -17,6 +17,7 @@
 	<ItemGroup>
 	  <Folder Include="Services\Feedbacks\Validators\" />
 	  <Folder Include="Services\Members\Validators\" />
+	  <Folder Include="Services\Statistic\Validators\" />
 	</ItemGroup>
 
 </Project>

@@ -74,6 +74,9 @@ public enum MessagesList
     [Message("This user is not a lessor!", "lessor_noti_exception_01")]
     LessorNotFoundException,
 
+    [Message("Please update information to make lessor!", "lessor_noti_exception_02")]
+    LessorNotRegisterdException,
+
     [Message("Create Product Successfully!", "product_noti_success_01")]
     ProductCreateSuccess,
 

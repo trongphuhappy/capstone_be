@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Neighbor.Contract.DTOs.OrderDTOs;
 using Neighbor.Contract.DTOs.StatisticDTOs;
 using Neighbor.Domain.Abstraction.Dappers.Repositories;
 
@@ -13,7 +14,35 @@ public class StatisticRepository : IStatisticRepository
     {
         _configuration = configuration;
     }
-    public async Task<List<BoxLessorDTO>> GetTotalBoxLessor(Guid lessorId)
+
+    public async Task<IEnumerable<OrderStatisticsDTO>> GetMonthlyOrderStatisticsByLessorAsync(Guid lessorId)
+    {
+        var query = @"
+            WITH LatestYearOrders AS (
+                SELECT 
+                    YEAR(CreatedDate) AS OrderYear,
+                    MONTH(CreatedDate) AS OrderMonth,
+                    COUNT(Id) AS OrderCount
+                FROM Orders
+                WHERE LessorId = @LessorId
+                GROUP BY YEAR(CreatedDate), MONTH(CreatedDate)
+            )
+            SELECT 
+                OrderMonth,
+                OrderCount
+            FROM LatestYearOrders
+            WHERE OrderYear = (SELECT MAX(YEAR(CreatedDate)) FROM Orders WHERE LessorId = @LessorId)
+            ORDER BY OrderMonth;
+        ";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            return await connection.QueryAsync<OrderStatisticsDTO>(query, new { LessorId = lessorId });
+        }
+    }
+
+    public async Task<List<BoxLessorDTO>> GetTotalBoxLessorAsync(Guid lessorId)
     {
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
@@ -51,6 +80,32 @@ public class StatisticRepository : IStatisticRepository
             
             var listTotal = new List<BoxLessorDTO>() { resultGetTotalProducts, resultGetTotalOrderValues, resultGetTotalOrderSuccess};
             return listTotal;
+        }
+    }
+
+    public async Task<OrderStatsDTO> GetPercentTotalOrder(Guid lessorId)
+    {
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+
+            string query = @"
+                SELECT
+                    COUNT(*) AS TotalOrders,
+                    CASE 
+                        WHEN COUNT(*) > 0 THEN SUM(CASE WHEN OrderStatus = 2 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)
+                        ELSE 0 
+                    END AS PercentOrderSuccess,
+                    CASE 
+                        WHEN COUNT(*) > 0 THEN SUM(CASE WHEN OrderStatus IN (-1, -3) THEN 1 ELSE 0 END) * 100.0 / COUNT(*)
+                        ELSE 0 
+                    END AS PercentOrderFail
+                FROM Orders
+                WHERE LessorId = @LessorId";
+
+            var result = await connection.QueryFirstOrDefaultAsync<OrderStatsDTO>(query, new { LessorId = lessorId });
+
+            return result;
         }
     }
 }

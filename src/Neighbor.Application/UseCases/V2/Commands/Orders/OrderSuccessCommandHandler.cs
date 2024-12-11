@@ -39,7 +39,7 @@ public sealed class OrderSuccessCommandHandler : ICommandHandler<Command.OrderSu
 
         // Find lessor
         //var lessor = await _efUnitOfWork.LessorRepository.FindByIdAsync(product.LessorId, cancellationToken);
-
+        var account = await _efUnitOfWork.AccountRepository.FindByIdAsync(orderObject.AccountId);
         //Find wallet
         var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(product.LessorId);
         
@@ -55,13 +55,13 @@ public sealed class OrderSuccessCommandHandler : ICommandHandler<Command.OrderSu
         // Delete cache order
         await _responseCacheService.DeleteCacheResponseAsync($"order_{request.OrderId}");
         // //Send success order email for Lessor
-        // await Task.WhenAll(
-        //    _publisher.Publish(new DomainEvent.NotiLessorOrderSuccess(orderCreated.Id, product.Lessor.Account.Email, product.Name, product.Lessor.WareHouseAddress, orderObject.RentTime, accountFound.Email), cancellationToken)
-        // );
-        // //Send success order email for User
-        // await Task.WhenAll(
-        //    _publisher.Publish(new DomainEvent.NotiUserOrderSuccess(orderCreated.Id, accountFound.Email, productFound.Name, productFound.Lessor.WareHouseAddress, request.RentTime), cancellationToken)
-        //);
+        await Task.WhenAll(
+           _publisher.Publish(new DomainEvent.NotiLessorOrderSuccess(orderCreated.Id, product.Lessor.Account.Email, product.Name, product.Lessor.WareHouseAddress, orderObject.RentTime, account.Email), cancellationToken)
+        );
+        //Send success order email for User
+        await Task.WhenAll(
+           _publisher.Publish(new DomainEvent.NotiUserOrderSuccess(orderCreated.Id, product.Lessor.Account.Email, product.Name, product.Lessor.WareHouseAddress, orderObject.RentTime), cancellationToken)
+       );
         var result = new Response.OrderSuccess($"{_clientSetting.Url}{_clientSetting.OrderSuccess}");
         return Result.Success(new Success<Response.OrderSuccess>("", "", result));
     }

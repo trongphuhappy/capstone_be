@@ -199,4 +199,7 @@ public enum MessagesList
 
     [Message("You have successfully created a comment, thank you for your comments.", "feedback_02")]
     CreateFeedbackSuccessfully,
+
+    [Message("Dashboard: ", "get_dashboard_noti_success_1")]
+    GetDashboardForTotalSuccess,
 }

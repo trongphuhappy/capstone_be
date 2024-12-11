@@ -25,4 +25,16 @@ public class AdminController : ApiController
 
         return Ok(result);
     }
+
+    [HttpGet("get_dashboard", Name = "GetDashboard")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetDashboard([FromQuery] Query.GetDashboardQuery getDashboardQuery)
+    {
+        var result = await Sender.Send(getDashboardQuery);
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Ok(result);
+    }
 }

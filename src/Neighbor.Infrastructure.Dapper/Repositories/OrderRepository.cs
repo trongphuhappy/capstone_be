@@ -23,6 +23,35 @@ public class OrderRepository : IOrderRepository
         throw new NotImplementedException();
     }
 
+    public async Task<Dictionary<int, double>> CountAmountInYear(int year)
+    {
+        var sql = @"
+        SELECT MONTH(ModifiedDate) AS Month, SUM(OrderValue * 0.3) AS TotalAmount
+        FROM Orders
+        WHERE YEAR(ModifiedDate) = @Year AND (OrderStatus IN (2, -3) AND OrderReportStatus IN (0, -1))
+        GROUP BY MONTH(ModifiedDate)
+        ORDER BY MONTH(ModifiedDate)";
+
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.QueryAsync<(int Month, double TotalAmount)>(sql, new { Year = year });
+
+            // Initialize a dictionary with all months set to 0
+            var allMonths = Enumerable.Range(1, 12).ToDictionary(month => month, _ => 0.0);
+
+            // Update the dictionary with the actual data
+            foreach (var record in result)
+            {
+                allMonths[record.Month] = record.TotalAmount;
+            }
+
+            return allMonths;
+        }
+    }
+
+
+
     public Task<int> DeleteAsync(Order entity)
     {
         throw new NotImplementedException();
@@ -315,6 +344,21 @@ public class OrderRepository : IOrderRepository
                 totalPages
             );
         }
+    }
+
+    public async Task<double> GetTotalRevenue()
+    {
+        var sql = @"
+        SELECT SUM(OrderValue * 0.3)
+        FROM Orders
+        WHERE (OrderStatus IN (2, -3) AND OrderReportStatus IN (0, -1))";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<double>(sql);
+            return result;
+        }
+
     }
 
     public Task<int> UpdateAsync(Order entity)

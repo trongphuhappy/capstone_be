@@ -123,20 +123,20 @@ public class ProductRepository : IProductRepository
     }
 
     public async Task<PagedResult<Product>> GetPagedAsync(
-    int pageIndex,
-    int pageSize,
-    Filter.ProductFilter filterParams,
-    string[] selectedColumns)
+int pageIndex,
+int pageSize,
+Filter.ProductFilter filterParams,
+string[] selectedColumns)
     {
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             // Valid columns for selecting
             var validColumns = new HashSet<string>
-        {
-            "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
-            "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
-            "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.AccountId", "l.CreatedDate AS LessorCreatedDate", "w.Id", "w.AccountId", "w.ModifiedDate AS WishlistModifiedDate", "c.Id", "c.Name", "c.IsVehicle"
-        };
+    {
+        "p.Id", "p.Name", "p.StatusType", "p.Policies", "p.Description", "p.RejectReason",
+        "p.Rating", "p.Price", "p.Value", "p.MaximumRentDays", "p.ConfirmStatus", "p.LessorId", "p.CreatedDate",
+        "p.ModifiedDate AS ProductModifiedDate", "i.ImageLink", "i.ImageId", "i.CreatedDate AS ImageCreatedDate", "l.Id", "l.WareHouseAddress", "l.ShopName", "l.AccountId", "l.CreatedDate AS LessorCreatedDate", "w.Id", "w.AccountId", "w.ModifiedDate AS WishlistModifiedDate", "c.Id", "c.Name", "c.IsVehicle"
+    };
 
             var columns = selectedColumns?.Where(c => validColumns.Contains(c)).ToArray();
 
@@ -147,23 +147,23 @@ public class ProductRepository : IProductRepository
 
             // Base query for fetching data
             var queryBuilder = new StringBuilder($@"
-            SELECT {selectedColumnsString} 
-            FROM Products p
-            LEFT JOIN Images i ON p.Id = i.ProductId
-            LEFT JOIN Wishlists w on p.Id = w.ProductId
-            JOIN Lessors l ON l.Id = p.LessorId
-            JOIN Categories c ON c.Id = p.CategoryId
-            WHERE 1=1");
+        SELECT {selectedColumnsString} 
+        FROM Products p
+        LEFT JOIN Images i ON p.Id = i.ProductId
+        LEFT JOIN Wishlists w on p.Id = w.ProductId
+        JOIN Lessors l ON l.Id = p.LessorId
+        JOIN Categories c ON c.Id = p.CategoryId
+        WHERE 1=1");
 
             // Base query for total count
             var totalCountQuery = new StringBuilder($@"
-            SELECT COUNT(DISTINCT p.Id) 
-            FROM Products p
-            LEFT JOIN Images i ON p.Id = i.ProductId
-            LEFT JOIN Wishlists w on p.Id = w.ProductId
-            JOIN Lessors l ON l.Id = p.LessorId
-            JOIN Categories c ON c.Id = p.CategoryId
-            WHERE 1=1");
+        SELECT COUNT(DISTINCT p.Id) 
+        FROM Products p
+        LEFT JOIN Images i ON p.Id = i.ProductId
+        LEFT JOIN Wishlists w on p.Id = w.ProductId
+        JOIN Lessors l ON l.Id = p.LessorId
+        JOIN Categories c ON c.Id = p.CategoryId
+        WHERE 1=1");
 
             var parameters = new DynamicParameters();
 

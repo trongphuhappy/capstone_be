@@ -12,4 +12,6 @@ public interface IDPUnitOfWork
     IWishlistRepository WishlistRepositories { get; }
     IOrderRepository OrderRepositories { get; }
     IFeedbackRepository FeedbackRepositories { get; }
+    IStatisticRepository StatisticRepositories { get; }
+    IWalletRepository WalletRepositories { get; }
 }

@@ -5,42 +5,41 @@ using Neighbor.Domain.Abstraction.Dappers.Repositories;
 using Neighbor.Domain.Entities;
 
 namespace Neighbor.Infrastructure.Dapper.Repositories;
-public class LessorRepository : ILessorRepository
+
+public class WalletRepository : IWalletRepository
 {
     private readonly IConfiguration _configuration;
-    public LessorRepository(IConfiguration configuration)
+    public WalletRepository(IConfiguration configuration)
     {
         _configuration = configuration;
     }
-    public Task<int> AddAsync(Lessor entity)
+    public Task<int> AddAsync(Wallet entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<int> DeleteAsync(Lessor entity)
+    public Task<int> DeleteAsync(Wallet entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyCollection<Lessor>> GetAllAsync()
+    public Task<IReadOnlyCollection<Wallet>> GetAllAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<Lessor>? GetByIdAsync(Guid Id)
+    public Task<Wallet>? GetByIdAsync(Guid Id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Lessor> GetLessorByUserIdAsync(Guid userId, string[] selectedColumns = null)
+    public async Task<Wallet> GetWalletByLessorId(Guid lessorId, string[] selectedColumns = null)
     {
         var validColumns = new HashSet<string>
         {
             "l.Id",
-            "l.WareHouseAddress",
-            "l.ShopName",
-            "l.LocationType",
-            "l.AccountId"
+            "l.LessorId",
+            "l.Balance",
         };
 
 
@@ -52,34 +51,23 @@ public class LessorRepository : ILessorRepository
 
         var sql = @$"
         SELECT {selectedColumnsString}
-        FROM Lessors l
-        WHERE l.AccountId = @UserId";
+        FROM Wallets l
+        WHERE l.LessorId = @LessorId";
 
         using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
         {
             await connection.OpenAsync();
 
-            var result = await connection.QueryAsync<Lessor>(
+            var result = await connection.QueryAsync<Wallet>(
                 sql,
-                new { UserId = userId }
+                new { LessorId = lessorId }
                 );
 
             return result.FirstOrDefault();
         }
     }
 
-    public async Task<bool>? LessorExistByAccountIdAsync(Guid userId)
-    {
-        var sql = "SELECT CASE WHEN EXISTS (SELECT 1 FROM Lessors WHERE AccountId = @UserId) THEN 1 ELSE 0 END";
-        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
-        {
-            await connection.OpenAsync();
-            var result = await connection.ExecuteScalarAsync<bool>(sql, new { UserId = userId });
-            return result;
-        }
-    }
-
-    public Task<int> UpdateAsync(Lessor entity)
+    public Task<int> UpdateAsync(Wallet entity)
     {
         throw new NotImplementedException();
     }

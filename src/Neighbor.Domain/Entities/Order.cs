@@ -8,11 +8,12 @@ namespace Neighbor.Domain.Entities
     {
         public Order()
         { }
-        public Order(Guid accountId, Guid productId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double orderValue, OrderStatusType orderStatus, long orderId,  PaymentMethodType paymentMethodId)
+        public Order(Guid accountId, Guid productId, Guid lessorId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double orderValue, OrderStatusType orderStatus, long orderId,  PaymentMethodType paymentMethodId)
         {
             Id = Guid.NewGuid();
             AccountId = accountId;
             ProductId = productId;
+            LessorId = lessorId;
             RentTime = rentTime;
             ReturnTime = returnTime;
             DeliveryAddress = deliveryAddress;
@@ -32,6 +33,7 @@ namespace Neighbor.Domain.Entities
         public string? UserReport { get; private set; }
         public string? AdminReasonReject { get; private set; }
         public long? OrderId { get; private set; }
+        public Guid LessorId { get; private set; }
         public virtual List<Feedback> Feedbacks { get; private set; }
         public PaymentMethodType PaymentMethodId { get; private set; }
         public virtual PaymentMethod PaymentMethod { get; private set; }
@@ -40,12 +42,12 @@ namespace Neighbor.Domain.Entities
         public Guid? AccountId { get; private set; }
         public virtual Account? Account { get; private set; }
 
-        public static Order CreateOrder(Guid accountId, Guid productId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double productPrice, long orderId)
+        public static Order CreateOrder(Guid accountId, Guid productId, Guid lessorId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double productPrice, long orderId)
         {
             double orderValue = Math.Ceiling((returnTime - rentTime).TotalDays) * productPrice;
             OrderStatusType orderStatus = OrderStatusType.Pending;
             PaymentMethodType paymentMethod = PaymentMethodType.Banking;
-            return new Order(accountId, productId, rentTime, returnTime, deliveryAddress, orderValue, orderStatus, orderId, paymentMethod);
+            return new Order(accountId, productId, lessorId, rentTime, returnTime, deliveryAddress, orderValue, orderStatus, orderId, paymentMethod);
         }
 
         public void UpdateConfirmOrderByUser(OrderStatusType orderStatus, string? rejectReason)

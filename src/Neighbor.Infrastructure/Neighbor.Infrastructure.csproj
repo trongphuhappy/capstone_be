@@ -13,6 +13,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="Google.Apis.Dialogflow.v2" Version="1.68.0.3610" />
+		<PackageReference Include="Google.Cloud.Dialogflow.V2" Version="4.24.0" />
 		<PackageReference Include="MailKit" Version="4.7.1.1" />
 		<PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
 		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.8" />

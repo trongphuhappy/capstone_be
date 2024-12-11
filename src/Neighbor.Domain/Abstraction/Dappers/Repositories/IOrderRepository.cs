@@ -8,4 +8,6 @@ public interface IOrderRepository : IGenericRepository<Domain.Entities.Order>
 {
     Task<PagedResult<Order>> GetPagedAsync(int pageIndex, int pageSize, OrderFilter filterParams, string[] selectedColumns);
     Task<Order> GetDetailsAsync(Guid productId);
+    Task<double> GetTotalRevenue();
+    Task<Dictionary<int, double>> CountAmountInYear(int year);
 }

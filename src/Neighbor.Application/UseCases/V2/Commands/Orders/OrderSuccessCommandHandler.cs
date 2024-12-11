@@ -42,8 +42,8 @@ public sealed class OrderSuccessCommandHandler : ICommandHandler<Command.OrderSu
 
         //Find wallet
         var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(product.LessorId);
-
-        var orderCreated = Order.CreateOrder(orderObject.AccountId, orderObject.ProductId, orderObject.RentTime, orderObject.ReturnTime, product.Lessor.WareHouseAddress, product.Price, request.OrderId);
+        
+        var orderCreated = Order.CreateOrder(orderObject.AccountId, orderObject.ProductId, product.LessorId, orderObject.RentTime, orderObject.ReturnTime, product.Lessor.WareHouseAddress, product.Price, request.OrderId);
         _efUnitOfWork.OrderRepository.Add(orderCreated);
         // Change status type product
         product.UpdateStatusType(StatusType.Not_Available);

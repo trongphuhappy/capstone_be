@@ -34,6 +34,8 @@ public sealed class GetInforLessorQueryHandler : IQueryHandler<Query.GetInforLes
                 null));
         }
         var result = _mapper.Map<LessorDTO>(lessor);
+        var wallet = await _dpUnitOfWork.WalletRepositories.GetWalletByLessorId(lessor.Id, new[] { "l.Balance"});
+        result.Wallet = wallet?.Balance ?? 0;
         return Result.Success(new Success<LessorDTO>(MessagesList.GetProfileSuccessfully.GetMessage().Code,
             MessagesList.GetProfileSuccessfully.GetMessage().Message,
             result));

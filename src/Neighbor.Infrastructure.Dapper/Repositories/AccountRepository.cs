@@ -29,6 +29,17 @@ public class AccountRepository : IAccountRepository
         throw new NotImplementedException();
     }
 
+    public async Task<int> CountAllUsers()
+    {
+        var sql = "SELECT COUNT(*) FROM Accounts WHERE RoleUserId = 2";
+        using (var connection = new SqlConnection(_configuration.GetConnectionString("ConnectionStrings")))
+        {
+            await connection.OpenAsync();
+            var result = await connection.ExecuteScalarAsync<int>(sql);
+            return result;
+        }
+    }
+
     public Task<int> DeleteAsync(Account entity)
     {
         throw new NotImplementedException();

@@ -33,7 +33,7 @@ namespace Neighbor.Domain.Entities
         public string? UserReport { get; private set; }
         public string? AdminReasonReject { get; private set; }
         public long? OrderId { get; private set; }
-        public Guid LessorId { get; private set; }
+        public Guid? LessorId { get; private set; }
         public virtual List<Feedback> Feedbacks { get; private set; }
         public PaymentMethodType PaymentMethodId { get; private set; }
         public virtual PaymentMethod PaymentMethod { get; private set; }

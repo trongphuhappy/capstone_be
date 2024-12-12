@@ -23,4 +23,14 @@ public class Surcharge : DomainEntity<Guid>
     {
         return new Surcharge(Id, Name, Description, IsDeleted);
     }
+
+    public static Surcharge CreateSurchargeForTest(Guid id, string name, string description)
+    {
+        return new Surcharge()
+        {
+            Id = id,
+            Name = name,
+            Description = description
+        };
+    }
 }

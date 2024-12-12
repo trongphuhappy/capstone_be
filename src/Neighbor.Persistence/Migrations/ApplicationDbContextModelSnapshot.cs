@@ -331,6 +331,10 @@ namespace Neighbor.Persistence.Migrations
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("LessorId")
+                       .ValueGeneratedOnAdd()
+                       .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 

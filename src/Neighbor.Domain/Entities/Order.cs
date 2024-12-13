@@ -47,7 +47,28 @@ namespace Neighbor.Domain.Entities
             double orderValue = Math.Ceiling((returnTime - rentTime).TotalDays) * productPrice;
             OrderStatusType orderStatus = OrderStatusType.Pending;
             PaymentMethodType paymentMethod = PaymentMethodType.Banking;
-            return new Order(accountId, productId, lessorId, rentTime, returnTime, deliveryAddress, orderValue, orderStatus, orderId, paymentMethod);
+            return new Order(accountId, productId, lessorId, rentTime, returnTime, deliveryAddress, orderValue, orderStatus,  orderId, paymentMethod);
+        }
+
+        public static Order CreateOrderForTestGetOrder(Guid orderId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double orderValue, OrderStatusType orderStatus, OrderReportStatusType orderReportStatusType, string userReasonReject, string lessorReasonReject, string userReport, string adminReasonReject, DateTime createdDate, Product product, Account user)
+        {
+            return new Order()
+            {
+                Id = orderId,
+                RentTime = rentTime,
+                ReturnTime = returnTime,
+                DeliveryAddress = deliveryAddress,
+                OrderValue = orderValue,
+                OrderStatus = orderStatus,
+                OrderReportStatus = orderReportStatusType,
+                UserReasonReject = userReasonReject,
+                LessorReasonReject = lessorReasonReject,
+                UserReport = userReport,
+                AdminReasonReject = adminReasonReject,
+                CreatedDate = createdDate,
+                Product = product,
+                Account = user,
+            };
         }
 
         public void UpdateConfirmOrderByUser(OrderStatusType orderStatus, string? rejectReason)

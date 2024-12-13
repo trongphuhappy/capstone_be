@@ -22,4 +22,12 @@ public class Wishlist : DomainEntity<Guid>
     {
         return new Wishlist(accountId, productId);
     }
+
+    public static Wishlist CreateWishlistForTest(DateTime createdDate)
+    {
+        return new Wishlist()
+        {
+            CreatedDate = createdDate,
+        };
+    }
 }

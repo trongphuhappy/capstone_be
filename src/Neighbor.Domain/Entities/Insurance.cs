@@ -30,6 +30,18 @@ public class Insurance : DomainEntity<Guid>
         return new Insurance(name, issueDate, expirationDate, productId);
     }
 
+    public static Insurance CreateInsuranceForTestGetDetailsProduct(string name, DateTime issueDate, DateTime expirationDate, Guid productId, List<Images> images)
+    {
+        return new Insurance()
+        {
+            Name = name,
+            IssueDate = issueDate,
+            ExpirationDate = expirationDate,
+            ProductId = productId,
+            Images = images
+        };
+    }
+
     public void UpdateImagesInsurance(List<Images> images)
     {
         Images = images;

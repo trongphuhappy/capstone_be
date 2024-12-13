@@ -72,12 +72,20 @@ namespace Neighbor.Application.UnitTests.UseCases.V2.Commands.Orders
                 .ReturnsAsync(orderMemory);
 
             // Mocking product repository
-            var product = Product.CreateProductForOrderSuccessCommandHandlerTest(productId, Lessor.CreateLessorForOrderSuccessCommandHandlerTest(accountId), 100, StatusType.Available);
+            var product = Product.CreateProductForOrderSuccessCommandHandlerTest(productId, Lessor.CreateLessorWithAccount(Account.CreateAccountWithEmail("test@gmail.com")), 100, StatusType.Available);
             _mockEFUnitOfWork.Setup(x => x.ProductRepository.FindByIdAsync(
                 productId,
                 It.IsAny<CancellationToken>(),
                 It.IsAny<Expression<Func<Product, object>>[]>()
             )).ReturnsAsync(product);
+
+            // Mocking account repository
+            var account = Account.CreateAccountWithEmail("test@gmail.com");
+            _mockEFUnitOfWork.Setup(x => x.AccountRepository.FindByIdAsync(
+                accountId,
+                It.IsAny<CancellationToken>(),
+                It.IsAny<Expression<Func<Account, object>>[]>()
+            )).ReturnsAsync(account);
 
             //// Mocking lessor repository
             //var lessor = Lessor.CreateLessorForOrderSuccessCommandHandlerTest(accountId);
@@ -118,6 +126,12 @@ namespace Neighbor.Application.UnitTests.UseCases.V2.Commands.Orders
 
             // Verify save changes was called once
             _mockEFUnitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _mockPublisher.Verify(x => x.Publish(
+                It.IsAny<DomainEvent.NotiLessorOrderSuccess>(),
+                It.IsAny<CancellationToken>()), Times.Once);
+            _mockPublisher.Verify(x => x.Publish(
+                It.IsAny<DomainEvent.NotiUserOrderSuccess>(),
+                It.IsAny<CancellationToken>()), Times.Once);
         }
 
 

@@ -154,4 +154,62 @@ public class Product : DomainEntity<Guid>
             Lessor = lessor,
         };
     }
+
+    public static Product CreateProductWithIdAndNameAndPrice(Guid id, string name, int price)
+    {
+        return new Product()
+        {
+            Id = id,
+            Name = name,
+            Price = price
+        };
+    }
+
+    public static Product CreateProductForGetAllTest(Guid id, string name, StatusType statusType, string policies, string description, double rating, int price, int value, int maximumRentDays, ConfirmStatus confirmStatus, DateTime createdDate, List<Wishlist> wishlists, Lessor lessor, Category category, List<Images> images)
+    {
+        var product = new Product
+        {
+            Id = id,
+            Name = name,
+            StatusType = statusType,
+            Policies = policies,
+            Description = description,
+            Rating = rating,
+            Price = price,
+            Value = value,
+            MaximumRentDays = maximumRentDays,
+            ConfirmStatus = confirmStatus,
+            Wishlists = wishlists,
+            CreatedDate = createdDate,
+            Lessor = lessor,
+            Category = category,
+            Images = images
+        };
+        return product;
+    }
+
+    public static Product CreateProductForGetDetailsTest(Guid id, string name, StatusType statusType, string policies, string description, double rating, int price, int value, int maximumRentDays, ConfirmStatus confirmStatus, DateTime createdDate, List<Wishlist> wishlists, List<Insurance> insurances, List<ProductSurcharge> productSurcharges, Lessor lessor, Category category, List<Images> images)
+    {
+        var product = new Product
+        {
+            Id = id,
+            Name = name,
+            StatusType = statusType,
+            Policies = policies,
+            Description = description,
+            Rating = rating,
+            Price = price,
+            Value = value,
+            MaximumRentDays = maximumRentDays,
+            ConfirmStatus = confirmStatus,
+            Wishlists = wishlists,
+            CreatedDate = createdDate,
+            Insurances = insurances,
+            ProductSurcharges = productSurcharges,
+            Lessor = lessor,
+            Category = category,
+            Images = images
+        };
+        return product;
+    }
 }

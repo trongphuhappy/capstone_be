@@ -73,4 +73,23 @@ public class Lessor : DomainEntity<Guid>
             Account = account
         };
     }
+
+    public static Lessor CreateLessorWithIdAndAccount(Guid id, Account account)
+    {
+        return new Lessor()
+        {
+            Id = id,
+            Account = account
+        };
+    }
+
+    public static Lessor CreateLessorForTest(string shopName, string wareHouseAddress)
+    {
+        return new Lessor()
+        {
+            Id = Guid.NewGuid(),
+            ShopName = shopName,
+            WareHouseAddress = wareHouseAddress
+        };
+    }
 }

@@ -1,4 +1,6 @@
 ﻿using Neighbor.Domain.Abstraction.Entities;
+using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Linq;
 
 namespace Neighbor.Domain.Entities;
 
@@ -24,5 +26,16 @@ public class Category : DomainEntity<int>
     public static Category CreateCategory(string name, string? image, bool isVehicle, bool isDeleted)
     {
         return new Category(name, image, isVehicle, isDeleted);
+    }
+
+    public static Category CreateCategoryForTest(int id, string name, bool isVehicle, string? image)
+    {
+        return new Category()
+        {
+            Id = id,
+            Name = name,
+            IsVehicle = isVehicle,
+            Image = image
+        };
     }
 }

@@ -150,4 +150,27 @@ public class Account : DomainEntity<Guid>
             Email = email
         };
     }
+
+    public static Account CreateAccountForTestGetOrder(Guid Id, string FirstName, string LastName, string Email, string PhoneNumber, string CropAvatarUrl, string FullAvatarUrl)
+    {
+        return new Account()
+        {
+            Id = Id,
+            FirstName = FirstName,
+            LastName = LastName,
+            Email = Email,
+            PhoneNumber = PhoneNumber,
+            CropAvatarUrl = CropAvatarUrl,
+            FullAvatarUrl = FullAvatarUrl
+        };
+    }
+
+    public static Account CreateAccountWithEmailAndIsDeleted(string email, bool isDeleted)
+    {
+        return new Account()
+        {
+            Email = email,
+            IsDeleted = isDeleted
+        };
+    }
 }

@@ -27,4 +27,12 @@ public class Images : DomainEntity<Guid>
     public virtual Feedback? Feedback { get; private set; }
     public Guid? InsuranceId { get; private set; }
     public virtual Insurance? Insurance { get; private set; }
+
+    public static Images CreateImageForTest(string imageLink)
+    {
+        return new Images()
+        {
+            ImageLink = imageLink,
+        };
+    }
 }

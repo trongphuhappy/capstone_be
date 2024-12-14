@@ -221,6 +221,21 @@ string[] selectedColumns)
                 parameters.Add("Price", filterParams.Price);
             }
 
+            // Filter price
+            if (filterParams?.MinPrice.HasValue == true)
+            {
+                queryBuilder.Append(" AND Price >= @MinPrice");
+                totalCountQuery.Append(" AND Price >= @MinPrice");
+                parameters.Add("MinPrice", filterParams.MinPrice.Value);
+            }
+
+            if (filterParams?.MaxPrice.HasValue == true)
+            {
+                queryBuilder.Append(" AND Price <= @MaxPrice");
+                totalCountQuery.Append(" AND Price <= @MaxPrice");
+                parameters.Add("MaxPrice", filterParams.MaxPrice.Value);
+            }
+
             if (filterParams?.Value.HasValue == true)
             {
                 queryBuilder.Append(" AND p.Value = @Value");

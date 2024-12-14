@@ -49,8 +49,8 @@ public sealed class LessorConfirmOrderCommandHandler : ICommandHandler<Command.L
         if (request.IsApproved && orderFound.OrderStatus == OrderStatusType.UserRejected)
         {
             var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(orderFound.Product.Lessor.Id);
-            int orderValue = (int)((orderFound.ReturnTime - orderFound.RentTime).TotalDays) * orderFound.Product.Price;
-            wallet.WithdrawMoney((int)(orderValue * 0.3), $"Lessor with accountId {request.AccountId} refund order {request.OrderId}");
+            long orderValue = (long)((orderFound.ReturnTime - orderFound.RentTime).TotalDays) * orderFound.Product.Price;
+            wallet.WithdrawMoney((long)(orderValue * 0.3), $"Lessor with accountId {request.AccountId} refund order {request.OrderId}");
             _efUnitOfWork.WalletRepository.Update(wallet);
         }
         //Check IsApproved to assign value to order status

@@ -8,14 +8,14 @@ public class Wallet : DomainEntity<Guid>
     {
 
     }
-    public Wallet(Guid lessorId, int balance)
+    public Wallet(Guid lessorId, long balance)
     {
         LessorId = lessorId;
         Balance = balance;
     }
 
     public Guid LessorId { get; private set; }
-    public int Balance { get; private set; }
+    public long Balance { get; private set; }
     
     public virtual Lessor? Lessor { get; private set; }
     public virtual List<Transaction>? Transactions { get; private set; } = new List<Transaction>();
@@ -34,7 +34,7 @@ public class Wallet : DomainEntity<Guid>
         Transactions.Add(transaction);
     }
 
-    public void WithdrawMoney(int rentMoney, string description)
+    public void WithdrawMoney(long rentMoney, string description)
     {
         Balance -= rentMoney;
         // Create new transactions

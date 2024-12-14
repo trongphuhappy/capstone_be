@@ -1,6 +1,5 @@
 ﻿using Neighbor.Contract.Enumarations.Product;
 using Neighbor.Domain.Abstraction.Entities;
-using System.Runtime.CompilerServices;
 
 namespace Neighbor.Domain.Entities;
 
@@ -8,9 +7,9 @@ public class Product : DomainEntity<Guid>
 {
     public Product()
     {
-
     }
-    public Product(string name, StatusType statusType, string policies, string description, double rating, int price, int value, int maximumRentDays, int categoryId, ConfirmStatus confirmStatus, Guid lessorId)
+
+    public Product(string name, StatusType statusType, string policies, string description, double rating, long price, long value, int maximumRentDays, int categoryId, ConfirmStatus confirmStatus, Guid lessorId)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -32,8 +31,8 @@ public class Product : DomainEntity<Guid>
     public string Description { get; private set; }
     public string? RejectReason { get; private set; }
     public double Rating { get; private set; }
-    public int Price { get; private set; }
-    public int Value { get; private set; }
+    public long Price { get; private set; }
+    public long Value { get; private set; }
     public int MaximumRentDays { get; private set; }
     public int CategoryId { get; private set; }
     public ConfirmStatus ConfirmStatus { get; private set; }
@@ -46,13 +45,12 @@ public class Product : DomainEntity<Guid>
     public virtual List<Wishlist>? Wishlists { get; private set; }
     public virtual List<Order>? Orders { get; private set; }
 
-
-    public static Product CreateProduct(string name, string policies, string description, int price, int value, int maximumRentDays, int categoryId, Guid lessorId)
+    public static Product CreateProduct(string name, string policies, string description, long price, long value, int maximumRentDays, int categoryId, Guid lessorId)
     {
         return new Product(name, StatusType.Available, policies, description, 0, price, value, maximumRentDays,  categoryId, ConfirmStatus.Pending, lessorId);
     }
 
-    public void UpdateProduct(string name, string policies, string description, int price, int value, int maximumRentDays, string rejectReason, StatusType statusType, ConfirmStatus confirmStatus)
+    public void UpdateProduct(string name, string policies, string description, long price, long value, int maximumRentDays, string rejectReason, StatusType statusType, ConfirmStatus confirmStatus)
     {
         Name = name;
         Policies = policies;
@@ -126,7 +124,7 @@ public class Product : DomainEntity<Guid>
         };
     }
 
-    public static Product CreateProductForOrderSuccessCommandHandlerTest(Guid Id, Lessor lessor, int price, StatusType statusType)
+    public static Product CreateProductForOrderSuccessCommandHandlerTest(Guid Id, Lessor lessor, long price, StatusType statusType)
     {
         return new Product()
         {
@@ -155,7 +153,7 @@ public class Product : DomainEntity<Guid>
         };
     }
 
-    public static Product CreateProductWithIdAndNameAndPrice(Guid id, string name, int price)
+    public static Product CreateProductWithIdAndNameAndPrice(Guid id, string name, long price)
     {
         return new Product()
         {
@@ -165,7 +163,7 @@ public class Product : DomainEntity<Guid>
         };
     }
 
-    public static Product CreateProductForGetAllTest(Guid id, string name, StatusType statusType, string policies, string description, double rating, int price, int value, int maximumRentDays, ConfirmStatus confirmStatus, DateTime createdDate, List<Wishlist> wishlists, Lessor lessor, Category category, List<Images> images)
+    public static Product CreateProductForGetAllTest(Guid id, string name, StatusType statusType, string policies, string description, double rating, long price, long value, int maximumRentDays, ConfirmStatus confirmStatus, DateTime createdDate, List<Wishlist> wishlists, Lessor lessor, Category category, List<Images> images)
     {
         var product = new Product
         {
@@ -188,7 +186,7 @@ public class Product : DomainEntity<Guid>
         return product;
     }
 
-    public static Product CreateProductForGetDetailsTest(Guid id, string name, StatusType statusType, string policies, string description, double rating, int price, int value, int maximumRentDays, ConfirmStatus confirmStatus, DateTime createdDate, List<Wishlist> wishlists, List<Insurance> insurances, List<ProductSurcharge> productSurcharges, Lessor lessor, Category category, List<Images> images)
+    public static Product CreateProductForGetDetailsTest(Guid id, string name, StatusType statusType, string policies, string description, double rating, long price, long value, int maximumRentDays, ConfirmStatus confirmStatus, DateTime createdDate, List<Wishlist> wishlists, List<Insurance> insurances, List<ProductSurcharge> productSurcharges, Lessor lessor, Category category, List<Images> images)
     {
         var product = new Product
         {

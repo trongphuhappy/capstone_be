@@ -49,7 +49,7 @@ public sealed class AdminConfirmOrderCommandHandler : ICommandHandler<Command.Ad
         {
             //Refund money to User if User Report has been approved by Admin
             var wallet = await _efUnitOfWork.WalletRepository.GetWalletByLessorId(orderFound.Product.Lessor.Id);
-            int orderValue = (int)((orderFound.ReturnTime - orderFound.RentTime).TotalDays) * orderFound.Product.Price;
+            long orderValue = ((long)(orderFound.ReturnTime - orderFound.RentTime).TotalDays) * orderFound.Product.Price;
             wallet.WithdrawMoney((int)(orderValue * 0.3), $"Admin refund order {request.OrderId}");
             _efUnitOfWork.WalletRepository.Update(wallet);
 

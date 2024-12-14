@@ -1,7 +1,6 @@
 ﻿
 using Neighbor.Contract.Abstractions.Message;
 using Neighbor.Contract.Abstractions.Shared;
-using Neighbor.Contract.Enumarations.Order;
 namespace Neighbor.Contract.Services.Orders;
 public static class Command
 {

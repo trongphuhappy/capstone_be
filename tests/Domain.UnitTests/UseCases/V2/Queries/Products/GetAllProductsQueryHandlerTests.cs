@@ -40,7 +40,7 @@ namespace Neighbor.Application.UnitTests.UseCases.V2.Queries.Products
             (
                 PageIndex: 1,
                 PageSize: 10,
-                FilterParams: new Filter.ProductFilter(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null), 
+                FilterParams: new Filter.ProductFilter(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null), 
                 SelectedColumns: null
             );
 

@@ -56,7 +56,7 @@ public sealed class CreateOrderBankingCommandHandler : ICommandHandler<Command.C
         // Create payment dto
         double orderValue = Math.Ceiling((request.ReturnTime - request.RentTime).TotalDays) * product.Price;
         List<ItemDTO> itemDTOs = new() { new ItemDTO($"Order_{orderId}", 1, (int)(orderValue * 0.3)) };
-        var createPaymentDto = new CreatePaymentDTO(orderId, $"Rent {product.Name}", itemDTOs, _payOSSetting.ErrorUrl, _payOSSetting.SuccessUrl + $"?orderId={orderId}");
+        var createPaymentDto = new CreatePaymentDTO(orderId, $"Rent {orderId}", itemDTOs, _payOSSetting.ErrorUrl, _payOSSetting.SuccessUrl + $"?orderId={orderId}");
         var result = await _paymentService.CreatePaymentLink(createPaymentDto);
         // Save memory to when success or fail will know value
         await _responseCacheService.SetCacheResponseAsync($"order_{orderId}", request, TimeSpan.FromMinutes(60));

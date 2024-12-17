@@ -49,7 +49,7 @@ public sealed class OrderSuccessCommandHandler : ICommandHandler<Command.OrderSu
         product.UpdateStatusType(StatusType.Not_Available);
         _efUnitOfWork.ProductRepository.Update(product);
         // Update wallet
-        long orderValue = (long)((orderObject.ReturnTime - orderObject.RentTime).TotalDays) * product.Price;
+        long orderValue = (long)((orderObject.ReturnTime - orderObject.RentTime).TotalDays) * (long)product.Price;
         wallet.AddMoney((long)(orderValue * 0.3), $"Member {orderObject.AccountId} rent {product.Id}");
         await _efUnitOfWork.SaveChangesAsync(cancellationToken);
         // Delete cache order

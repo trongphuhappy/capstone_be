@@ -28,8 +28,6 @@ public sealed class CreateOrderBankingCommandHandler : ICommandHandler<Command.C
 
     public async Task<Result> Handle(Command.CreateOrderBankingCommand request, CancellationToken cancellationToken)
     {
-        var product = await _efUnitOfWork.ProductRepository.FindByIdAsync(request.ProductId);
-
         //CreateOrderBankingCommandHandler
         var accountFound = await _efUnitOfWork.AccountRepository.FindByIdAsync(request.AccountId) ?? throw new AccountException.AccountNotFoundException();
         var productFound = await _efUnitOfWork.ProductRepository.FindByIdAsync(request.ProductId) ?? throw new ProductException.ProductNotFoundException();
@@ -54,7 +52,7 @@ public sealed class CreateOrderBankingCommandHandler : ICommandHandler<Command.C
         long orderId = new Random().Next(1, 100000);
 
         // Create payment dto
-        double orderValue = Math.Ceiling((request.ReturnTime - request.RentTime).TotalDays) * product.Price;
+        double orderValue = Math.Ceiling((request.ReturnTime - request.RentTime).TotalDays) * productFound.Price;
         List<ItemDTO> itemDTOs = new() { new ItemDTO($"Order_{orderId}", 1, (int)(orderValue * 0.3)) };
         var createPaymentDto = new CreatePaymentDTO(orderId, $"Rent {orderId}", itemDTOs, _payOSSetting.ErrorUrl, _payOSSetting.SuccessUrl + $"?orderId={orderId}");
         var result = await _paymentService.CreatePaymentLink(createPaymentDto);

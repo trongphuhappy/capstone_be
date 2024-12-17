@@ -1,32 +1,64 @@
 {
-  "ConnectionStrings": {
-    "ConnectionStrings": ""
+  "AccountAdmin": {
+    "Email": "",
+    "Password": ""
   },
-  "RedisConfiguration": {
-    "Enabled": true,
-    "ConnectionString": ""
+  "AuthenticationConfiguration": {
+    "AccessSecretToken": "",
+    "AccessTokenExpMinute": "",
+    "Audience": "",
+    "Issuer": "",
+    "RefreshSecretToken": "",
+    "RefreshTokenExpMinute": ""
   },
   "ClientConfiguration": {
+    "OrderFail": "",
+    "OrderSuccess": "",
     "Url": "",
-    "VerifyEmail": "",
     "VerifyChangeEmail": "",
-    "VerifyChangePassword": ""
+    "VerifyChangePassword": "",
+    "VerifyEmail": ""
+  },
+  "CloudinarySetting": {
+    "ApiKey": "",
+    "ApiSecret": "",
+    "CloudName": "",
+    "Folder": ""
+  },
+  "DialogflowSetting": {
+    "AuthProviderX509CertUrl": "",
+    "AuthUri": "",
+    "ClientEmail": "",
+    "ClientId": "",
+    "ClientX509CertUrl": "",
+    "PrivateKey": "",
+    "PrivateKeyId": "",
+    "ProjectId": "",
+    "TokenUri": "",
+    "Type": "",
+    "UniverseDomain": ""
   },
   "EmailConfiguration": {
     "EmailHost": "",
-    "EmailUsername": "",
-    "EmailPassword": ""
+    "EmailPassword": "",
+    "EmailUsername": ""
+  },
+  "PayOSSetting": {
+    "ApiKey": "",
+    "ChecksumKey": "",
+    "ClientId": "",
+    "ErrorUrl": "",
+    "SuccessUrl": ""
+  },
+  "RedisConfiguration": {
+    "ConnectionString": "",
+    "Enabled": false
+  },
+  "ConnectionStrings": {
+    "ConnectionStrings": ""
   },
   "UserConfiguration": {
-    "DefaultMaleAvatar": "",
-    "DefaultFemaleAvatar": ""
-  },
-  "AuthenticationConfiguration": {
-    "Issuer": "",
-    "Audience": "",
-    "AccessSecretToken": "",
-    "RefreshSecretToken": "",
-    "AccessTokenExpMinute": "",
-    "RefreshTokenExpMinute": ""
+    "DefaultFemaleAvatar": "",
+    "DefaultMaleAvatar": ""
   }
 }

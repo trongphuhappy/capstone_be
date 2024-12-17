@@ -42,7 +42,7 @@ namespace Neighbor.Domain.Entities
         public Guid? AccountId { get; private set; }
         public virtual Account? Account { get; private set; }
 
-        public static Order CreateOrder(Guid accountId, Guid productId, Guid lessorId, DateTime rentTime, DateTime returnTime, string deliveryAddress, double productPrice, long orderId)
+        public static Order CreateOrder(Guid accountId, Guid productId, Guid lessorId, DateTime rentTime, DateTime returnTime, string deliveryAddress, long productPrice, long orderId)
         {
             double orderValue = Math.Ceiling((returnTime - rentTime).TotalDays) * productPrice;
             OrderStatusType orderStatus = OrderStatusType.Pending;

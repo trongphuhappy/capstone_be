@@ -26,7 +26,7 @@ public class Wallet : DomainEntity<Guid>
         return wallet;
     }
 
-    public void AddMoney(int rentMoney, string description)
+    public void AddMoney(long rentMoney, string description)
     {
         Balance += rentMoney;
         // Create new transactions
